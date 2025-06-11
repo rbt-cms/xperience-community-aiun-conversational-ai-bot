@@ -25,6 +25,7 @@ using Microsoft.Extensions.Hosting;
 using Samples.DancingGoat;
 
 using CMS.Base;
+using XperienceCommunity.AIUN.ConversationalAIBot;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -56,12 +57,11 @@ builder.Services.AddLocalization()
     .AddControllersWithViews()
     .AddViewLocalization()
     .AddDataAnnotationsLocalization(options =>
-    {
-        options.DataAnnotationLocalizerProvider = (type, factory) => factory.Create(typeof(SharedResources));
-    });
+        options.DataAnnotationLocalizerProvider = (type, factory) => factory.Create(typeof(SharedResources))
+    );
 
 builder.Services.AddDancingGoatServices();
-
+builder.Services.AddKenticoXperienceAIUNChatbot();
 builder.Services.AddSingleton<IEmailActivityTrackingEvaluator, EmailActivityTrackingEvaluator>();
 
 ConfigureMembershipServices(builder.Services);

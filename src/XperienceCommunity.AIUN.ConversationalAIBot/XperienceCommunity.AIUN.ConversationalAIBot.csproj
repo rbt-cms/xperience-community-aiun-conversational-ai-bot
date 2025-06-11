@@ -1,9 +1,42 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <TargetFramework Condition="'$(TargetFramework)' == ''">net8.0</TargetFramework>
+    <AdminOrgName>rbt</AdminOrgName>
+    <!-- Required to prevent type conflicts with existing types -->
+    <HotChocolateImplicitUsings>disable</HotChocolateImplicitUsings>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Admin\Client\node_modules\**" />
+    <EmbeddedResource Remove="Admin\Client\node_modules\**" />
+    <None Remove="Admin\Client\node_modules\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <AdminClientPath Include="Admin\Client\dist\**">
+      <ProjectName>aiun-chatbot</ProjectName>
+    </AdminClientPath>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Admin\Client\dist\**\*.*">
+      <Pack>true</Pack>
+      <PackagePath>contentFiles\any\net8.0\Admin\Client\dist\</PackagePath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Admin\Client\dist\" />
+  </ItemGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="kentico.xperience.admin" />
+  </ItemGroup>
+  <Target Name="NpmInstall" BeforeTargets="NpmBuildClient" Condition=" '$(Configuration)|$(Platform)' != 'Debug|AnyCPU' ">
+    <Exec Command="npm ci --no-audit --no-fund" WorkingDirectory="$(MSBuildProjectDirectory)\Admin\Client" />
+  </Target>
+  <Target Name="NpmBuildClient" BeforeTargets="BeforeBuild" Condition=" '$(Configuration)|$(Platform)' != 'Debug|AnyCPU' ">
+    <Exec Command="npm run build" WorkingDirectory="$(MSBuildProjectDirectory)\Admin\Client" />
 
+   
+  </Target>
 </Project>
