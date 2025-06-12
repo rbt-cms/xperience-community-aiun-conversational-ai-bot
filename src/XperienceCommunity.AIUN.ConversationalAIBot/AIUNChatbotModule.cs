@@ -1,8 +1,11 @@
-﻿using XperienceCommunity.AIUN.ConversationalAIBot;
-using Kentico.Xperience.Admin.Base;
-using CMS.Base;
+﻿using CMS.Base;
 using CMS.Core;
+
+using Kentico.Xperience.Admin.Base;
+
 using Microsoft.Extensions.DependencyInjection;
+
+using XperienceCommunity.AIUN.ConversationalAIBot;
 
 
 [assembly: CMS.AssemblyDiscoverable]
@@ -36,7 +39,6 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot
                 ApplicationEvents.Initialized.Execute += InitializeModule;
             }
         }
-
         private void InitializeModule(object? sender, EventArgs e) =>
             installer?.Install();
     }
