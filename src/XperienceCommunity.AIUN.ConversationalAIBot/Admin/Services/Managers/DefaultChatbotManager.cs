@@ -2,51 +2,47 @@
 using CMS.ContentEngine;
 using CMS.Core;
 using CMS.DataEngine;
-
 using CMS.Helpers;
 using CMS.Websites;
-using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.IManagers;
-using XperienceCommunity.AIUN.ConversationalAIBot.InfoClasses.AIUNConfigurationItem;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
+
+using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.IManagers;
+using XperienceCommunity.AIUN.ConversationalAIBot.InfoClasses.AIUNConfigurationItem;
 
 
 namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
 {
     public class DefaultChatbotManager : IDefaultChatbotManager
     {
-        private readonly IInfoProvider<ChannelInfo> channelProvider;
-        private readonly IConversionService conversionService;
-        private readonly IProgressiveCache cache;
         private readonly IInfoProvider<AIUNConfigurationItemInfo> aiUNConfigurationItemInfoProvider;
         private readonly IContentQueryExecutor contentQueryExecutor;
+        private readonly IProgressiveCache cache;
+        private readonly IInfoProvider<ChannelInfo> channelProvider;
+        private readonly IConversionService conversionService;
         private readonly IWebPageUrlRetriever urlRetriever;
-        private readonly IHttpContextAccessor httpContextAccessor;
-        private readonly IAIUNApiManager aiUNApiManager;
+        private readonly IAiunApiManager aiUNApiManager;
         private readonly IEventLogService eventLogService;
 
-
-        public DefaultChatbotManager(
-        IInfoProvider<ChannelInfo> channelProviderParam,
-        IConversionService conversionServiceParam,
+        public DefaultChatbotManager(IInfoProvider<AIUNConfigurationItemInfo> aIUNConfigurationItemInfoProvider,
+        IContentQueryExecutor executor,
         IProgressiveCache cacheParam,
-        IInfoProvider<AIUNConfigurationItemInfo> aIUNConfigurationItemInfoProviderParam,
-        IContentQueryExecutor executorParam,
-        IHttpContextAccessor httpContextAccessorParam,
-        IWebPageUrlRetriever urlRetrieverParam,
+          IInfoProvider<ChannelInfo> channelProviderParam,
+           IConversionService conversionServiceParam,
+            IWebPageUrlRetriever urlRetrieverParam,
         IEventLogService eventLogServiceParam,
-        IAIUNApiManager aiUNApiManagerParam)
+        IAiunApiManager aiUNApiManagerParam
+        )
         {
+            contentQueryExecutor = executor;
+            aiUNConfigurationItemInfoProvider = aIUNConfigurationItemInfoProvider;
             cache = cacheParam;
-            contentQueryExecutor = executorParam;
             channelProvider = channelProviderParam;
             conversionService = conversionServiceParam;
-            httpContextAccessor = httpContextAccessorParam;
             urlRetriever = urlRetrieverParam;
-            aiUNApiManager = aiUNApiManagerParam;
             eventLogService = eventLogServiceParam;
-            aiUNConfigurationItemInfoProvider = aIUNConfigurationItemInfoProviderParam;
-
+            aiUNApiManager = aiUNApiManagerParam;
         }
 
         /// <summary>
@@ -107,8 +103,8 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
                 var languageUrls = await GetWebPageRelativeUrls(pageIdentifiers, "en", cancellationToken);
 
                 relativeUrls.AddRange(languageUrls);
-                var absoluteUrls = await GetAbsoluteUrls(relativeUrls, scheme, host);
-                await aiUNApiManager.UploadURLsAsync(absoluteUrls.Distinct().ToList(), clientID);
+                var absoluteUrls = GetAbsoluteUrls(relativeUrls, scheme, host);
+                _ = await aiUNApiManager.UploadURLsAsync(absoluteUrls.Distinct().ToList(), clientID);
             }
             catch (Exception ex)
             {
@@ -152,7 +148,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
         /// <param name="scheme"></param>
         /// <param name="host"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<string>> GetAbsoluteUrls(IEnumerable<string> relativeUrls, string scheme, HostString host)
+        public IEnumerable<string> GetAbsoluteUrls(IEnumerable<string> relativeUrls, string scheme, HostString host)
         {
             try
             {
@@ -211,6 +207,8 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
             }
             return string.Empty;
         }
+
+        Task<IEnumerable<string>> IDefaultChatbotManager.GetAbsoluteUrls(IEnumerable<string> relativeUrls, string scheme, HostString host) => throw new NotImplementedException();
     }
 
 }

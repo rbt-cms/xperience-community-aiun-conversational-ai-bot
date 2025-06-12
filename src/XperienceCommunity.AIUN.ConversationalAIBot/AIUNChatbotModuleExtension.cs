@@ -1,15 +1,11 @@
-﻿using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.IManagers;
+﻿using Microsoft.Extensions.DependencyInjection;
+
+using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.IManagers;
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace XperienceCommunity.AIUN.ConversationalAIBot
 {
-    public static class AIUNChatbotModuleExtension
+    public static class AiunChatbotModuleExtension
     {
         /// <summary>
         /// Adds all required services for AIUN Chatbot functionality
@@ -19,11 +15,11 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot
         public static IServiceCollection AddKenticoXperienceAIUNChatbot(this IServiceCollection services)
         {
 
-            services.AddHttpContextAccessor()
-                .AddSingleton<AIUNChatbotModuleInstaller>()
+            _ = services.AddHttpContextAccessor()
+                .AddSingleton<AiunChatbotModuleInstaller>()
                 .AddScoped<IDefaultChatbotManager, DefaultChatbotManager>()
-                .AddScoped<IAIUNApiManager, AIUNApiManager>()
-                .AddHttpClient<IAIUNApiManager, AIUNApiManager>();
+                .AddScoped<IAiunApiManager, AiunApiManager>()
+                .AddHttpClient<IAiunApiManager, AiunApiManager>();
 
 
 

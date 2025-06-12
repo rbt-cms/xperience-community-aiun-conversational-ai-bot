@@ -1,15 +1,16 @@
 ﻿using Kentico.Xperience.Admin.Base;
+
+using Newtonsoft.Json;
+
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.IManagers;
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages;
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.TokensUsage;
 
-using Newtonsoft.Json;
-
 
 [assembly: UIPage(
-    parentType: typeof(AIUNChatbotApplication),
+    parentType: typeof(AiunChatbotApplication),
     slug: "token-usage",
-    uiPageType: typeof(AIUNTokenUsageTemplate),
+    uiPageType: typeof(AiunTokenUsageTemplate),
     name: "Token Usage",
     templateName: "@rbt/aiun-chatbot/TokensUsageLayout",
     order: UIPageOrder.NoOrder)]
@@ -17,12 +18,12 @@ using Newtonsoft.Json;
 namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.TokensUsage
 {
     // Main page class for Token Usage
-    internal class AIUNTokenUsageTemplate : Page<AIUNTokenUsageLayoutProperties>
+    internal class AiunTokenUsageTemplate : Page<AiunTokenUsageLayoutProperties>
     {
-        private readonly IAIUNApiManager aIUNApiManager;
+        private readonly IAiunApiManager aIUNApiManager;
         private readonly IDefaultChatbotManager defaultChatbotManager;
 
-        public AIUNTokenUsageTemplate(IAIUNApiManager aIUNApiManagerParam, IDefaultChatbotManager defaultChatbotManagerParam)
+        public AiunTokenUsageTemplate(IAiunApiManager aIUNApiManagerParam, IDefaultChatbotManager defaultChatbotManagerParam)
         {
             aIUNApiManager = aIUNApiManagerParam;
             defaultChatbotManager = defaultChatbotManagerParam;
@@ -30,12 +31,12 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.TokensUsage
 
 
         // Called on page load to populate template props
-        public override async Task<AIUNTokenUsageLayoutProperties> ConfigureTemplateProperties(AIUNTokenUsageLayoutProperties properties)
+        public override async Task<AiunTokenUsageLayoutProperties> ConfigureTemplateProperties(AiunTokenUsageLayoutProperties properties)
         {
             properties.OverallUsage = new OverallUsage();
             properties.Clients = [];
 
-            var apiData = aIUNApiManager.GetTokenUsageAsync().Result;
+            var apiData = await aIUNApiManager.GetTokenUsageAsync();
 
             if (apiData != null)
             {
@@ -62,7 +63,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.TokensUsage
     }
 
     // Template props sent to React component
-    public class AIUNTokenUsageLayoutProperties : TemplateClientProperties
+    public class AiunTokenUsageLayoutProperties : TemplateClientProperties
     {
         [JsonProperty("overall")]
         public OverallUsage OverallUsage { get; set; } = new OverallUsage();

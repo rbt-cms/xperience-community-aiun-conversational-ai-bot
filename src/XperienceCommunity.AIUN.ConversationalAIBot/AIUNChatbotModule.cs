@@ -6,19 +6,19 @@ using Microsoft.Extensions.DependencyInjection;
 
 
 [assembly: CMS.AssemblyDiscoverable]
-[assembly: CMS.RegisterModule(typeof(AIUNChatbotModule))]
+[assembly: CMS.RegisterModule(typeof(AiunChatbotModule))]
 
 //// Adds a new application category 
 //[assembly: UICategory(AIUNChatbotModule.CUSTOM_CATEGORY, "Custom", Icons.CustomElement, 100)]
 
 namespace XperienceCommunity.AIUN.ConversationalAIBot
 {
-    public class AIUNChatbotModule : AdminModule
+    public class AiunChatbotModule : AdminModule
     {
         public const string CUSTOM_CATEGORY = "acme.web.admin.category";
-        private AIUNChatbotModuleInstaller? installer;
+        private AiunChatbotModuleInstaller? installer;
 
-        public AIUNChatbotModule() : base(nameof(AIUNChatbotModule))
+        public AiunChatbotModule() : base(nameof(AiunChatbotModule))
         {
         }
 
@@ -29,7 +29,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot
 
             var services = parameters.Services;
 
-            installer = services.GetService<AIUNChatbotModuleInstaller>();
+            installer = services.GetService<AiunChatbotModuleInstaller>();
 
             if (installer != null)
             {

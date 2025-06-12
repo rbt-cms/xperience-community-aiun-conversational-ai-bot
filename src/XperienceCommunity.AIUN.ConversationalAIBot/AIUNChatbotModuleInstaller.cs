@@ -1,24 +1,20 @@
 ﻿using CMS.DataEngine;
 using CMS.FormEngine;
 using CMS.Modules;
+
 using XperienceCommunity.AIUN.ConversationalAIBot.InfoClasses.AIUNConfigurationItem;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace XperienceCommunity.AIUN.ConversationalAIBot
 {
-    public class AIUNChatbotModuleInstaller(IInfoProvider<ResourceInfo> resourceProvider)
+    public class AiunChatbotModuleInstaller(IInfoProvider<ResourceInfo> resourceProvider)
     {
         public void Install()
         {
             var resource = resourceProvider.Get("XperienceCommunity.AIUN.ConversationalAIBot") ?? new ResourceInfo();
 
-            InitializeResource(resource);
-           InstallAIUNConfiguartionItemInfo(resource);
-           InstallAIUNSettingsKeyInfo(resource);
+            _ = InitializeResource(resource);
+            InstallAIUNConfiguartionItemInfo(resource);
+            InstallAIUNSettingsKeyInfo(resource);
         }
 
 
@@ -41,7 +37,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot
         private void InstallAIUNConfiguartionItemInfo(ResourceInfo resource)
         {
             var info = DataClassInfoProvider.GetDataClassInfo(AIUNConfigurationItemInfo.OBJECT_TYPE) ?? DataClassInfo.New(AIUNConfigurationItemInfo.OBJECT_TYPE);
-            
+
             info.ClassName = AIUNConfigurationItemInfo.TYPEINFO.ObjectClassName;
             info.ClassTableName = AIUNConfigurationItemInfo.TYPEINFO.ObjectClassName.Replace(".", "_");
             info.ClassDisplayName = "AIUN Configuration Item";
@@ -61,7 +57,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot
             };
             formInfo.AddFormItem(formItem);
 
-            
+
 
             formItem = new FormFieldInfo
             {
@@ -99,7 +95,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot
             };
             formInfo.AddFormItem(formItem);
 
-        
+
 
             SetFormDefinition(info, formInfo);
 
@@ -127,7 +123,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot
                 AllowEmpty = false,
                 Visible = true,
                 Precision = 0,
-                Size=1500,
+                Size = 1500,
                 DataType = "text",
                 Enabled = true,
             };

@@ -6,7 +6,7 @@ using XperienceCommunity.AIUN.ConversationalAIBot.InfoClasses.AIUNConfigurationI
 
 namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Models
 {
-    public class AIUNConfigurationItemModel
+    public class AiunConfigurationItemModel
     {
         public readonly IEnumerable<AIUNConfigurationItemInfo> ItemList = [];
         public int Id { get; set; }
@@ -25,15 +25,15 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Models
         public string BaseURL { get; set; } = string.Empty;
 
 
-        public AIUNConfigurationItemModel() { }
-        public AIUNConfigurationItemModel(string channelName, string clientID, string apiKey, string baseURL)
+        public AiunConfigurationItemModel() { }
+        public AiunConfigurationItemModel(string channelName, string clientID, string apiKey, string baseURL)
         {
             ChannelName = channelName;
             ClientID = clientID;
             APIKey = apiKey;
             BaseURL = baseURL;
         }
-        public AIUNConfigurationItemModel(AIUNConfigurationItemInfo aIUNConfigurationItemInfo)
+        public AiunConfigurationItemModel(AIUNConfigurationItemInfo aIUNConfigurationItemInfo)
         {
             Id = aIUNConfigurationItemInfo.AIUNConfigurationItemID;
             ChannelName = aIUNConfigurationItemInfo.ChannelName;
@@ -42,7 +42,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Models
             BaseURL = aIUNConfigurationItemInfo.BaseURL;
         }
 
-        public AIUNConfigurationItemModel(IEnumerable<AIUNConfigurationItemInfo> enumerable) => ItemList = enumerable;
+        public AiunConfigurationItemModel(IEnumerable<AIUNConfigurationItemInfo> enumerable) => ItemList = enumerable;
 
     }
 }

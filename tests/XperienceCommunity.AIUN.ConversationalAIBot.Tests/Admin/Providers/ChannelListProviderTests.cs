@@ -1,16 +1,16 @@
 ﻿
-using Kentico.Xperience.Admin.Base.FormAnnotations;
+using System.Data;
+
 using CMS.ContentEngine;
 using CMS.DataEngine;
-using Moq;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Xunit;
-using System.Data;
-using System.Threading;
 
-namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests.Admin.Providers
+using Kentico.Xperience.Admin.Base.FormAnnotations;
+
+using Moq;
+
+using Xunit;
+
+namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Providers
 {
     public class ChannelListProviderTests
     {
@@ -25,7 +25,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests.Admin.Providers
             };
 
             var mockProvider = new Mock<IInfoProvider<ChannelInfo>>();
-            mockProvider.Setup(p => p.Get()).Returns(new FakeObjectQuery(channels));
+            _ = mockProvider.Setup(p => p.Get()).Returns(new FakeObjectQuery(channels));
 
             var provider = new PublicChannelListProvider(mockProvider.Object);
 

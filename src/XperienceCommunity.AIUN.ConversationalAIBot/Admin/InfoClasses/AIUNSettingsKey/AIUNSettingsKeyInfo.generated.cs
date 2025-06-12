@@ -24,7 +24,6 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot
         /// <summary>
         /// Type information.
         /// </summary>
-#warning "You will need to configure the type info."
         public static readonly ObjectTypeInfo TYPEINFO = new ObjectTypeInfo(typeof(AIUNSettingsKeyInfoProvider), OBJECT_TYPE, "RBT.AIUNSettingsKey", "AIUNSettingsKeyID", null, null, null, null, null, null, null)
         {
             TouchCacheDependencies = true,

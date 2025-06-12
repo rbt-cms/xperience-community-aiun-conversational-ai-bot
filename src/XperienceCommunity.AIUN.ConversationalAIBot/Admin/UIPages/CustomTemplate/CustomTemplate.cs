@@ -9,7 +9,7 @@ using XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.CustomTemplate;
  */
 
 // Defines a new application and registers its root page under <webappdomain>/admin/CustomTemplate
-[assembly: UIApplication("Acme.CustomTemplate", typeof(CustomTemplate), "CustomTemplate", "CustomApp", AIUNChatbotModule.CUSTOM_CATEGORY, Icons.Clock, "@acme/web-admin/CustomLayout")]
+[assembly: UIApplication("Acme.CustomTemplate", typeof(CustomTemplate), "CustomTemplate", "CustomApp", AiunChatbotModule.CUSTOM_CATEGORY, Icons.Clock, "@acme/web-admin/CustomLayout")]
 
 namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.CustomTemplate
 {

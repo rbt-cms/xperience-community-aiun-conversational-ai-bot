@@ -2,22 +2,15 @@
 using CMS.DataEngine;
 using CMS.Websites.Routing;
 
-using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Components.ViewComponents.AIUNChatbot;
-using XperienceCommunity.AIUN.ConversationalAIBot.InfoClasses.AIUNConfigurationItem;
-
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 
 using Moq;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using XperienceCommunity.AIUN.ConversationalAIBot.InfoClasses.AIUNConfigurationItem;
 
 using Xunit;
 
-namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests.Admin.Components.ViewComponents.AIUNChatbot
+namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Components.ViewComponents.AIUNChatbot
 {
     public class AIUNChatbotViewComponentTests
     {
@@ -29,8 +22,8 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests.Admin.Components.Vie
             var mockWebsiteChannelContext = new Mock<IWebsiteChannelContext>();
             var mockEventLogService = new Mock<IEventLogService>();
 
-            mockWebsiteChannelContext.Setup(x => x.WebsiteChannelName).Returns("TestChannel");
-            mockAIUNConfigurationItemInfoProvider
+            _ = mockWebsiteChannelContext.Setup(x => x.WebsiteChannelName).Returns("TestChannel");
+            _ = mockAIUNConfigurationItemInfoProvider
                 .Setup(x => x.Get())
                 .Returns(new ObjectQuery<AIUNConfigurationItemInfo>());
 
@@ -57,8 +50,8 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests.Admin.Components.Vie
             var mockWebsiteChannelContext = new Mock<IWebsiteChannelContext>();
             var mockEventLogService = new Mock<IEventLogService>();
 
-            mockWebsiteChannelContext.Setup(x => x.WebsiteChannelName).Returns("TestChannel");
-            mockAIUNConfigurationItemInfoProvider
+            _ = mockWebsiteChannelContext.Setup(x => x.WebsiteChannelName).Returns("TestChannel");
+            _ = mockAIUNConfigurationItemInfoProvider
                 .Setup(x => x.Get())
                 .Returns(new ObjectQuery<AIUNConfigurationItemInfo>().WhereEquals("ChannelName", "TestChannel"));
 
@@ -85,10 +78,10 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests.Admin.Components.Vie
             var mockWebsiteChannelContext = new Mock<IWebsiteChannelContext>();
             var mockEventLogService = new Mock<IEventLogService>();
 
-            mockWebsiteChannelContext.Setup(x => x.WebsiteChannelName).Returns("TestChannel");
-            mockAIUNConfigurationItemInfoProvider
+            _ = mockWebsiteChannelContext.Setup(x => x.WebsiteChannelName).Returns("TestChannel");
+            _ = mockAIUNConfigurationItemInfoProvider
                 .Setup(x => x.Get())
-                .Throws(new System.Exception("Test exception"));
+                .Throws(new Exception("Test exception"));
 
             var component = new AiunChatbotViewComponent(
                 mockAIUNConfigurationItemInfoProvider.Object,

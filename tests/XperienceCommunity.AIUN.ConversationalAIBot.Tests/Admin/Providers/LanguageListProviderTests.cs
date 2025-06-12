@@ -1,20 +1,12 @@
 ﻿using CMS.ContentEngine;
 using CMS.DataEngine;
 
-using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Providers;
-
 using Moq;
 using Moq.Protected;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xunit;
 
-namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests.Admin.Providers
+namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Providers
 {
     public class LanguageListProviderTests
     {
@@ -39,7 +31,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests.Admin.Providers
 
             var mockQuery = CreateMockQuery(mockData);
 
-            mockContentLanguageInfoProvider
+            _ = mockContentLanguageInfoProvider
                 .Setup(provider => provider.Get())
                 .Returns(mockQuery.Object);
 
@@ -65,10 +57,10 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests.Admin.Providers
             var filteredData = mockData.Where(x => x.ContentLanguageDisplayName.Contains("Eng")).ToList();
 
             var mockQuery = CreateMockQuery(filteredData);
-            mockQuery.Setup(q => q.WhereStartsWith(It.IsAny<string>(), It.IsAny<string>())).Returns(mockQuery.Object);
-            mockQuery.Setup(q => q.Page(It.IsAny<int>(), It.IsAny<int>())).Returns(mockQuery.Object);
+            _ = mockQuery.Setup(q => q.WhereStartsWith(It.IsAny<string>(), It.IsAny<string>())).Returns(mockQuery.Object);
+            _ = mockQuery.Setup(q => q.Page(It.IsAny<int>(), It.IsAny<int>())).Returns(mockQuery.Object);
 
-            mockContentLanguageInfoProvider
+            _ = mockContentLanguageInfoProvider
                 .Setup(provider => provider.Get())
                 .Returns(mockQuery.Object);
 
@@ -77,7 +69,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests.Admin.Providers
 
             // Assert
             Assert.NotNull(result);
-            Assert.Single(result.Items);
+            _ = Assert.Single(result.Items);
             Assert.Equal("en", result.Items.First().Value);
         }
 
@@ -92,9 +84,9 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests.Admin.Providers
         };
 
             var mockQuery = CreateMockQuery(mockData);
-            mockQuery.Setup(q => q.Page(It.IsAny<int>(), It.IsAny<int>())).Returns(mockQuery.Object);
+            _ = mockQuery.Setup(q => q.Page(It.IsAny<int>(), It.IsAny<int>())).Returns(mockQuery.Object);
 
-            mockContentLanguageInfoProvider
+            _ = mockContentLanguageInfoProvider
                 .Setup(provider => provider.Get())
                 .Returns(mockQuery.Object);
 
@@ -105,19 +97,16 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests.Admin.Providers
 
             // Assert
             Assert.NotNull(result);
-            Assert.Single(result);
+            _ = Assert.Single(result);
             Assert.Equal("en", result.First().Value);
         }
 
         // Helper to create a stub ContentLanguageInfo
-        private static ContentLanguageInfo CreateStubContentLanguageInfo(string name, string displayName)
+        private static ContentLanguageInfo CreateStubContentLanguageInfo(string name, string displayName) => new StubContentLanguageInfo
         {
-            return new StubContentLanguageInfo
-            {
-                ContentLanguageNameValue = name,
-                ContentLanguageDisplayNameValue = displayName
-            };
-        }
+            ContentLanguageNameValue = name,
+            ContentLanguageDisplayNameValue = displayName
+        };
 
         private class StubContentLanguageInfo : ContentLanguageInfo
         {
@@ -140,23 +129,23 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests.Admin.Providers
         private static Mock<ObjectQuery<ContentLanguageInfo>> CreateMockQuery(List<ContentLanguageInfo> items)
         {
             var mockQuery = new Mock<ObjectQuery<ContentLanguageInfo>>(MockBehavior.Strict);
-            mockQuery.SetupProperty(q => q.ClassName, It.IsAny<string>());
-            mockQuery.SetupProperty(q => q.QueryName, It.IsAny<string>());
-            mockQuery.SetupProperty(q => q.ObjectType, It.IsAny<string>());
-            mockQuery.Protected().Setup("TypeUpdated");
-            mockQuery.Setup(q => q.GetEnumerableTypedResultAsync(
+            _ = mockQuery.SetupProperty(q => q.ClassName, It.IsAny<string>());
+            _ = mockQuery.SetupProperty(q => q.QueryName, It.IsAny<string>());
+            _ = mockQuery.SetupProperty(q => q.ObjectType, It.IsAny<string>());
+            _ = mockQuery.Protected().Setup("TypeUpdated");
+            _ = mockQuery.Setup(q => q.GetEnumerableTypedResultAsync(
                 It.IsAny<System.Data.CommandBehavior>(),
                 It.IsAny<bool>(),
                 It.IsAny<CancellationToken?>()))
                 .ReturnsAsync(items);
 
-            mockQuery.Setup(q => q.IsPagedQuery).Returns(true);
-            mockQuery.Setup(q => q.TotalRecords).Returns(items.Count);
-            mockQuery.Setup(q => q.Offset).Returns(0);
-            mockQuery.Setup(q => q.MaxRecords).Returns(0);
+            _ = mockQuery.Setup(q => q.IsPagedQuery).Returns(true);
+            _ = mockQuery.Setup(q => q.TotalRecords).Returns(items.Count);
+            _ = mockQuery.Setup(q => q.Offset).Returns(0);
+            _ = mockQuery.Setup(q => q.MaxRecords).Returns(0);
 
             // Add this line to allow .Page() to be called in tests
-            mockQuery.Setup(q => q.Page(It.IsAny<int>(), It.IsAny<int>())).Returns(mockQuery.Object);
+            _ = mockQuery.Setup(q => q.Page(It.IsAny<int>(), It.IsAny<int>())).Returns(mockQuery.Object);
 
             return mockQuery;
         }

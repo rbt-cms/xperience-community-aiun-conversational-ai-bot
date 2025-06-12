@@ -1,17 +1,14 @@
-﻿using Kentico.Xperience.Admin.Base.UIPages;
+﻿using CMS.Membership;
+
 using Kentico.Xperience.Admin.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CMS.Membership;
+using Kentico.Xperience.Admin.Base.UIPages;
+
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages;
 
 [assembly:
     UIApplication(
-    identifier: AIUNChatbotApplication.IDENTIFIER,
-    type: typeof(AIUNChatbotApplication),
+    identifier: AiunChatbotApplication.IDENTIFIER,
+    type: typeof(AiunChatbotApplication),
     slug: "aiunchatbot",
     name: "AIUN Chatbot",
     category: BaseApplicationCategories.CONFIGURATION,
@@ -20,7 +17,7 @@ using XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages;
 namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages
 {
     [UIPermission(SystemPermissions.VIEW)]
-    public class AIUNChatbotApplication : ApplicationPage
+    public class AiunChatbotApplication : ApplicationPage
     {
         public const string IDENTIFIER = "XperienceCommunity.AIUN.ConversationalAIBot";
     }

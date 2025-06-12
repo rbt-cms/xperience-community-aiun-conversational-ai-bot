@@ -1,178 +1,186 @@
 ﻿
+using System.Net;
+using System.Net.Sockets;
+
 using CMS;
 using CMS.Base;
+using CMS.ContentEngine;
 using CMS.Core;
 using CMS.DataEngine;
+using CMS.Helpers;
+using CMS.Membership;
 using CMS.Websites;
+
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.IManagers;
 
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Http;
-using CMS.Membership;
-using CMS.Helpers;
-using CMS.ContentEngine;
+
+[assembly: RegisterModule(typeof(XperienceCommunity.AIUN.ConversationalAIBot.ContentChangeEventHandler))]
 
 
-[assembly: RegisterModule(typeof(ContentChangeEventHandler))]
-
-public class ContentChangeEventHandler : Module
+namespace XperienceCommunity.AIUN.ConversationalAIBot
 {
-    public ContentChangeEventHandler()
-        : base(nameof(ContentChangeEventHandler))
+    public class ContentChangeEventHandler : Module
     {
-    }
-
-    protected override void OnInit()
-    {
-        base.OnInit();
-
-        // Attach to relevant events
-        WebPageEvents.Publish.Execute += HandleWebPagePublish;
-        //ContentItemEvents.Publish.Execute += HandleContentItemPublish;
-    }
-
-    private async void HandleWebPagePublish(object? sender, CMSEventArgs e)
-    {
-        if (e is not WebPageEventArgsBase pageEvent)
+        public ContentChangeEventHandler()
+            : base(nameof(ContentChangeEventHandler))
         {
-            return;
         }
 
-        LogPageInfo(pageEvent);
-        //await ProcessContentChangeAsync(pageEvent.ID, pageEvent.ContentLanguageName);
-    }
-
-
-    private async Task LogPageInfo(WebPageEventArgsBase pageEvent)
-    {
-        string pagePath = pageEvent.TreePath;
-        string websiteChannelName = pageEvent.WebsiteChannelName;
-
-        // Fetch user and request info
-        var currentUser = MembershipContext.AuthenticatedUser;
-        int userId = currentUser?.UserID ?? 0;
-        string userName = currentUser?.UserName ?? "Unknown";
-        string ipAddress = RequestContext.UserHostAddress ?? "Unknown";
-
-        if (ipAddress is "::1" or "127.0.0.1")
+        protected override void OnInit()
         {
-            try
-            {
-                var host = System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName());
-                foreach (var ip in host.AddressList)
-                {
-                    if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
-                    {
-                        ipAddress = ip.ToString();
-                        break;
-                    }
-                }
-            }
-            catch
-            {
-                ipAddress = "localhost";
-            }
-        }
-        ipAddress ??= "Unknown";
+            base.OnInit();
 
-        try
+            // Attach to relevant events
+            WebPageEvents.Publish.Execute += HandleWebPagePublish;
+
+        }
+
+        private void HandleWebPagePublish(object? sender, CMSEventArgs e)
+        {
+            if (e is not WebPageEventArgsBase pageEvent)
+            {
+                return;
+            }
+
+            _ = LogPageInfo(pageEvent);
+
+        }
+
+
+        private async Task LogPageInfo(WebPageEventArgsBase pageEvent)
         {
             using var scope = Service.Resolve<IServiceScopeFactory>().CreateScope();
-            var syncLogs = scope.ServiceProvider.GetRequiredService<IAIUNApiManager>();
-            var chatbotManager = scope.ServiceProvider.GetRequiredService<IDefaultChatbotManager>();
-            var httpContextAccessor = scope.ServiceProvider.GetRequiredService<IHttpContextAccessor>();
-            var _contentQueryExecutor = scope.ServiceProvider.GetRequiredService<IContentQueryExecutor>();
+            string pagePath = pageEvent.TreePath;
+            string websiteChannelName = pageEvent.WebsiteChannelName;
 
+            // Fetch user and request info
+            var currentUser = MembershipContext.AuthenticatedUser;
+            int userId = currentUser?.UserID ?? 0;
+            string userName = currentUser?.UserName ?? "Unknown";
+            string ipAddress = RequestContext.UserHostAddress ?? "Unknown";
 
-            if (!string.IsNullOrWhiteSpace(pagePath))
+            if (ipAddress is "::1" or "127.0.0.1")
             {
-                var relativeUrls = new List<string>();
-                var options = new ContentQueryExecutionOptions
+                try
                 {
-                    ForPreview = false,
-                    IncludeSecuredItems = false,
+                    var host = await Dns.GetHostEntryAsync(Dns.GetHostName());
+                    foreach (var ip in host.AddressList)
+                    {
+                        if (ip.AddressFamily == AddressFamily.InterNetwork)
+                        {
+                            ipAddress = ip.ToString();
+                            break;
+                        }
+                    }
+                }
+                catch
+                {
+                    ipAddress = "localhost";
+                }
+            }
+            ipAddress ??= "Unknown";
 
-                };
+            try
+            {
 
-                var builder = new ContentItemQueryBuilder();
-                builder.ForContentTypes(parameters =>
-                    parameters.ForWebsite(
-                        websiteChannelName: websiteChannelName,
-                        pathMatch: PathMatch.Single(pagePath)
-                    ));
-
-                var cancellationToken = CancellationToken.None;
-                var pageIdentifiers = await _contentQueryExecutor.GetWebPageResult(builder, i => i.WebPageItemID, options, cancellationToken);
-                var languageUrls = await GetWebPageRelativeUrls(pageIdentifiers, "en", cancellationToken);
-
-                relativeUrls.AddRange(languageUrls);
+                var syncLogs = scope.ServiceProvider.GetRequiredService<IAiunApiManager>();
+                var chatbotManager = scope.ServiceProvider.GetRequiredService<IDefaultChatbotManager>();
+                var httpContextAccessor = scope.ServiceProvider.GetRequiredService<IHttpContextAccessor>();
+                var contentQueryExecutor = scope.ServiceProvider.GetRequiredService<IContentQueryExecutor>();
 
 
-                var request = httpContextAccessor.HttpContext?.Request;
-                string scheme = request?.Scheme ?? string.Empty;
-                var host = request?.Host ?? new();
-                var absoluteUrls = await chatbotManager.GetAbsoluteUrls(relativeUrls, scheme, host);
-                string clientID = chatbotManager.GetClientIDWIthChannelName(websiteChannelName);
+                if (!string.IsNullOrWhiteSpace(pagePath))
+                {
+                    var relativeUrls = new List<string>();
+                    var options = new ContentQueryExecutionOptions
+                    {
+                        ForPreview = false,
+                        IncludeSecuredItems = false,
 
-                await syncLogs.UploadURLsAsync(absoluteUrls.ToList(), clientID);
+                    };
 
-                // Log with user details
+                    var builder = new ContentItemQueryBuilder();
+                    _ = builder.ForContentTypes(parameters =>
+                        parameters.ForWebsite(
+                            websiteChannelName: websiteChannelName,
+                            pathMatch: PathMatch.Single(pagePath)
+                        ));
+
+                    var cancellationToken = CancellationToken.None;
+                    var pageIdentifiers = await contentQueryExecutor.GetWebPageResult(builder, i => i.WebPageItemID, options, cancellationToken);
+                    var languageUrls = await GetWebPageRelativeUrls(pageIdentifiers, "en", cancellationToken);
+
+                    relativeUrls.AddRange(languageUrls);
+
+
+                    var request = httpContextAccessor.HttpContext?.Request;
+                    string scheme = request?.Scheme ?? string.Empty;
+                    var host = request?.Host ?? new();
+                    var absoluteUrls = await chatbotManager.GetAbsoluteUrls(relativeUrls, scheme, host);
+                    string clientID = chatbotManager.GetClientIDWIthChannelName(websiteChannelName);
+
+                    _ = await syncLogs.UploadURLsAsync(absoluteUrls.ToList(), clientID);
+
+                    // Log with user details
+                    Service.Resolve<IEventLogService>().LogEvent(new EventLogData(
+                        EventTypeEnum.Information,
+                        "ContentChangeEventHandler",
+                        "Upload Success")
+                    {
+                        EventDescription = $"Uploaded URLs successfully at {DateTime.Now}.\n" +
+                                           $"URLs: {absoluteUrls}\n\n",
+                        UserID = userId,
+                        UserName = userName,
+                        IPAddress = ipAddress
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                Service.Resolve<IEventLogService>().LogException("ContentChangeEventHandler", "Logging_Page_Info_Failed", ex);
+
+                // Log with user details even on exception
                 Service.Resolve<IEventLogService>().LogEvent(new EventLogData(
-                    EventTypeEnum.Information,
+                    EventTypeEnum.Error,
                     "ContentChangeEventHandler",
-                    "Upload Success")
+                    "Upload Failed")
                 {
-                    EventDescription = $"Uploaded URLs successfully at {DateTime.Now}.\n" +
-                                       $"URLs: {absoluteUrls}\n\n",
+                    EventDescription = $"Failed to upload URLs at {DateTime.Now}.\n" +
+                                       $"Exception: {ex.Message}\n" +
+                                       $"URLs: {pagePath.ToLower()}\n\n",
                     UserID = userId,
                     UserName = userName,
                     IPAddress = ipAddress
                 });
             }
         }
-        catch (Exception ex)
+
+        public static async Task<IEnumerable<string>> GetWebPageRelativeUrls(IEnumerable<int> pageIdentifiers, string languageName, CancellationToken cancellationToken)
         {
-            Service.Resolve<IEventLogService>().LogException("ContentChangeEventHandler", "Logging_Page_Info_Failed", ex);
+            using var scope = Service.Resolve<IServiceScopeFactory>().CreateScope();
+            var urlRetriever = scope.ServiceProvider.GetRequiredService<IWebPageUrlRetriever>();
+            var eventLogService = scope.ServiceProvider.GetRequiredService<IEventLogService>();
+            var relativeUrls = new List<string>();
 
-            // Log with user details even on exception
-            Service.Resolve<IEventLogService>().LogEvent(new EventLogData(
-                EventTypeEnum.Error,
-                "ContentChangeEventHandler",
-                "Upload Failed")
+            try
             {
-                EventDescription = $"Failed to upload URLs at {DateTime.Now}.\n" +
-                                   $"Exception: {ex.Message}\n" +
-                                   $"URLs: {pagePath.ToLower()}\n\n",
-                UserID = userId,
-                UserName = userName,
-                IPAddress = ipAddress
-            });
-        }
-    }
-
-    public async Task<IEnumerable<string>> GetWebPageRelativeUrls(IEnumerable<int> pageIdentifiers, string languageName, CancellationToken cancellationToken)
-    {
-
-        using var scope = Service.Resolve<IServiceScopeFactory>().CreateScope();
-        var _urlRetriever = scope.ServiceProvider.GetRequiredService<IWebPageUrlRetriever>();
-        var relativeUrls = new List<string>();
-
-        try
-        {
-            foreach (int pageIdentifier in pageIdentifiers)
-            {
-
-                var webPageUrl = await _urlRetriever.Retrieve(pageIdentifier, languageName, false, cancellationToken);
-                relativeUrls.Add(webPageUrl.RelativePath.TrimStart('~'));
+                foreach (int pageIdentifier in pageIdentifiers)
+                {
+                    var webPageUrl = await urlRetriever.Retrieve(pageIdentifier, languageName, false, cancellationToken);
+                    relativeUrls.Add(webPageUrl.RelativePath.TrimStart('~'));
+                }
             }
-        }
-        catch (Exception ex)
-        {
-            // _eventLogService.LogException(nameof(DefaultChatbotManager), nameof(GetWebPageRelativeUrls), ex, null);
+            catch (Exception ex)
+            {
+                eventLogService.LogException(nameof(ContentChangeEventHandler), nameof(GetWebPageRelativeUrls), ex, null);
+            }
+
+            return relativeUrls;
         }
 
-        return relativeUrls;
     }
 
 }

@@ -1,24 +1,27 @@
 ﻿using CMS.Core;
 using CMS.DataEngine;
+
 using Kentico.Xperience.Admin.Base;
+
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Memory;
+
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.IManagers;
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages;
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNConfiguraionItem;
 using XperienceCommunity.AIUN.ConversationalAIBot.InfoClasses.AIUNConfigurationItem;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Caching.Memory;
 
 
 [assembly: UIPage(
-    parentType: typeof(AIUNChatbotApplication),
+    parentType: typeof(AiunChatbotApplication),
     slug: "list",
-    uiPageType: typeof(AIUNConfigurationItemsList),
+    uiPageType: typeof(AiunConfigurationItemsList),
     name: "Configuration",
     templateName: TemplateNames.LISTING,
     order: UIPageOrder.NoOrder)]
 namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNConfiguraionItem
 {
-    public class AIUNConfigurationItemsList : ListingPage
+    public class AiunConfigurationItemsList : ListingPage
     {
         protected override string ObjectType => AIUNConfigurationItemInfo.OBJECT_TYPE;
 
@@ -31,7 +34,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNConfigur
 
 
 
-        public AIUNConfigurationItemsList(IDefaultChatbotManager defaultChatbotManagerParam, IInfoProvider<AIUNConfigurationItemInfo> aIUNConfigurationItemInfoProviderParam, IMemoryCache memoryCacheParam, IHttpContextAccessor httpContextAccessorParam)
+        public AiunConfigurationItemsList(IDefaultChatbotManager defaultChatbotManagerParam, IInfoProvider<AIUNConfigurationItemInfo> aIUNConfigurationItemInfoProviderParam, IMemoryCache memoryCacheParam, IHttpContextAccessor httpContextAccessorParam)
         {
             defaultChatbotManager = defaultChatbotManagerParam;
             aiUNConfigurationItemInfoProvider = aIUNConfigurationItemInfoProviderParam;
@@ -41,17 +44,17 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNConfigur
 
         public override Task ConfigurePage()
         {
-            PageConfiguration.ColumnConfigurations
+            _ = PageConfiguration.ColumnConfigurations
             .AddColumn(nameof(AIUNConfigurationItemInfo.AIUNConfigurationItemID), "ID")
             .AddColumn(nameof(AIUNConfigurationItemInfo.ChannelName), "Channel Name")
             .AddColumn(nameof(AIUNConfigurationItemInfo.ClientID), "ClientID")
             .AddColumn(nameof(AIUNConfigurationItemInfo.APIKey), "API Key")
             .AddColumn(nameof(AIUNConfigurationItemInfo.BaseURL), "Base URL");
 
-            PageConfiguration.HeaderActions.AddLink<AIUNConfigurationItemCreate>("Create");
-            PageConfiguration.AddEditRowAction<AIUNConfigurationItemEdit>();
-            PageConfiguration.TableActions.AddCommand("Index Published Pages", nameof(Index), icon: Icons.ArrowSend);
-            PageConfiguration.TableActions.AddDeleteAction("Delete");
+            _ = PageConfiguration.HeaderActions.AddLink<AiunConfigurationItemCreate>("Create");
+            _ = PageConfiguration.AddEditRowAction<AiunConfigurationItemEdit>();
+            _ = PageConfiguration.TableActions.AddCommand("Index Published Pages", nameof(Index), icon: Icons.ArrowSend);
+            _ = PageConfiguration.TableActions.AddDeleteAction("Delete");
 
             return base.ConfigurePage();
         }
@@ -59,7 +62,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNConfigur
         public override Task<ICommandResponse<RowActionResult>> Delete(int id) => base.Delete(id);
 
         [PageCommand]
-        public async Task<ICommandResponse<RowActionResult>> Index(int id, CancellationToken cancellationToken)
+        public ICommandResponse<RowActionResult> Index(int id, CancellationToken cancellationToken)
         {
             var result = new RowActionResult(false);
 
@@ -68,7 +71,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNConfigur
                 return ResponseFrom(result)
                     .AddErrorMessage("Indexing is already in progress. Please try again later.");
             }
-            memoryCache.Set("IndexInProgress", true, TimeSpan.FromMinutes(10));
+            _ = memoryCache.Set("IndexInProgress", true, TimeSpan.FromMinutes(10));
 
             var request = httpContextAccessor.HttpContext?.Request;
             string scheme = request?.Scheme ?? string.Empty;
@@ -85,13 +88,13 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNConfigur
                         .Select(c => (c.ChannelName, c.WebsiteChannelID))
                         .FirstOrDefault();
 
-                    await defaultChatbotManager.IndexInternal(websiteChannelID, channelName, AIUNConfigurationItem.ClientID, cancellationToken, scheme, host);
-                    memoryCache.Set("IndexInProgress", false);
+                    _ = await defaultChatbotManager.IndexInternal(websiteChannelID, channelName, AIUNConfigurationItem.ClientID, cancellationToken, scheme, host);
+                    _ = memoryCache.Set("IndexInProgress", false);
                 }
                 catch (Exception ex)
                 {
-                    memoryCache.Set("IndexInProgress", false);
-                    EventLogService.LogException(nameof(AIUNConfigurationItemsList), nameof(Index), ex);
+                    _ = memoryCache.Set("IndexInProgress", false);
+                    EventLogService.LogException(nameof(AiunConfigurationItemsList), nameof(Index), ex);
                 }
             });
 

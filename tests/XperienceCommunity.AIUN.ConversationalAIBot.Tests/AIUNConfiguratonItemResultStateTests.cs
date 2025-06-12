@@ -1,10 +1,6 @@
-﻿using System;
+﻿using Xunit;
 
-using XperienceCommunity.AIUN.ConversationalAIBot;
-
-using Xunit;
-
-namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests
+namespace XperienceCommunity.AIUN.ConversationalAIBot
 {
     public class AIUNConfiguratonItemResultStateTests
     {

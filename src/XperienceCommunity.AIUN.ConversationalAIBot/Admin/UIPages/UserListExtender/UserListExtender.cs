@@ -33,18 +33,18 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.UserListExte
             var fullNameColumn = configuration.ColumnConfigurations
                 .FirstOrDefault(c => c.Name == "LastName");
 
-            configuration.ColumnConfigurations
+            _ = configuration.ColumnConfigurations
                 .Remove(fullNameColumn);
 
-            configuration.ColumnConfigurations
+            _ = configuration.ColumnConfigurations
                 .AddColumn("LastName", "Custom last name");
 
             // Adds a new action to each item in the listing
-            configuration.TableActions
+            _ = configuration.TableActions
                 .AddCommand("Reverse last name", nameof(ReverseName), Icons.ArrowsCrooked);
 
             // Adds a new action for the entire listing
-            configuration.HeaderActions
+            _ = configuration.HeaderActions
                 .AddLink<DashboardApplication>("Dashboard", Icons.LGrid22)
                 .AddCommand("Reverse last name", nameof(ReverseNameBulk), Icons.ArrowsCrooked);
 

@@ -1,10 +1,8 @@
 ﻿using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Models.AIUNIndexes;
 
-using System.Collections.Generic;
-
 using Xunit;
 
-namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests.Models.AIUNIndexes
+namespace XperienceCommunity.AIUN.ConversationalAIBot.Models.AIUNIndexes
 {
     public class IndexesResponseModelTests
     {
@@ -28,7 +26,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests.Models.AIUNIndexes
             // Arrange
             var items = new List<IndexItemModel>
             {
-                new IndexItemModel { Id = "1", Name = "Test" }
+                new() { Id = "1", Name = "Test" }
             };
             var model = new IndexesResponseModel
             {

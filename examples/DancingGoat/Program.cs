@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using CMS.Base;
 
 using DancingGoat;
 using DancingGoat.Models;
@@ -11,20 +10,13 @@ using Kentico.OnlineMarketing.Web.Mvc;
 using Kentico.PageBuilder.Web.Mvc;
 using Kentico.Web.Mvc;
 
-
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 using Samples.DancingGoat;
 
-using CMS.Base;
 using XperienceCommunity.AIUN.ConversationalAIBot;
 
 
@@ -68,7 +60,7 @@ ConfigureMembershipServices(builder.Services);
 
 if (builder.Environment.IsDevelopment())
 {
-    builder.Services.Configure<UrlResolveOptions>(options => options.UseSSL = false);
+    _ = builder.Services.Configure<UrlResolveOptions>(options => options.UseSSL = false);
 }
 
 var app = builder.Build();
@@ -119,7 +111,7 @@ app.Run();
 
 static void ConfigureMembershipServices(IServiceCollection services)
 {
-    services.AddIdentity<ApplicationUser, NoOpApplicationRole>(options =>
+    _ = services.AddIdentity<ApplicationUser, NoOpApplicationRole>(options =>
     {
         options.Password.RequireDigit = false;
         options.Password.RequireNonAlphanumeric = false;
@@ -135,7 +127,7 @@ static void ConfigureMembershipServices(IServiceCollection services)
         .AddUserManager<UserManager<ApplicationUser>>()
         .AddSignInManager<SignInManager<ApplicationUser>>();
 
-    services.ConfigureApplicationCookie(options =>
+    _ = services.ConfigureApplicationCookie(options =>
     {
         options.ExpireTimeSpan = TimeSpan.FromDays(14);
         options.SlidingExpiration = true;
@@ -144,7 +136,7 @@ static void ConfigureMembershipServices(IServiceCollection services)
         {
             var factory = ctx.HttpContext.RequestServices.GetRequiredService<IUrlHelperFactory>();
             var urlHelper = factory.GetUrlHelper(new ActionContext(ctx.HttpContext, new RouteData(ctx.HttpContext.Request.RouteValues), new ActionDescriptor()));
-            var url = urlHelper.Action("Login", "Account") + new Uri(ctx.RedirectUri).Query;
+            string url = urlHelper.Action("Login", "Account") + new Uri(ctx.RedirectUri).Query;
 
             ctx.Response.Redirect(url);
 
@@ -152,11 +144,9 @@ static void ConfigureMembershipServices(IServiceCollection services)
         };
     });
 
-    services.Configure<AdminIdentityOptions>(options =>
-    {
+    _ = services.Configure<AdminIdentityOptions>(options =>
         // The expiration time span of 8 hours is set for demo purposes only. In production environment, set expiration according to best practices.
-        options.AuthenticationOptions.ExpireTimeSpan = TimeSpan.FromHours(8);
-    });
+        options.AuthenticationOptions.ExpireTimeSpan = TimeSpan.FromHours(8));
 
-    services.AddAuthorization();
+    _ = services.AddAuthorization();
 }

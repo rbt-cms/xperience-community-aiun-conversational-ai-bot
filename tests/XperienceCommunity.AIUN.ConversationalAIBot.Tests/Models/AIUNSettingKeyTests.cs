@@ -1,13 +1,11 @@
 ﻿using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Models;
 
-using System.Collections.Generic;
-
 using Xunit;
 
-namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests.Models
+namespace XperienceCommunity.AIUN.ConversationalAIBot.Models
 {
     // Test double for AIUNSettingsKeyInfo
-    public class TestAIUNSettingsKeyInfo
+    public class TestAiunSettingsKeyInfo
     {
         public string SettingsKey { get; set; } = string.Empty;
     }
@@ -17,7 +15,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests.Models
         [Fact]
         public void Constructor_InitializesWithDefaultValues()
         {
-            var model = new AIUNSettingKey();
+            var model = new AiunSettingKey();
 
             Assert.Equal(string.Empty, model.SettingKey);
         }
@@ -25,7 +23,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests.Models
         [Fact]
         public void Properties_SetAndGetValues()
         {
-            var model = new AIUNSettingKey
+            var model = new AiunSettingKey
             {
                 SettingKey = "TestKey"
             };
@@ -36,7 +34,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests.Models
         [Fact]
         public void Constructor_WithStringParameter_SetsProperty()
         {
-            var model = new AIUNSettingKey("MySettingKey");
+            var model = new AiunSettingKey("MySettingKey");
 
             Assert.Equal("MySettingKey", model.SettingKey);
         }
@@ -44,29 +42,22 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests.Models
         [Fact]
         public void Constructor_WithEnumerable_DoesNotThrow()
         {
-            var list = new List<TestAIUNSettingsKeyInfo>();
+            _ = new List<TestAiunSettingsKeyInfo>();
             // The constructor expects IEnumerable<AIUNSettingsKeyInfo>, but for test, we just check instantiation  
             // If you have the real class, use it here. Otherwise, this test just ensures no exception.  
-            Assert.NotNull(new AIUNSettingKey([]));
+            Assert.NotNull(new AiunSettingKey([]));
         }
 
         [Fact]
         public void Constructor_WithAIUNSettingsKeyInfo_SetsProperty()
         {
             // If you have the real AIUNSettingsKeyInfo, use it here. Otherwise, use a test double.  
-            var info = new TestAIUNSettingsKeyInfo { SettingsKey = "InfoKey" };
+            var info = new TestAiunSettingsKeyInfo { SettingsKey = "InfoKey" };
 
             // You may need to use a mock or a real instance if available.  
-            var model = new AIUNSettingKey(info.SettingsKey);
+            var model = new AiunSettingKey(info.SettingsKey);
 
             Assert.Equal("InfoKey", model.SettingKey);
-        }
-
-        // Fake class to match the constructor signature  
-        private class FakeAIUNSettingsKeyInfo
-        {
-            public string SettingsKey { get; set; }
-            public FakeAIUNSettingsKeyInfo(string key) => SettingsKey = key;
         }
     }
 }

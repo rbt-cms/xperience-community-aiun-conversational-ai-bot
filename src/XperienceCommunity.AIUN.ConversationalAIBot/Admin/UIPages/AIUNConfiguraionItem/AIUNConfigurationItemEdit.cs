@@ -1,34 +1,44 @@
 ﻿using CMS.DataEngine;
+
 using Kentico.Xperience.Admin.Base;
 using Kentico.Xperience.Admin.Base.Forms;
-using XperienceCommunity.AIUN.ConversationalAIBot.InfoClasses.AIUNConfigurationItem;
-using IFormItemCollectionProvider = Kentico.Xperience.Admin.Base.Forms.Internal.IFormItemCollectionProvider;
+
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Models;
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNConfiguraionItem;
+using XperienceCommunity.AIUN.ConversationalAIBot.InfoClasses.AIUNConfigurationItem;
+
+using IFormItemCollectionProvider = Kentico.Xperience.Admin.Base.Forms.Internal.IFormItemCollectionProvider;
 
 [assembly: UIPage(
-    parentType: typeof(AIUNConfigurationItemsList),
+    parentType: typeof(AiunConfigurationItemsList),
     slug: PageParameterConstants.PARAMETERIZED_SLUG,
-    uiPageType: typeof(AIUNConfigurationItemEdit),
+    uiPageType: typeof(AiunConfigurationItemEdit),
     name: "Edit",
     templateName: TemplateNames.EDIT,
     order: 1)]
 namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNConfiguraionItem
 {
-    internal class AIUNConfigurationItemEdit(
-    IFormItemCollectionProvider formItemCollectionProvider,
-    IFormDataBinder formDataBinder,
-    IPageLinkGenerator pageLinkGenerator,
-    IInfoProvider<AIUNConfigurationItemInfo> aIUNConfigurationItemProvider
-      ) : AIUNConfigurationItemBaseEditPage(formItemCollectionProvider, formDataBinder, aIUNConfigurationItemProvider)
+    internal class AiunConfigurationItemEdit : AiunConfigurationItemBaseEditPage
     {
-        private readonly IInfoProvider<AIUNConfigurationItemInfo> aIUNConfigurationInfoProvider = aIUNConfigurationItemProvider;
+        private readonly IPageLinkGenerator pageLinkGenerator;
+        private readonly IInfoProvider<AIUNConfigurationItemInfo> aIUNConfigurationItemProvider; // Fix: Add missing field declaration
 
         [PageParameter(typeof(IntPageModelBinder))]
         public int AIUNConfigurationItemIdentifier { get; set; }
-        private AIUNConfigurationItemModel? model = null;
+        private AiunConfigurationItemModel? model = null;
 
-        protected override AIUNConfigurationItemModel Model
+        public AiunConfigurationItemEdit(
+           IFormItemCollectionProvider formItemCollectionProvider,
+           IFormDataBinder formDataBinder,
+           IPageLinkGenerator pageLinkGenerator,
+           IInfoProvider<AIUNConfigurationItemInfo> aIUNConfigurationItemProvider
+        ) : base(formItemCollectionProvider, formDataBinder, aIUNConfigurationItemProvider)
+        {
+            this.pageLinkGenerator = pageLinkGenerator;
+            this.aIUNConfigurationItemProvider = aIUNConfigurationItemProvider; // Fix: Initialize the missing field
+        }
+
+        protected override AiunConfigurationItemModel Model
         {
             get
             {
@@ -36,23 +46,24 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNConfigur
                     .Get()
                     .WithID(AIUNConfigurationItemIdentifier)
                     .FirstOrDefault() ?? throw new InvalidOperationException("Specified key does not exist");
-                model ??= new AIUNConfigurationItemModel(settings);
+                model ??= new AiunConfigurationItemModel(settings);
                 return model;
             }
         }
+
         public override Task ConfigurePage()
         {
             PageConfiguration.Headline = LocalizationService.GetString("Edit the configuration Item");
             return base.ConfigurePage();
         }
 
-        protected override Task<ICommandResponse> ProcessFormData(AIUNConfigurationItemModel model, ICollection<IFormItem> formItems)
+        protected override Task<ICommandResponse> ProcessFormData(AiunConfigurationItemModel model, ICollection<IFormItem> formItems)
         {
             var result = ValidateAndProcess(model, updateExisting: true);
 
             if (result.ModificationResultState == ModificationResultState.Success)
             {
-                var successResponse = NavigateTo(pageLinkGenerator.GetPath<AIUNConfigurationItemsList>())
+                var successResponse = NavigateTo(pageLinkGenerator.GetPath<AiunConfigurationItemsList>())
                     .AddSuccessMessage("Item edited");
 
                 return Task.FromResult<ICommandResponse>(successResponse);
@@ -63,6 +74,5 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNConfigur
 
             return Task.FromResult<ICommandResponse>(errorResponse);
         }
-
     }
 }

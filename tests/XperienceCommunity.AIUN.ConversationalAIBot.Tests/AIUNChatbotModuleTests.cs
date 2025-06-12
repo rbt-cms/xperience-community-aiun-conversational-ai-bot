@@ -1,13 +1,15 @@
 ﻿
-using Microsoft.Extensions.DependencyInjection;
-using Moq;
-using Xunit;
-
 using CMS.Core;
 using CMS.DataEngine;
 using CMS.Modules;
 
-namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests
+using Microsoft.Extensions.DependencyInjection;
+
+using Moq;
+
+using Xunit;
+
+namespace XperienceCommunity.AIUN.ConversationalAIBot
 {
     public class AIUNChatbotModuleTests
     {
@@ -17,13 +19,13 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests
             // Arrange  
             var services = new ServiceCollection();
 
-            services.AddSingleton(provider =>
-                new AIUNChatbotModuleInstaller(Mock.Of<IInfoProvider<ResourceInfo>>()));
+            _ = services.AddSingleton(provider =>
+                new AiunChatbotModuleInstaller(Mock.Of<IInfoProvider<ResourceInfo>>()));
 
             var serviceProvider = services.BuildServiceProvider();
             var parameters = new ModuleInitParameters { Services = serviceProvider };
 
-            var module = new TestableAIUNChatbotModule();
+            var module = new TestableAiunChatbotModule();
 
             // Act  
             module.TestOnInit(parameters);
@@ -34,12 +36,12 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests
         }
 
         // Helper class to expose protected members for testing  
-        private class TestableAIUNChatbotModule : AIUNChatbotModule
+        private class TestableAiunChatbotModule : AiunChatbotModule
         {
             public bool ClientModuleRegistered { get; private set; }
-            public AIUNChatbotModuleInstaller? Installer => typeof(AIUNChatbotModule)
+            public AiunChatbotModuleInstaller? Installer => typeof(AiunChatbotModule)
                 .GetField("installer", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                ?.GetValue(this) as AIUNChatbotModuleInstaller;
+                ?.GetValue(this) as AiunChatbotModuleInstaller;
 
             public void TestOnInit(ModuleInitParameters parameters)
             {

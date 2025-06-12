@@ -36,7 +36,5 @@
   </Target>
   <Target Name="NpmBuildClient" BeforeTargets="BeforeBuild" Condition=" '$(Configuration)|$(Platform)' != 'Debug|AnyCPU' ">
     <Exec Command="npm run build" WorkingDirectory="$(MSBuildProjectDirectory)\Admin\Client" />
-
-   
   </Target>
 </Project>

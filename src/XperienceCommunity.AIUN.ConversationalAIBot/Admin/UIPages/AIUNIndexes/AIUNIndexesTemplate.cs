@@ -1,17 +1,18 @@
-﻿using Kentico.Xperience.Admin.Base;
+﻿using CMS.DataEngine;
 
-using XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages;
+using Kentico.Xperience.Admin.Base;
+
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Models;
-using XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNIndexes;
-using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.IManagers;
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Models.AIUNIndexes;
-using CMS.DataEngine;
+using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.IManagers;
+using XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages;
+using XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNIndexes;
 using XperienceCommunity.AIUN.ConversationalAIBot.InfoClasses.AIUNConfigurationItem;
 
 [assembly: UIPage(
-    parentType: typeof(AIUNChatbotApplication),
+    parentType: typeof(AiunChatbotApplication),
     slug: "indexes",
-    uiPageType: typeof(AIUNIndexesTemplate),
+    uiPageType: typeof(AiunIndexesTemplate),
     name: "Indexes",
     templateName: "@rbt/aiun-chatbot/AIUNIndexesLayout",
     order: UIPageOrder.NoOrder)]
@@ -20,11 +21,11 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNIndexes
     /// <summary>
     /// Template class
     /// </summary>
-    public class AIUNIndexesTemplate : Page<AIUNIndexesLayoutProperties>
+    public class AiunIndexesTemplate : Page<AiunIndexesLayoutProperties>
     {
-        private readonly IAIUNApiManager aIUNApiManager;
+        private readonly IAiunApiManager aIUNApiManager;
         private readonly IInfoProvider<AIUNConfigurationItemInfo> aIUNConfigurationItemInfoProvider;
-        public AIUNIndexesTemplate(IAIUNApiManager aiUNApiManagerParam, IInfoProvider<AIUNConfigurationItemInfo> aIUNConfigurationItemInfoProviderParam)
+        public AiunIndexesTemplate(IAiunApiManager aiUNApiManagerParam, IInfoProvider<AIUNConfigurationItemInfo> aIUNConfigurationItemInfoProviderParam)
         {
             aIUNApiManager = aiUNApiManagerParam;
             aIUNConfigurationItemInfoProvider = aIUNConfigurationItemInfoProviderParam;
@@ -35,7 +36,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNIndexes
         /// </summary>
         /// <param name="properties"></param>
         /// <returns></returns>
-        public override async Task<AIUNIndexesLayoutProperties> ConfigureTemplateProperties(AIUNIndexesLayoutProperties properties)
+        public override async Task<AiunIndexesLayoutProperties> ConfigureTemplateProperties(AiunIndexesLayoutProperties properties)
         {
             var filter = new IndexItemFilterModel();// Default filter on load
             properties.IndexesResponse = await aIUNApiManager.GetIndexesAsync(filter);
@@ -68,7 +69,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNIndexes
     /// <summary>
     /// Defines the properties for passing to client template (AIUNIndexesLayoutTemplate.tsx)
     /// </summary>
-    public class AIUNIndexesLayoutProperties : TemplateClientProperties
+    public class AiunIndexesLayoutProperties : TemplateClientProperties
     {
         public IndexesResponseModel IndexesResponse { get; set; } = new IndexesResponseModel();
         public List<WebsiteChannelModel> WebsiteChannels { get; set; } = [];

@@ -1,26 +1,29 @@
-﻿using CMS.Core;
+﻿using System.Net.Http.Headers;
+using System.Text;
+using System.Text.Json;
+
+using CMS.Core;
 using CMS.DataEngine;
+
+using Microsoft.Extensions.Logging;
+
+using Newtonsoft.Json;
+
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Models.AIUNIndexes;
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.IManagers;
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.TokensUsage;
 
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Text.Json;
-
 
 namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
 {
-    public class AIUNApiManager : IAIUNApiManager
+    public class AiunApiManager : IAiunApiManager
     {
         private readonly HttpClient httpClient;
         private readonly IEventLogService eventLogService;
         private readonly IInfoProvider<AIUNSettingsKeyInfo> settingsKeyProvider;
 
 
-        public AIUNApiManager(HttpClient httpClientParam, IEventLogService eventLogServiceParam, IInfoProvider<AIUNSettingsKeyInfo> settingsKeyProviderParam)
+        public AiunApiManager(HttpClient httpClientParam, IEventLogService eventLogServiceParam, IInfoProvider<AIUNSettingsKeyInfo> settingsKeyProviderParam)
         {
             httpClient = httpClientParam;
             eventLogService = eventLogServiceParam;
@@ -63,7 +66,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
 
                     // Log success using LogInformation
                     eventLogService.LogInformation(
-                        source: nameof(AIUNApiManager),
+                        source: nameof(AiunApiManager),
                         eventCode: "Upload Success",
                         eventDescription: $"Uploaded URLs successfully at {DateTime.Now}. URLs: {string.Join(", ", websiteUrls)}"
                     );
@@ -77,7 +80,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
                 // Log failure using LogException
                 var exception = new ApplicationException($"Upload API failed. Status: {response.StatusCode}, Error: {error}");
                 eventLogService.LogException(
-                    source: nameof(AIUNApiManager),
+                    source: nameof(AiunApiManager),
                     eventCode: "Upload Failure",
                     ex: exception,
                     additionalMessage: $"Failed to upload URLs at {DateTime.Now}. URLs: {string.Join(", ", websiteUrls)}"
@@ -90,7 +93,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
             {
                 // Log unexpected exceptions
                 eventLogService.LogException(
-                    source: nameof(AIUNApiManager),
+                    source: nameof(AiunApiManager),
                     eventCode: "Upload Exception",
                     ex: ex,
                     additionalMessage: $"Unexpected error at {DateTime.Now} while uploading URLs: {string.Join(", ", websiteUrls)}"
@@ -102,7 +105,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
         /// Get Token Usage from API call
         /// </summary>
         /// <returns></returns>
-        public async Task<AIUNTokenUsageLayoutProperties> GetTokenUsageAsync()
+        public async Task<AiunTokenUsageLayoutProperties> GetTokenUsageAsync()
         {
             try
             {
@@ -118,7 +121,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
                 var response = await httpClient.GetAsync(requestUrl);
                 if (response.Content == null)
                 {
-                    return new AIUNTokenUsageLayoutProperties();
+                    return new AiunTokenUsageLayoutProperties();
                 }
 
                 if (response.IsSuccessStatusCode)
@@ -126,15 +129,15 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
                     string json = await response.Content.ReadAsStringAsync();
                     if (!string.IsNullOrEmpty(json))
                     {
-                        var result = JsonConvert.DeserializeObject<AIUNTokenUsageLayoutProperties>(json);
-                        return result ?? new AIUNTokenUsageLayoutProperties();
+                        var result = JsonConvert.DeserializeObject<AiunTokenUsageLayoutProperties>(json);
+                        return result ?? new AiunTokenUsageLayoutProperties();
                     }
                 }
 
                 string error = await response.Content.ReadAsStringAsync();
                 var exception = new ApplicationException($"Token Usage API failed. Status: {response.StatusCode}, Error: {error}");
                 eventLogService.LogException(
-                    source: nameof(AIUNApiManager),
+                    source: nameof(AiunApiManager),
                     eventCode: "Token Usage Failure",
                     ex: exception,
                     additionalMessage: $"Token Usage API failed at {DateTime.Now}"
@@ -142,9 +145,9 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
             }
             catch (Exception ex)
             {
-                eventLogService.LogException(nameof(AIUNApiManager), nameof(GetTokenUsageAsync), ex);
+                eventLogService.LogException(nameof(AiunApiManager), nameof(GetTokenUsageAsync), ex);
             }
-            return new AIUNTokenUsageLayoutProperties();
+            return new AiunTokenUsageLayoutProperties();
         }
 
         /// <summary>
@@ -206,7 +209,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
             }
             catch (Exception ex)
             {
-                eventLogService.LogException(nameof(AIUNApiManager), nameof(GetIndexesAsync), ex);
+                eventLogService.LogException(nameof(AiunApiManager), nameof(GetIndexesAsync), ex);
             }
 
             return new IndexesResponseModel();

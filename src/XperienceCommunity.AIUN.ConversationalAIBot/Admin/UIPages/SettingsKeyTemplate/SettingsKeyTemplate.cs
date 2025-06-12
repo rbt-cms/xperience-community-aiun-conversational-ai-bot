@@ -9,7 +9,7 @@ using XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.SettingsKeyTempl
 
 [assembly: UIPage(
 
-    parentType: typeof(AIUNChatbotApplication), // Your module root
+    parentType: typeof(AiunChatbotApplication), // Your module root
 
     slug: "settings-key", // Unique slug for the page
 
