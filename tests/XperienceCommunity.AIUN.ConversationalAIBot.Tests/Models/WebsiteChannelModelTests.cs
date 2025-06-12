@@ -2,7 +2,7 @@
 
 using Xunit;
 
-namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests.Models
+namespace XperienceCommunity.AIUN.ConversationalAIBot.Models
 {
     public class WebsiteChannelModelTests
     {

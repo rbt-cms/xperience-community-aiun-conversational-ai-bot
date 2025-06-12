@@ -2,7 +2,7 @@
 
 using Xunit;
 
-namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests.Models.AIUNIndexes
+namespace XperienceCommunity.AIUN.ConversationalAIBot.Models.AIUNIndexes
 {
     public class IndexItemModelTests
     {
