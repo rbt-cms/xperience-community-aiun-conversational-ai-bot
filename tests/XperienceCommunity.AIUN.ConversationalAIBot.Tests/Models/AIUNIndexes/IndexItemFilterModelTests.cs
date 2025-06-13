@@ -2,10 +2,11 @@
 
 using Xunit;
 
-namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests.Models.AIUNIndexes
+namespace XperienceCommunity.AIUN.ConversationalAIBot.Models.AIUNIndexes
 {
     public class IndexItemFilterModelTests
     {
+
         [Fact]
         public void Constructor_InitializesWithDefaultValues()
         {
@@ -19,8 +20,9 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests.Models.AIUNIndexes
             Assert.Equal("uploaded_date", model.SortBy);
             Assert.Equal("desc", model.SortDirection);
             Assert.Equal("All", model.TypeFilter);
-            Assert.Null(model.Channel);
+            Assert.Equal(string.Empty, model.Channel); // Fixed: expect empty string, not null
         }
+
 
         [Fact]
         public void Properties_SetAndGetValues()

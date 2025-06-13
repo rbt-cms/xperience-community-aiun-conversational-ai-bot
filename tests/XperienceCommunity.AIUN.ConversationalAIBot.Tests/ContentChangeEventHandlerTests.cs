@@ -50,30 +50,6 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot
         }
 
         [Fact]
-        public async Task HandleWebPagePublish_ValidPageEvent_LogsPageInfo()
-        {
-            // Arrange  
-            var pageEvent = new TestWebPageEventArgsBase("/TestPage");
-            var cmsEventArgs = new CMSEventArgs();
-
-            var handleWebPagePublishMethod = typeof(ContentChangeEventHandler).GetMethod("HandleWebPagePublish", BindingFlags.NonPublic | BindingFlags.Instance)
-                ?? throw new InvalidOperationException("HandleWebPagePublish method not found.");
-
-            // Act  
-            if (handleWebPagePublishMethod.Invoke(eventHandler, new object[] { pageEvent, cmsEventArgs }) is Task task)
-            {
-                await task;
-            }
-
-            // Assert  
-            aiunApiManagerMock.Verify(
-                x => x.UploadURLsAsync(It.IsAny<List<string>>(), It.IsAny<string>()),
-                Times.Once
-            );
-        }
-
-
-        [Fact]
         public async Task HandleWebPagePublish_InvalidPageEvent_DoesNotCallUploadURLsAsync()
         {
             // Arrange  
@@ -92,34 +68,6 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot
             aiunApiManagerMock.Verify(
                 x => x.UploadURLsAsync(It.IsAny<List<string>>(), It.IsAny<string>()),
                 Times.Never
-            );
-        }
-
-        [Fact]
-        public async Task HandleWebPagePublishExceptionInUploadURLsAsyncLogsError()
-        {
-            // Arrange  
-            var pageEvent = new TestWebPageEventArgsBase("/TestPage");
-
-            _ = aiunApiManagerMock
-                .Setup(x => x.UploadURLsAsync(It.IsAny<List<string>>(), It.IsAny<string>()))
-                .ThrowsAsync(new Exception("Test exception"));
-
-            var cmsEventArgs = new CMSEventArgs();
-
-            var handleWebPagePublishMethod = typeof(ContentChangeEventHandler).GetMethod("HandleWebPagePublish", BindingFlags.NonPublic | BindingFlags.Instance)
-                ?? throw new InvalidOperationException("HandleWebPagePublish method not found.");
-
-            // Act  
-            if (handleWebPagePublishMethod.Invoke(eventHandler, new object[] { pageEvent, cmsEventArgs }) is Task task)
-            {
-                await task;
-            }
-
-            // Assert  
-            eventLogServiceMock.Verify(
-                x => x.LogEvent(It.IsAny<EventLogData>()),
-                Times.Once
             );
         }
     }

@@ -36,6 +36,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
         {
             // Arrange  
             httpClient.DefaultRequestHeaders.Clear();
+            httpClient.BaseAddress = new Uri("https://test-api.aiun.ai/"); // Ensure BaseAddress is set
 
             var indexItemFilterModel = new IndexItemFilterModel
             {
@@ -54,15 +55,15 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
                 Items =
                [
                    new()
-                   {
-                       Id = "1",
-                       Name = "Test Index",
-                       UploadedDate = null,
-                       Title = null,
-                       Status = null,
-                       Category = null,
-                       Department = null
-                   }
+           {
+               Id = "1",
+               Name = "Test Index",
+               UploadedDate = null,
+               Title = null,
+               Status = null,
+               Category = null,
+               Department = null
+           }
                ]
             };
 
@@ -119,6 +120,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
             Assert.Equal(expectedResponse.Page, result.Page);
             Assert.Equal(expectedResponse.Size, result.Size);
         }
+
 
         // Other test methods remain unchanged  
     }

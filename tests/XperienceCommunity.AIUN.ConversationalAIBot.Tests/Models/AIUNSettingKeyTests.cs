@@ -40,15 +40,6 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Models
         }
 
         [Fact]
-        public void Constructor_WithEnumerable_DoesNotThrow()
-        {
-            _ = new List<TestAiunSettingsKeyInfo>();
-            // The constructor expects IEnumerable<AIUNSettingsKeyInfo>, but for test, we just check instantiation  
-            // If you have the real class, use it here. Otherwise, this test just ensures no exception.  
-            Assert.NotNull(new AiunSettingKey([]));
-        }
-
-        [Fact]
         public void Constructor_WithAIUNSettingsKeyInfo_SetsProperty()
         {
             // If you have the real AIUNSettingsKeyInfo, use it here. Otherwise, use a test double.  

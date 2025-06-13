@@ -9,7 +9,6 @@ using XperienceCommunity.AIUN.ConversationalAIBot.InfoClasses.AIUNConfigurationI
 
 using IFormItemCollectionProvider = Kentico.Xperience.Admin.Base.Forms.Internal.IFormItemCollectionProvider;
 
-
 [assembly: UIPage(
     parentType: typeof(AiunConfigurationItemsList),
     slug: "create",
@@ -19,30 +18,22 @@ using IFormItemCollectionProvider = Kentico.Xperience.Admin.Base.Forms.Internal.
     order: 2)]
 namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNConfiguraionItem
 {
-    internal class AiunConfigurationItemCreate : AiunConfigurationItemBaseEditPage
-    {
-        private readonly IInfoProvider<AIUNConfigurationItemInfo> aIUNConfigurationItemInfoProvider;
-        private readonly IPageLinkGenerator pageLinkGenerator;
-        private AiunConfigurationItemModel? model = null;
-
-        public AiunConfigurationItemCreate(
-            IFormItemCollectionProvider formItemCollectionProvider,
+    internal class AiunConfigurationItemCreate(IFormItemCollectionProvider formItemCollectionProvider,
             IFormDataBinder formDataBinder,
             IInfoProvider<AIUNConfigurationItemInfo> aIUNConfigurationItemInfoProvider,
-            IPageLinkGenerator pageLinkGenerator)
-            : base(formItemCollectionProvider, formDataBinder, aIUNConfigurationItemInfoProvider)
-        {
-            this.aIUNConfigurationItemInfoProvider = aIUNConfigurationItemInfoProvider;
-            this.pageLinkGenerator = pageLinkGenerator;
-        }
-
+            IPageLinkGenerator pageLinkGenerator) : AiunConfigurationItemBaseEditPage(
+    formItemCollectionProvider,
+    formDataBinder,
+#pragma warning disable CS9107 // Parameter is captured into the state of the enclosing type and its value is also passed to the base constructor. The value might be captured by the base class as well.
+                aIUNConfigurationItemInfoProvider)
+#pragma warning restore CS9107 // Parameter is captured into the state of the enclosing type and its value is also passed to the base constructor. The value might be captured by the base class as well.
+    {
+        private AiunConfigurationItemModel? model = null;
         protected override AiunConfigurationItemModel Model
         {
             get
             {
-                var configurationItemInfo = aIUNConfigurationItemInfoProvider.Get().FirstOrDefault() ?? throw new InvalidOperationException("No AIUNConfigurationItemInfo found.");
-
-                model ??= new AiunConfigurationItemModel(configurationItemInfo);
+                model ??= new AiunConfigurationItemModel(aIUNConfigurationItemInfoProvider.Get().GetEnumerableTypedResult());
                 return model;
             }
         }
@@ -64,5 +55,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNConfigur
 
             return Task.FromResult<ICommandResponse>(errorResponse);
         }
+
+
     }
 }

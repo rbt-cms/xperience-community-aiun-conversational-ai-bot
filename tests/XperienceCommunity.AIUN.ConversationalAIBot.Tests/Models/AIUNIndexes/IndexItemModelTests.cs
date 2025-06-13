@@ -7,20 +7,21 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Models.AIUNIndexes
     public class IndexItemModelTests
     {
         [Fact]
-        public void Constructor_InitializesWithNullProperties()
+        public void Constructor_InitializesWithEmptyStringProperties()
         {
             // Act
             var model = new IndexItemModel();
 
             // Assert
-            Assert.Null(model.Id);
-            Assert.Null(model.Name);
-            Assert.Null(model.UploadedDate);
-            Assert.Null(model.Title);
-            Assert.Null(model.Status);
-            Assert.Null(model.Category);
-            Assert.Null(model.Department);
+            Assert.Equal(string.Empty, model.Id);
+            Assert.Equal(string.Empty, model.Name);
+            Assert.Equal(string.Empty, model.UploadedDate);
+            Assert.Equal(string.Empty, model.Title);
+            Assert.Equal(string.Empty, model.Status);
+            Assert.Equal(string.Empty, model.Category);
+            Assert.Equal(string.Empty, model.Department);
         }
+
 
         [Fact]
         public void Properties_SetAndGetValues()

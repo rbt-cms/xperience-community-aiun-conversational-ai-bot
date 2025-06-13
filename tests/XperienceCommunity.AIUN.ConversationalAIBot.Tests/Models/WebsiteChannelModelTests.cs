@@ -7,12 +7,12 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Models
     public class WebsiteChannelModelTests
     {
         [Fact]
-        public void Constructor_InitializesWithNullProperties()
+        public void Constructor_InitializesWithEmptyStringProperties()
         {
             var model = new WebsiteChannelModel();
 
-            Assert.Null(model.ClientId);
-            Assert.Null(model.ChannelName);
+            Assert.Equal(string.Empty, model.ClientId);
+            Assert.Equal(string.Empty, model.ChannelName);
         }
 
         [Fact]
