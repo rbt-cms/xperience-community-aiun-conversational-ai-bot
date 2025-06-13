@@ -55,15 +55,15 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
                 Items =
                [
                    new()
-           {
-               Id = "1",
-               Name = "Test Index",
-               UploadedDate = null,
-               Title = null,
-               Status = null,
-               Category = null,
-               Department = null
-           }
+                   {
+                       Id = "1",
+                       Name = "Test Index",
+                       UploadedDate = null,
+                       Title = null,
+                       Status = null,
+                       Category = null,
+                       Department = null
+                   }
                ]
             };
 
