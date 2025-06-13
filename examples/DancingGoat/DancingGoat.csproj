@@ -6,6 +6,7 @@
     <SeparatedAdmin Condition="'$(SeparatedAdmin)' == ''">false</SeparatedAdmin>
     <Nullable>annotations</Nullable>
     <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
+    <HotChocolateImplicitUsings>disable</HotChocolateImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="App_Data\CMSModules\WebFarm\webfarm.sync" />
@@ -22,12 +23,14 @@
   <PropertyGroup Condition="'$(SeparatedAdmin)' == 'true'">
     <DefineConstants>$(DefineConstants);SEPARATED_ADMIN</DefineConstants>
   </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="kentico.xperience.admin"  />
-    <PackageReference Include="kentico.xperience.azurestorage"   />
-    <PackageReference Include="kentico.xperience.imageprocessing"     />
-    <PackageReference Include="kentico.xperience.webapp"    />
+    <PackageReference Include="kentico.xperience.admin" />
+    <PackageReference Include="kentico.xperience.azurestorage" />
+    <PackageReference Include="kentico.xperience.imageprocessing" />
+    <PackageReference Include="kentico.xperience.webapp" />
 
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\XperienceCommunity.AIUN.ConversationalAIBot\XperienceCommunity.AIUN.ConversationalAIBot.csproj" />
   </ItemGroup>
 </Project>

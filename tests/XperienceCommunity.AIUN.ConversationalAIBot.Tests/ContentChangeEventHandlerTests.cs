@@ -1,0 +1,74 @@
+﻿
+using System.Reflection;
+
+using CMS.Base;
+using CMS.Core;
+using CMS.Websites;
+
+using Microsoft.Extensions.DependencyInjection;
+
+using Moq;
+
+using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.IManagers;
+
+using Xunit;
+
+
+namespace XperienceCommunity.AIUN.ConversationalAIBot
+{
+    // Helper class for non-virtual property override
+    public class TestWebPageEventArgsBase : WebPageEventArgsBase
+    {
+        public TestWebPageEventArgsBase(string treePath) => TreePath = treePath;
+        public new string TreePath { get; }
+    }
+    public class ContentChangeEventHandlerTests
+    {
+        private readonly Mock<IAiunApiManager> aiunApiManagerMock;
+        private readonly Mock<IEventLogService> eventLogServiceMock;
+        private readonly ContentChangeEventHandler eventHandler;
+
+        public ContentChangeEventHandlerTests()
+        {
+            aiunApiManagerMock = new Mock<IAiunApiManager>();
+            eventLogServiceMock = new Mock<IEventLogService>();
+
+            var serviceProviderMock = new Mock<IServiceProvider>();
+            _ = serviceProviderMock.Setup(sp => sp.GetService(typeof(IAiunApiManager))).Returns(aiunApiManagerMock.Object);
+            _ = serviceProviderMock.Setup(sp => sp.GetService(typeof(IEventLogService))).Returns(eventLogServiceMock.Object);
+
+            var serviceScopeMock = new Mock<IServiceScope>();
+            _ = serviceScopeMock.Setup(s => s.ServiceProvider).Returns(serviceProviderMock.Object);
+
+            var serviceScopeFactoryMock = new Mock<IServiceScopeFactory>();
+            _ = serviceScopeFactoryMock.Setup(f => f.CreateScope()).Returns(serviceScopeMock.Object);
+
+            var serviceCollectionMock = new Mock<IServiceProvider>();
+            _ = serviceCollectionMock.Setup(sp => sp.GetService(typeof(IServiceScopeFactory))).Returns(serviceScopeFactoryMock.Object);
+
+            eventHandler = new ContentChangeEventHandler();
+        }
+
+        [Fact]
+        public async Task HandleWebPagePublish_InvalidPageEvent_DoesNotCallUploadURLsAsync()
+        {
+            // Arrange  
+            var cmsEventArgs = new CMSEventArgs();
+
+            var handleWebPagePublishMethod = typeof(ContentChangeEventHandler).GetMethod("HandleWebPagePublish", BindingFlags.NonPublic | BindingFlags.Instance)
+                ?? throw new InvalidOperationException("HandleWebPagePublish method not found.");
+
+            // Act  
+            if (handleWebPagePublishMethod.Invoke(eventHandler, new object[] { this, cmsEventArgs }) is Task task)
+            {
+                await task;
+            }
+
+            // Assert  
+            aiunApiManagerMock.Verify(
+                x => x.UploadURLsAsync(It.IsAny<List<string>>(), It.IsAny<string>()),
+                Times.Never
+            );
+        }
+    }
+}
