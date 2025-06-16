@@ -59,14 +59,14 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot
                 ?? throw new InvalidOperationException("HandleWebPagePublish method not found.");
 
             // Act  
-            if (handleWebPagePublishMethod.Invoke(eventHandler, new object[] { this, cmsEventArgs }) is Task task)
+            if (handleWebPagePublishMethod.Invoke(eventHandler, new object[] { cmsEventArgs }) is Task task)
             {
                 await task;
             }
 
             // Assert  
             aiunApiManagerMock.Verify(
-                x => x.UploadURLsAsync(It.IsAny<List<string>>(), It.IsAny<string>()),
+                x => x.UploadURLsAsync(It.IsAny<List<string>>(), It.IsAny<string>(), It.IsAny<string>()),
                 Times.Never
             );
         }
