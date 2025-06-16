@@ -22,7 +22,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot
                 .AddHttpClient<IAiunApiManager, AiunApiManager>();
 
 
-
+            _ = services.AddScoped<ContentChangeEventHandlerWorker>();
 
             return services;
         }

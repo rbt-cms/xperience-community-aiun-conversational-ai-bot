@@ -66,7 +66,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot
 
             // Assert  
             aiunApiManagerMock.Verify(
-                x => x.UploadURLsAsync(It.IsAny<List<string>>(), It.IsAny<string>()),
+                x => x.UploadURLsAsync(It.IsAny<List<string>>(), It.IsAny<string>(), It.IsAny<string>()),
                 Times.Never
             );
         }

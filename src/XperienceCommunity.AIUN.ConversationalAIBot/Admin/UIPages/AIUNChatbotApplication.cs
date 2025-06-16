@@ -12,7 +12,7 @@ using XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages;
     slug: "aiunchatbot",
     name: "AIUN Chatbot",
     category: BaseApplicationCategories.CONFIGURATION,
-    icon: Icons.Earth,
+    icon: Icons.Bubbles,
     templateName: TemplateNames.SECTION_LAYOUT)]
 namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages
 {

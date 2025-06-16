@@ -308,12 +308,12 @@ export const AIUNIndexesLayoutTemplate = (props: any) => {
                                     </td>
                                     <td className="status W-10">
                                             <span className={item.status.toLowerCase()} >
-                                                {{
-                                                    "PENDING": "QUEUED",
-                                                    "PROCESSING": "INDEXING",
-                                                    "FAILED": "FAILED",
-                                                    "COMPLETED": "COMPLETED"
-                                                }[item.status] || item.status}
+                                            {{
+                                                "PENDING": "QUEUED",
+                                                "PROCESSING": "INDEXING",
+                                                "FAILED": "FAILED",
+                                                "COMPLETED": "COMPLETED"
+                                            }[item.status] || item.status}
                                             </span> 
                                     </td>
                                 </tr>

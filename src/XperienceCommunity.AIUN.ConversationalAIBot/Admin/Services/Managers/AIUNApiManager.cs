@@ -34,8 +34,9 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
         /// </summary>
         /// <param name="websiteUrls"></param>
         /// <param name="clientID"></param>
+        /// <param name="securityToken"></param>
         /// <returns></returns>
-        public async Task<string> UploadURLsAsync(List<string> websiteUrls, string clientID)
+        public async Task<string> UploadURLsAsync(List<string> websiteUrls, string clientID, string? securityToken = "")
         {
             try
             {
@@ -53,7 +54,10 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
 
                 // Set Authorization header with Bearer token: ModuleKey + SecurityToken
                 string moduleKey = Constants.Constants.XApikey;
-                string securityToken = settingsKeyProvider.Get()?.FirstOrDefault()?.SettingsKey ?? string.Empty;
+                if (string.IsNullOrEmpty(securityToken))
+                {
+                    securityToken = settingsKeyProvider.Get()?.FirstOrDefault()?.SettingsKey;
+                }
 
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{securityToken}");
                 httpClient.DefaultRequestHeaders.Add("X-Api-Key", moduleKey);
@@ -87,7 +91,6 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
                 );
 
                 return error;
-
             }
             catch (Exception ex)
             {
@@ -100,6 +103,8 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
                 );
             }
             return string.Empty;
+
+
         }
         /// <summary>
         /// Get Token Usage from API call

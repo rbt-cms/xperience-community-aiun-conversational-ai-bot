@@ -57,7 +57,10 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
         public async Task InitializeChatbot_ShouldReturnTrue_WhenInitializationSucceeds()
         {
             // Arrange  
-            _ = mockAIUNApiManager.Setup(s => s.UploadURLsAsync(It.IsAny<List<string>>(), It.IsAny<string>())).ReturnsAsync("Success");
+            // Fix for CS0854: An expression tree may not contain a call or invocation that uses optional arguments
+            // Explicitly pass all arguments, including the optional one.
+            _ = mockAIUNApiManager.Setup(s => s.UploadURLsAsync(It.IsAny<List<string>>(), It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync("Success");
 
             // Act  
             string result = await chatbotManager.IndexInternal(1, "TestChannel", "TestClientID", default, "https", new HostString("localhost"));
@@ -72,7 +75,8 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
         public async Task InitializeChatbot_ShouldReturnFalse_WhenInitializationFails()
         {
             // Arrange  
-            _ = mockAIUNApiManager.Setup(s => s.UploadURLsAsync(It.IsAny<List<string>>(), It.IsAny<string>()))
+            // Fix for CS0854: Explicitly pass all arguments, including the optional one.
+            _ = mockAIUNApiManager.Setup(s => s.UploadURLsAsync(It.IsAny<List<string>>(), It.IsAny<string>(), It.IsAny<string>()))
                 .ThrowsAsync(new Exception("Error"));
 
             // Act  
