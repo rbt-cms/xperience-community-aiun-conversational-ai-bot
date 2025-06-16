@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 
 using Moq;
 
+using XperienceCommunity.AIUN.ConversationalAIBot.Admin.InfoClasses.AIUNRegistration;
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.IManagers;
 using XperienceCommunity.AIUN.ConversationalAIBot.InfoClasses.AIUNConfigurationItem;
 
@@ -40,16 +41,19 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
             // Add missing mock for AIUNConfigurationItemInfoProvider  
             var mockAIUNConfigurationItemInfoProvider = new Mock<IInfoProvider<AIUNConfigurationItemInfo>>();
 
+            // Add missing mock for AIUNRegistrationInfoProvider  
+            var mockAIUNRegistrationInfoProvider = new Mock<IInfoProvider<AIUNRegistrationInfo>>();
+
             chatbotManager = new DefaultChatbotManager(
-                 mockAIUNConfigurationItemInfoProvider.Object,
-                 mockContentQueryExecutor.Object,
-                   mockCache.Object,
-                    mockChannelProvider.Object,
+                mockAIUNConfigurationItemInfoProvider.Object,
+                mockContentQueryExecutor.Object,
+                mockCache.Object,
+                mockChannelProvider.Object,
                 mockConversionService.Object,
                 mockUrlRetriever.Object,
-                   mockEventLogService.Object,
-                mockAIUNApiManager.Object
-
+                mockEventLogService.Object,
+                mockAIUNApiManager.Object,
+                mockAIUNRegistrationInfoProvider.Object // Pass the missing parameter  
             );
         }
 

@@ -7,6 +7,7 @@ using CMS.DataEngine;
 using Moq;
 using Moq.Protected;
 
+using XperienceCommunity.AIUN.ConversationalAIBot.Admin.InfoClasses.AIUNRegistration;
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Models.AIUNIndexes;
 
 using Xunit;
@@ -17,7 +18,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
     {
         private readonly Mock<HttpMessageHandler> httpMessageHandlerMock;
         private readonly Mock<IEventLogService> eventLogServiceMock;
-        private readonly Mock<IInfoProvider<AIUNSettingsKeyInfo>> settingsKeyProviderMock;
+        private readonly Mock<IInfoProvider<AIUNRegistrationInfo>> aIUNRegistrationInfoProviderMock;
         private readonly HttpClient httpClient;
         private readonly AiunApiManager apiManager;
 
@@ -25,10 +26,10 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
         {
             httpMessageHandlerMock = new Mock<HttpMessageHandler>();
             eventLogServiceMock = new Mock<IEventLogService>();
-            settingsKeyProviderMock = new Mock<IInfoProvider<AIUNSettingsKeyInfo>>();
+            aIUNRegistrationInfoProviderMock = new Mock<IInfoProvider<AIUNRegistrationInfo>>();
 
             httpClient = new HttpClient(httpMessageHandlerMock.Object);
-            apiManager = new AiunApiManager(httpClient, eventLogServiceMock.Object, settingsKeyProviderMock.Object);
+            apiManager = new AiunApiManager(httpClient, eventLogServiceMock.Object, aIUNRegistrationInfoProviderMock.Object);
         }
 
         [Fact]
@@ -85,18 +86,18 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
                 .ReturnsAsync(responseMessage)
                 .Verifiable();
 
-            _ = settingsKeyProviderMock.Setup(x => x.Get())
+            _ = aIUNRegistrationInfoProviderMock.Setup(x => x.Get())
                 .Returns(() =>
                 {
-                    var mockQuery = new Mock<ObjectQuery<AIUNSettingsKeyInfo>>();
-                    _ = mockQuery.As<IQueryable<AIUNSettingsKeyInfo>>()
-                        .Setup(q => q.Provider).Returns(new List<AIUNSettingsKeyInfo> { new FakeAiunSettingsKeyInfo("dummy-token") }.AsQueryable().Provider);
-                    _ = mockQuery.As<IQueryable<AIUNSettingsKeyInfo>>()
-                        .Setup(q => q.Expression).Returns(new List<AIUNSettingsKeyInfo> { new FakeAiunSettingsKeyInfo("dummy-token") }.AsQueryable().Expression);
-                    _ = mockQuery.As<IQueryable<AIUNSettingsKeyInfo>>()
-                        .Setup(q => q.ElementType).Returns(new List<AIUNSettingsKeyInfo> { new FakeAiunSettingsKeyInfo("dummy-token") }.AsQueryable().ElementType);
-                    _ = mockQuery.As<IQueryable<AIUNSettingsKeyInfo>>()
-                        .Setup(q => q.GetEnumerator()).Returns(new List<AIUNSettingsKeyInfo> { new FakeAiunSettingsKeyInfo("dummy-token") }.GetEnumerator());
+                    var mockQuery = new Mock<ObjectQuery<AIUNRegistrationInfo>>();
+                    _ = mockQuery.As<IQueryable<AIUNRegistrationInfo>>()
+                        .Setup(q => q.Provider).Returns(new List<AIUNRegistrationInfo> { new FakeAiunSettingsKeyInfo("dummy-token") }.AsQueryable().Provider);
+                    _ = mockQuery.As<IQueryable<AIUNRegistrationInfo>>()
+                        .Setup(q => q.Expression).Returns(new List<AIUNRegistrationInfo> { new FakeAiunSettingsKeyInfo("dummy-token") }.AsQueryable().Expression);
+                    _ = mockQuery.As<IQueryable<AIUNRegistrationInfo>>()
+                        .Setup(q => q.ElementType).Returns(new List<AIUNRegistrationInfo> { new FakeAiunSettingsKeyInfo("dummy-token") }.AsQueryable().ElementType);
+                    _ = mockQuery.As<IQueryable<AIUNRegistrationInfo>>()
+                        .Setup(q => q.GetEnumerator()).Returns(new List<AIUNRegistrationInfo> { new FakeAiunSettingsKeyInfo("dummy-token") }.GetEnumerator());
                     return mockQuery.Object;
                 });
 
@@ -126,9 +127,9 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
     }
 
     // Place the helper class here, outside the test class
-    public class FakeAiunSettingsKeyInfo : AIUNSettingsKeyInfo
+    public class FakeAiunSettingsKeyInfo : AIUNRegistrationInfo
     {
-        public FakeAiunSettingsKeyInfo(string settingsKey) => SettingsKey = settingsKey;
-        public override string SettingsKey { get; set; }
+        public FakeAiunSettingsKeyInfo(string settingsKey) => APIKey = settingsKey;
+        public override string APIKey { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
+using XperienceCommunity.AIUN.ConversationalAIBot.Admin.InfoClasses.AIUNRegistration;
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.IManagers;
 
 using Xunit;
@@ -40,9 +41,8 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot
             var mockEventLogService = new Moq.Mock<CMS.Core.IEventLogService>();
             _ = services.AddSingleton(mockEventLogService.Object);
 
-            // Register missing getundex
-            var mockSettingsKeyInfoProvider = new Moq.Mock<CMS.DataEngine.IInfoProvider<AIUNSettingsKeyInfo>>();
-            _ = services.AddSingleton(mockSettingsKeyInfoProvider.Object);
+            var mockAIUNRegistrationInfoProvider = new Moq.Mock<CMS.DataEngine.IInfoProvider<AIUNRegistrationInfo>>();
+            _ = services.AddSingleton(mockAIUNRegistrationInfoProvider.Object);
 
             // Act
             _ = services.AddKenticoXperienceAIUNChatbot();

@@ -1,17 +1,29 @@
 .indexes-wrapper,
 .token-usage-wrapper,
-.api-key-wrapper {
+.api-key-wrapper,
+.registration-page-wrapper {
     color: black;
 }
 
 .indexes-text,
 .token-usage-text,
-.api-key-text {
+.api-key-text,
+.registration-page-text {
     padding-bottom: 20px;
 }
 
 .api-key-text-wrapper {
     width: 90%;
+}
+
+.registration-page-wrapper {
+    width: 70%;
+}
+
+.registration-page-text-wrapper {
+    background-color: #fff;
+    border-radius: 16px;
+    padding: 32px;
 }
 
 .token-usage-wrapper .usage-summary-text {
@@ -205,4 +217,12 @@ td.status .pending {
     border-radius: 8px;
     outline: none;
     border-color: #dfdfdf;
+}
+
+.mt-24 {
+    margin-top: 24px;
+}
+
+.notification-bar___bS2HI {
+    border-radius: 16px;
 }

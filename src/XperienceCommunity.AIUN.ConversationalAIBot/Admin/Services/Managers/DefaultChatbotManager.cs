@@ -8,6 +8,8 @@ using CMS.Websites;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 
+using XperienceCommunity.AIUN.ConversationalAIBot.Admin.InfoClasses.AIUNRegistration;
+using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Models;
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.IManagers;
 using XperienceCommunity.AIUN.ConversationalAIBot.InfoClasses.AIUNConfigurationItem;
 
@@ -24,6 +26,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
         private readonly IWebPageUrlRetriever urlRetriever;
         private readonly IAiunApiManager aiUNApiManager;
         private readonly IEventLogService eventLogService;
+        private readonly IInfoProvider<AIUNRegistrationInfo> aIUNRegistrationInfo;
 
         public DefaultChatbotManager(IInfoProvider<AIUNConfigurationItemInfo> aIUNConfigurationItemInfoProvider,
         IContentQueryExecutor executor,
@@ -32,7 +35,8 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
            IConversionService conversionServiceParam,
             IWebPageUrlRetriever urlRetrieverParam,
         IEventLogService eventLogServiceParam,
-        IAiunApiManager aiUNApiManagerParam
+        IAiunApiManager aiUNApiManagerParam,
+        IInfoProvider<AIUNRegistrationInfo> aIUNRegistrationInfoParam
         )
         {
             contentQueryExecutor = executor;
@@ -43,6 +47,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
             urlRetriever = urlRetrieverParam;
             eventLogService = eventLogServiceParam;
             aiUNApiManager = aiUNApiManagerParam;
+            aIUNRegistrationInfo = aIUNRegistrationInfoParam;
         }
 
         /// <summary>
@@ -209,6 +214,57 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
         }
 
         Task<IEnumerable<string>> IDefaultChatbotManager.GetAbsoluteUrls(IEnumerable<string> relativeUrls, string scheme, HostString host) => throw new NotImplementedException();
+
+        public AIUNRegistrationItemModel GetExistingRegistration()
+        {
+            var info = aIUNRegistrationInfo.Get().FirstOrDefault();
+            if (info == null)
+            {
+                return new AIUNRegistrationItemModel();
+            }
+            return new AIUNRegistrationItemModel
+            {
+                FirstName = info.FirstName,
+                LastName = info.LastName,
+                Email = info.Email,
+                APIKey = info.APIKey
+            };
+        }
+
+        public async Task<object> StoreOrUpdate(AIUNRegistrationItemModel data)
+        {
+            var existing = aIUNRegistrationInfo.Get().FirstOrDefault();
+            if (existing != null)
+            {
+                existing.FirstName = data.FirstName;
+                existing.LastName = data.LastName;
+                existing.Email = data.Email;
+                existing.APIKey = data.APIKey;
+                aIUNRegistrationInfo.Set(existing);
+                return new { success = true, message = "Data saved successfully." };
+            }
+            else
+            {
+                // Call AIUN signup API to register user with AIUN
+                var registeredData = await aiUNApiManager.AIUNSignup(data);
+
+                if (registeredData == null || registeredData.Email == string.Empty)
+                {
+                    return new { success = false, message = "AIUN registration failed. Please check the Event Log for more details." };
+                }
+
+                // On successful signup create record into Kentico DB
+                var newInfo = new AIUNRegistrationInfo
+                {
+                    FirstName = data.FirstName,
+                    LastName = data.LastName,
+                    Email = data.Email,
+                    APIKey = data.APIKey
+                };
+                aIUNRegistrationInfo.Set(newInfo);
+                return new { success = true, message = "Verification email sent. Please confirm to activate your API key." };
+            }
+        }
     }
 
 }

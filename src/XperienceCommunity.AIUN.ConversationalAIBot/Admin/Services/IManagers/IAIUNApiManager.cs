@@ -1,4 +1,5 @@
 ﻿
+using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Models;
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Models.AIUNIndexes;
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.TokensUsage;
 
@@ -9,5 +10,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.IManagers
         public Task<string> UploadURLsAsync(List<string> websiteUrls, string clientID, string securityToken = "");
         public Task<AiunTokenUsageLayoutProperties> GetTokenUsageAsync();
         public Task<IndexesResponseModel> GetIndexesAsync(IndexItemFilterModel indexItemFilterModel);
+
+        Task<AIUNRegistrationItemModel> AIUNSignup(AIUNRegistrationItemModel aIUNRegistrationItemModel);
     }
 }

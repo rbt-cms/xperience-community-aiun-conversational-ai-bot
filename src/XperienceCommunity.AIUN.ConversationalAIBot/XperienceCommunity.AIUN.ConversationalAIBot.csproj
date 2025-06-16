@@ -8,8 +8,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Admin\Client\node_modules\**" />
+    <Compile Remove="Admin\Client\src\settingskey-layout\**" />
+    <Compile Remove="Admin\InfoClasses\AIUNSettingsKey\**" />
+    <Compile Remove="Admin\UIPages\SettingsKeyTemplate\**" />
+    <Content Remove="Admin\Client\src\settingskey-layout\**" />
+    <Content Remove="Admin\InfoClasses\AIUNSettingsKey\**" />
+    <Content Remove="Admin\UIPages\SettingsKeyTemplate\**" />
     <EmbeddedResource Remove="Admin\Client\node_modules\**" />
     <None Remove="Admin\Client\node_modules\**" />
+    <None Remove="Admin\Client\src\settingskey-layout\**" />
+    <None Remove="Admin\InfoClasses\AIUNSettingsKey\**" />
+    <None Remove="Admin\UIPages\SettingsKeyTemplate\**" />
   </ItemGroup>
   <ItemGroup>
     <AdminClientPath Include="Admin\Client\dist\**">
@@ -22,6 +31,9 @@
       <PackagePath>contentFiles\any\net8.0\Admin\Client\dist\</PackagePath>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Admin\Models\AIUNSettingKey.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Admin\Client\dist\" />

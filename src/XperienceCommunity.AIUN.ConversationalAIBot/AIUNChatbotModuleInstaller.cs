@@ -2,6 +2,7 @@
 using CMS.FormEngine;
 using CMS.Modules;
 
+using XperienceCommunity.AIUN.ConversationalAIBot.Admin.InfoClasses.AIUNRegistration;
 using XperienceCommunity.AIUN.ConversationalAIBot.InfoClasses.AIUNConfigurationItem;
 
 namespace XperienceCommunity.AIUN.ConversationalAIBot
@@ -14,7 +15,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot
 
             _ = InitializeResource(resource);
             InstallAIUNConfiguartionItemInfo(resource);
-            InstallAIUNSettingsKeyInfo(resource);
+            InstallAIUNRegistrationInfo(resource);
         }
 
 
@@ -106,26 +107,65 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot
 
         }
 
-        private void InstallAIUNSettingsKeyInfo(ResourceInfo resource)
+        private void InstallAIUNRegistrationInfo(ResourceInfo resource)
         {
-            var info = DataClassInfoProvider.GetDataClassInfo(AIUNSettingsKeyInfo.OBJECT_TYPE) ?? DataClassInfo.New(AIUNSettingsKeyInfo.OBJECT_TYPE);
-            info.ClassName = AIUNSettingsKeyInfo.TYPEINFO.ObjectClassName;
-            info.ClassTableName = AIUNSettingsKeyInfo.TYPEINFO.ObjectClassName.Replace(".", "_");
-            info.ClassDisplayName = "SettingsKey";
+            var info = DataClassInfoProvider.GetDataClassInfo(AIUNRegistrationInfo.OBJECT_TYPE) ?? DataClassInfo.New(AIUNRegistrationInfo.OBJECT_TYPE);
+
+            info.ClassName = AIUNRegistrationInfo.TYPEINFO.ObjectClassName;
+            info.ClassTableName = AIUNRegistrationInfo.TYPEINFO.ObjectClassName.Replace(".", "_");
+            info.ClassDisplayName = "AIUN Registration";
             info.ClassType = ClassType.OTHER;
             info.ClassResourceID = resource.ResourceID;
 
-            var formInfo = FormHelper.GetBasicFormDefinition(nameof(AIUNSettingsKeyInfo.AIUNSettingsKeyID));
+            var formInfo = FormHelper.GetBasicFormDefinition(nameof(AIUNRegistrationInfo.AIUNRegistrationItemID));
 
             var formItem = new FormFieldInfo
             {
-                Name = nameof(AIUNSettingsKeyInfo.SettingsKey),
+                Name = nameof(AIUNRegistrationInfo.FirstName),
                 AllowEmpty = false,
                 Visible = true,
                 Precision = 0,
-                Size = 1500,
+                Size = 50,
                 DataType = "text",
                 Enabled = true,
+            };
+            formInfo.AddFormItem(formItem);
+
+
+
+            formItem = new FormFieldInfo
+            {
+                Name = nameof(AIUNRegistrationInfo.LastName),
+                AllowEmpty = false,
+                Visible = true,
+                Precision = 0,
+                Size = 50,
+                DataType = "text",
+                Enabled = true
+            };
+            formInfo.AddFormItem(formItem);
+
+            formItem = new FormFieldInfo
+            {
+                Name = nameof(AIUNRegistrationInfo.Email),
+                AllowEmpty = false,
+                Visible = true,
+                Precision = 0,
+                Size = 100,
+                DataType = "text",
+                Enabled = true
+            };
+            formInfo.AddFormItem(formItem);
+
+            formItem = new FormFieldInfo
+            {
+                Name = nameof(AIUNRegistrationInfo.APIKey),
+                AllowEmpty = false,
+                Visible = true,
+                Precision = 0,
+                Size = 400,
+                DataType = "text",
+                Enabled = true
             };
             formInfo.AddFormItem(formItem);
 
@@ -135,6 +175,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot
             {
                 DataClassInfoProvider.SetDataClassInfo(info);
             }
+
         }
 
         /// <summary>
