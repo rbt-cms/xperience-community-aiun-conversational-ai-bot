@@ -1,21 +1,22 @@
-﻿using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Models;
+﻿using NUnit.Framework;
 
-using Xunit;
+using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Models;
 
 namespace XperienceCommunity.AIUN.ConversationalAIBot.Models
 {
+    [TestFixture]
     public class WebsiteChannelModelTests
     {
-        [Fact]
+        [Test]
         public void Constructor_InitializesWithEmptyStringProperties()
         {
             var model = new WebsiteChannelModel();
 
-            Assert.Equal(string.Empty, model.ClientId);
-            Assert.Equal(string.Empty, model.ChannelName);
+            Assert.That(model.ClientId, Is.EqualTo(string.Empty));
+            Assert.That(model.ChannelName, Is.EqualTo(string.Empty));
         }
 
-        [Fact]
+        [Test]
         public void Properties_SetAndGetValues()
         {
             var model = new WebsiteChannelModel
@@ -24,8 +25,8 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Models
                 ChannelName = "MainChannel"
             };
 
-            Assert.Equal("client-123", model.ClientId);
-            Assert.Equal("MainChannel", model.ChannelName);
+            Assert.That(model.ClientId, Is.EqualTo("client-123"));
+            Assert.That(model.ChannelName, Is.EqualTo("MainChannel"));
         }
     }
 }

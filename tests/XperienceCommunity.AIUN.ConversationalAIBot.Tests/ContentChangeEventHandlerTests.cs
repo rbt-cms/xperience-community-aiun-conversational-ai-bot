@@ -1,5 +1,4 @@
-﻿
-using System.Reflection;
+﻿using System.Reflection;
 
 using CMS.Base;
 using CMS.Core;
@@ -9,10 +8,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Moq;
 
+using NUnit.Framework;
+
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.IManagers;
-
-using Xunit;
-
 
 namespace XperienceCommunity.AIUN.ConversationalAIBot
 {
@@ -22,13 +20,16 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot
         public TestWebPageEventArgsBase(string treePath) => TreePath = treePath;
         public new string TreePath { get; }
     }
+
+    [TestFixture]
     public class ContentChangeEventHandlerTests
     {
-        private readonly Mock<IAiunApiManager> aiunApiManagerMock;
-        private readonly Mock<IEventLogService> eventLogServiceMock;
-        private readonly ContentChangeEventHandler eventHandler;
+        private Mock<IAiunApiManager> aiunApiManagerMock;
+        private Mock<IEventLogService> eventLogServiceMock;
+        private ContentChangeEventHandler eventHandler;
 
-        public ContentChangeEventHandlerTests()
+        [SetUp]
+        public void SetUp()
         {
             aiunApiManagerMock = new Mock<IAiunApiManager>();
             eventLogServiceMock = new Mock<IEventLogService>();
@@ -49,7 +50,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot
             eventHandler = new ContentChangeEventHandler();
         }
 
-        [Fact]
+        [Test]
         public async Task HandleWebPagePublish_InvalidPageEvent_DoesNotCallUploadURLsAsync()
         {
             // Arrange  
