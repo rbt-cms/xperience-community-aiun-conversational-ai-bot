@@ -6,15 +6,15 @@ using Microsoft.AspNetCore.Mvc.ViewComponents;
 
 using Moq;
 
-using XperienceCommunity.AIUN.ConversationalAIBot.InfoClasses.AIUNConfigurationItem;
+using NUnit.Framework;
 
-using Xunit;
+using XperienceCommunity.AIUN.ConversationalAIBot.InfoClasses.AIUNConfigurationItem;
 
 namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Components.ViewComponents.AIUNChatbot
 {
     public class AIUNChatbotViewComponentTests
     {
-        [Fact]
+        [Test]
         public async Task InvokeAsync_ReturnsViewEvenWithNoConfig()
         {
             // Arrange  
@@ -37,12 +37,13 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Components.ViewCompo
             var result = await component.InvokeAsync();
 
             // Assert  
-            var viewResult = Assert.IsType<ViewViewComponentResult>(result);
-            Assert.NotNull(viewResult.ViewData?.Model);
+            Assert.That(result, Is.InstanceOf<ViewViewComponentResult>()); // Updated to use NUnit's `Assert.That` with `Is.InstanceOf`
+            var viewResult = (ViewViewComponentResult)result;
+            Assert.That(viewResult.ViewData?.Model, Is.Not.Null);
             // Optionally, check for empty or fallback content  
         }
 
-        [Fact]
+        [Test]
         public async Task InvokeAsync_ReturnsViewWithValidConfig()
         {
             // Arrange  
@@ -65,12 +66,13 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Components.ViewCompo
             var result = await component.InvokeAsync();
 
             // Assert  
-            var viewResult = Assert.IsType<ViewViewComponentResult>(result);
-            Assert.NotNull(viewResult.ViewData?.Model);
+            Assert.That(result, Is.InstanceOf<ViewViewComponentResult>()); // Updated to use NUnit's `Assert.That` with `Is.InstanceOf`
+            var viewResult = (ViewViewComponentResult)result;
+            Assert.That(viewResult.ViewData?.Model, Is.Not.Null);
             // Optionally, validate the model content  
         }
 
-        [Fact]
+        [Test]
         public async Task InvokeAsync_LogsErrorWhenExceptionOccurs()
         {
             // Arrange  
@@ -94,10 +96,10 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Components.ViewCompo
 
             // Assert  
             mockEventLogService.Verify(x => x.LogEvent(It.IsAny<EventLogData>()), Times.Once);
-            var viewResult = Assert.IsType<ViewViewComponentResult>(result);
-            Assert.NotNull(viewResult.ViewData?.Model);
+            Assert.That(result, Is.InstanceOf<ViewViewComponentResult>()); // Updated to use NUnit's `Assert.That` with `Is.InstanceOf`
+            var viewResult = (ViewViewComponentResult)result;
+            Assert.That(viewResult.ViewData?.Model, Is.Not.Null);
             // Optionally, check for fallback content  
         }
     }
 }
-

@@ -8,26 +8,27 @@ using Microsoft.AspNetCore.Http;
 
 using Moq;
 
+using NUnit.Framework;
+
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.IManagers;
 using XperienceCommunity.AIUN.ConversationalAIBot.InfoClasses.AIUNConfigurationItem;
 
-using Xunit;
-
 namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
 {
+    [TestFixture]
     public class DefaultChatbotManagerTests
     {
+        private Mock<IAiunApiManager> mockAIUNApiManager;
+        private Mock<IInfoProvider<ChannelInfo>> mockChannelProvider;
+        private Mock<IConversionService> mockConversionService;
+        private Mock<IProgressiveCache> mockCache;
+        private Mock<IContentQueryExecutor> mockContentQueryExecutor;
+        private Mock<IWebPageUrlRetriever> mockUrlRetriever;
+        private Mock<IEventLogService> mockEventLogService;
+        private DefaultChatbotManager chatbotManager;
 
-        private readonly Mock<IAiunApiManager> mockAIUNApiManager;
-        private readonly Mock<IInfoProvider<ChannelInfo>> mockChannelProvider;
-        private readonly Mock<IConversionService> mockConversionService;
-        private readonly Mock<IProgressiveCache> mockCache;
-        private readonly Mock<IContentQueryExecutor> mockContentQueryExecutor;
-        private readonly Mock<IWebPageUrlRetriever> mockUrlRetriever;
-        private readonly Mock<IEventLogService> mockEventLogService;
-        private readonly DefaultChatbotManager chatbotManager;
-
-        public DefaultChatbotManagerTests()
+        [SetUp]
+        public void SetUp()
         {
             mockAIUNApiManager = new Mock<IAiunApiManager>();
             mockChannelProvider = new Mock<IInfoProvider<ChannelInfo>>();
@@ -37,67 +38,56 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
             mockUrlRetriever = new Mock<IWebPageUrlRetriever>();
             mockEventLogService = new Mock<IEventLogService>();
 
-            // Add missing mock for AIUNConfigurationItemInfoProvider  
             var mockAIUNConfigurationItemInfoProvider = new Mock<IInfoProvider<AIUNConfigurationItemInfo>>();
 
             chatbotManager = new DefaultChatbotManager(
-                 mockAIUNConfigurationItemInfoProvider.Object,
-                 mockContentQueryExecutor.Object,
-                   mockCache.Object,
-                    mockChannelProvider.Object,
+                mockAIUNConfigurationItemInfoProvider.Object,
+                mockContentQueryExecutor.Object,
+                mockCache.Object,
+                mockChannelProvider.Object,
                 mockConversionService.Object,
                 mockUrlRetriever.Object,
-                   mockEventLogService.Object,
+                mockEventLogService.Object,
                 mockAIUNApiManager.Object
-
             );
         }
 
-        [Fact]
+        [Test]
         public async Task InitializeChatbot_ShouldReturnTrue_WhenInitializationSucceeds()
         {
-            // Arrange  
-            // Fix for CS0854: An expression tree may not contain a call or invocation that uses optional arguments
-            // Explicitly pass all arguments, including the optional one.
+            // Arrange
             _ = mockAIUNApiManager.Setup(s => s.UploadURLsAsync(It.IsAny<List<string>>(), It.IsAny<string>(), It.IsAny<string>()))
                 .ReturnsAsync("Success");
 
-            // Act  
+            // Act
             string result = await chatbotManager.IndexInternal(1, "TestChannel", "TestClientID", default, "https", new HostString("localhost"));
 
-            // Assert  
-            // Accept null as a valid result since IndexInternal always returns null  
-            Assert.True(result == null || result.Any() || !result.Any());
+            // Assert
+            Assert.That(result == null || result.Any() || !result.Any());
         }
 
-
-        [Fact]
+        [Test]
         public async Task InitializeChatbot_ShouldReturnFalse_WhenInitializationFails()
         {
-            // Arrange  
-            // Fix for CS0854: Explicitly pass all arguments, including the optional one.
+            // Arrange
             _ = mockAIUNApiManager.Setup(s => s.UploadURLsAsync(It.IsAny<List<string>>(), It.IsAny<string>(), It.IsAny<string>()))
                 .ThrowsAsync(new Exception("Error"));
 
-            // Act  
+            // Act
             string result = await chatbotManager.IndexInternal(1, "TestChannel", "TestClientID", default, "https", new HostString("localhost"));
 
-            // Assert  
-            // Treat null as empty for this test  
-            Assert.True(result == null || !result.Any(), "Expected result to be empty or null when initialization fails.");
+            // Assert
+            Assert.That(result == null || !result.Any(), "Expected result to be empty or null when initialization fails.");
         }
 
-        [Fact]
+        [Test]
         public void GetChatbotStatus_ShouldReturnCorrectStatus()
         {
-            // Arrange  
-
-            // Act  
+            // Act
             var result = chatbotManager.GetAllWebsiteChannels();
 
-            // Assert  
-            Assert.NotNull(result);
+            // Assert
+            Assert.That(result, Is.Not.Null);
         }
     }
 }
-

@@ -1,7 +1,7 @@
-﻿using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Models;
-using XperienceCommunity.AIUN.ConversationalAIBot.InfoClasses.AIUNConfigurationItem;
+﻿using NUnit.Framework;
 
-using Xunit;
+using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Models;
+using XperienceCommunity.AIUN.ConversationalAIBot.InfoClasses.AIUNConfigurationItem;
 
 namespace XperienceCommunity.AIUN.ConversationalAIBot.Models
 {
@@ -12,24 +12,24 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Models
         public override string ClientID { get; set; }
         public override string APIKey { get; set; }
         public override string BaseURL { get; set; }
-
     }
 
+    [TestFixture]
     public class AIUNConfigurationItemModelTests
     {
-        [Fact]
+        [Test]
         public void Constructor_InitializesWithDefaultValues()
         {
             var model = new AiunConfigurationItemModel();
 
-            Assert.Equal(0, model.Id);
-            Assert.Equal(string.Empty, model.ChannelName);
-            Assert.Equal(string.Empty, model.ClientID);
-            Assert.Equal(string.Empty, model.APIKey);
-            Assert.Equal(string.Empty, model.BaseURL);
+            Assert.That(model.Id, Is.EqualTo(0));
+            Assert.That(model.ChannelName, Is.EqualTo(string.Empty));
+            Assert.That(model.ClientID, Is.EqualTo(string.Empty));
+            Assert.That(model.APIKey, Is.EqualTo(string.Empty));
+            Assert.That(model.BaseURL, Is.EqualTo(string.Empty));
         }
 
-        [Fact]
+        [Test]
         public void Properties_SetAndGetValues()
         {
             var model = new AiunConfigurationItemModel
@@ -41,35 +41,34 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Models
                 BaseURL = "https://test.url"
             };
 
-            Assert.Equal(42, model.Id);
-            Assert.Equal("TestChannel", model.ChannelName);
-            Assert.Equal("TestClientId", model.ClientID);
-            Assert.Equal("TestApiKey", model.APIKey);
-            Assert.Equal("https://test.url", model.BaseURL);
+            Assert.That(model.Id, Is.EqualTo(42));
+            Assert.That(model.ChannelName, Is.EqualTo("TestChannel"));
+            Assert.That(model.ClientID, Is.EqualTo("TestClientId"));
+            Assert.That(model.APIKey, Is.EqualTo("TestApiKey"));
+            Assert.That(model.BaseURL, Is.EqualTo("https://test.url"));
         }
 
-        [Fact]
+        [Test]
         public void Constructor_WithStringParameters_SetsProperties()
         {
             var model = new AiunConfigurationItemModel("ChannelA", "ClientA", "KeyA", "https://a.url");
 
-            Assert.Equal("ChannelA", model.ChannelName);
-            Assert.Equal("ClientA", model.ClientID);
-            Assert.Equal("KeyA", model.APIKey);
-            Assert.Equal("https://a.url", model.BaseURL);
+            Assert.That(model.ChannelName, Is.EqualTo("ChannelA"));
+            Assert.That(model.ClientID, Is.EqualTo("ClientA"));
+            Assert.That(model.APIKey, Is.EqualTo("KeyA"));
+            Assert.That(model.BaseURL, Is.EqualTo("https://a.url"));
         }
 
-        [Fact]
+        [Test]
         public void Constructor_WithEnumerable_DoesNotThrow()
         {
             var list = new List<AIUNConfigurationItemInfo>();
             var model = new AiunConfigurationItemModel(list);
 
-            // No public property to assert, just ensure no exception
-            Assert.NotNull(model);
+            Assert.That(model, Is.Not.Null);
         }
 
-        [Fact]
+        [Test]
         public void Constructor_WithAIUNConfigurationItemInfo_SetsProperties()
         {
             var info = new TestAiunConfigurationItemInfo
@@ -83,11 +82,11 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Models
 
             var model = new AiunConfigurationItemModel(info);
 
-            Assert.Equal(7, model.Id);
-            Assert.Equal("ChannelB", model.ChannelName);
-            Assert.Equal("ClientB", model.ClientID);
-            Assert.Equal("KeyB", model.APIKey);
-            Assert.Equal("https://b.url", model.BaseURL);
+            Assert.That(model.Id, Is.EqualTo(7));
+            Assert.That(model.ChannelName, Is.EqualTo("ChannelB"));
+            Assert.That(model.ClientID, Is.EqualTo("ClientB"));
+            Assert.That(model.APIKey, Is.EqualTo("KeyB"));
+            Assert.That(model.BaseURL, Is.EqualTo("https://b.url"));
         }
     }
 }

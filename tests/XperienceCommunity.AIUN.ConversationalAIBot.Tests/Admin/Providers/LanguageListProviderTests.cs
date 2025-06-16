@@ -4,30 +4,31 @@ using CMS.DataEngine;
 using Moq;
 using Moq.Protected;
 
-using Xunit;
+using NUnit.Framework;
 
 namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Providers
 {
     public class LanguageListProviderTests
     {
-        private readonly Mock<IInfoProvider<ContentLanguageInfo>> mockContentLanguageInfoProvider;
-        private readonly LanguageListProvider languageListProvider;
+        private Mock<IInfoProvider<ContentLanguageInfo>> mockContentLanguageInfoProvider;
+        private LanguageListProvider languageListProvider;
 
-        public LanguageListProviderTests()
+        [SetUp]
+        public void SetUp()
         {
             mockContentLanguageInfoProvider = new Mock<IInfoProvider<ContentLanguageInfo>>();
             languageListProvider = new LanguageListProvider(mockContentLanguageInfoProvider.Object);
         }
 
-        [Fact]
+        [Test]
         public async Task GetItemsAsync_ReturnsPagedItems()
         {
             // Arrange
             var mockData = new List<ContentLanguageInfo>
-        {
-            CreateStubContentLanguageInfo("en", "English"),
-            CreateStubContentLanguageInfo("fr", "French")
-        };
+            {
+                CreateStubContentLanguageInfo("en", "English"),
+                CreateStubContentLanguageInfo("fr", "French")
+            };
 
             var mockQuery = CreateMockQuery(mockData);
 
@@ -39,20 +40,20 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Providers
             var result = await languageListProvider.GetItemsAsync(null, 0, CancellationToken.None);
 
             // Assert
-            Assert.NotNull(result);
-            Assert.Equal(2, result.Items.Count());
-            Assert.Contains(result.Items, x => x.Value == "en" && x.Text == "English");
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Items.Count(), Is.EqualTo(2));
+            Assert.That(result.Items, Has.Some.Matches<dynamic>(x => x.Value == "en" && x.Text == "English"));
         }
 
-        [Fact]
+        [Test]
         public async Task GetItemsAsync_FiltersBySearchTerm()
         {
             // Arrange
             var mockData = new List<ContentLanguageInfo>
-    {
-        CreateStubContentLanguageInfo("en", "English"),
-        CreateStubContentLanguageInfo("fr", "French")
-    };
+            {
+                CreateStubContentLanguageInfo("en", "English"),
+                CreateStubContentLanguageInfo("fr", "French")
+            };
 
             var filteredData = mockData.Where(x => x.ContentLanguageDisplayName.Contains("Eng")).ToList();
 
@@ -68,20 +69,20 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Providers
             var result = await languageListProvider.GetItemsAsync("Eng", 0, CancellationToken.None);
 
             // Assert
-            Assert.NotNull(result);
-            _ = Assert.Single(result.Items);
-            Assert.Equal("en", result.Items.First().Value);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Items.Count(), Is.EqualTo(1));
+            Assert.That(result.Items.First().Value, Is.EqualTo("en"));
         }
 
-        [Fact]
+        [Test]
         public async Task GetSelectedItemsAsync_ReturnsSelectedItems()
         {
             // Arrange
             var mockData = new List<ContentLanguageInfo>
-        {
-            CreateStubContentLanguageInfo("en", "English"),
-            CreateStubContentLanguageInfo("fr", "French")
-        };
+            {
+                CreateStubContentLanguageInfo("en", "English"),
+                CreateStubContentLanguageInfo("fr", "French")
+            };
 
             var mockQuery = CreateMockQuery(mockData);
             _ = mockQuery.Setup(q => q.Page(It.IsAny<int>(), It.IsAny<int>())).Returns(mockQuery.Object);
@@ -96,9 +97,9 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Providers
             var result = await languageListProvider.GetSelectedItemsAsync(selectedValues, CancellationToken.None);
 
             // Assert
-            Assert.NotNull(result);
-            _ = Assert.Single(result);
-            Assert.Equal("en", result.First().Value);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Count(), Is.EqualTo(1));
+            Assert.That(result.First().Value, Is.EqualTo("en"));
         }
 
         // Helper to create a stub ContentLanguageInfo

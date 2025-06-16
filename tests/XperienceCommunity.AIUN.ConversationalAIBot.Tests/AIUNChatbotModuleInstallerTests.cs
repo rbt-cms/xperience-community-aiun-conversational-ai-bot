@@ -3,13 +3,14 @@ using CMS.Modules;
 
 using Moq;
 
-using Xunit;
+using NUnit.Framework;
 
 namespace XperienceCommunity.AIUN.ConversationalAIBot
 {
+    [TestFixture]
     public class AIUNChatbotModuleInstallerTests
     {
-        [Fact]
+        [Test]
         public void InitializeResource_CallsSet_WhenChanged()
         {
             // Arrange
@@ -28,7 +29,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot
             resourceProviderMock.Verify(p => p.Set(resourceMock.Object), Times.Once);
         }
 
-        [Fact]
+        [Test]
         public void InitializeResource_DoesNotCallSet_WhenNotChanged()
         {
             // Arrange
@@ -53,4 +54,3 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot
         }
     }
 }
-

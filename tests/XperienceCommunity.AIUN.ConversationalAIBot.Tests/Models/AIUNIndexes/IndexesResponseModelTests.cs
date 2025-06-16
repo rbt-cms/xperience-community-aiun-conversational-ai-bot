@@ -1,26 +1,27 @@
-﻿using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Models.AIUNIndexes;
+﻿using NUnit.Framework;
 
-using Xunit;
+using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Models.AIUNIndexes;
 
 namespace XperienceCommunity.AIUN.ConversationalAIBot.Models.AIUNIndexes
 {
+    [TestFixture]
     public class IndexesResponseModelTests
     {
-        [Fact]
+        [Test]
         public void Constructor_InitializesWithDefaultValues()
         {
             // Act
             var model = new IndexesResponseModel();
 
             // Assert
-            Assert.NotNull(model.Items);
-            Assert.Empty(model.Items);
-            Assert.Equal(0, model.Total);
-            Assert.Equal(1, model.Page);
-            Assert.Equal(50, model.Size);
+            Assert.That(model.Items, Is.Not.Null);
+            Assert.That(model.Items, Is.Empty);
+            Assert.That(model.Total, Is.EqualTo(0));
+            Assert.That(model.Page, Is.EqualTo(1));
+            Assert.That(model.Size, Is.EqualTo(50));
         }
 
-        [Fact]
+        [Test]
         public void Properties_SetAndGetValues()
         {
             // Arrange
@@ -37,10 +38,10 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Models.AIUNIndexes
             };
 
             // Assert
-            Assert.Equal(items, model.Items);
-            Assert.Equal(10, model.Total);
-            Assert.Equal(2, model.Page);
-            Assert.Equal(25, model.Size);
+            Assert.That(model.Items, Is.EqualTo(items));
+            Assert.That(model.Total, Is.EqualTo(10));
+            Assert.That(model.Page, Is.EqualTo(2));
+            Assert.That(model.Size, Is.EqualTo(25));
         }
     }
 }
