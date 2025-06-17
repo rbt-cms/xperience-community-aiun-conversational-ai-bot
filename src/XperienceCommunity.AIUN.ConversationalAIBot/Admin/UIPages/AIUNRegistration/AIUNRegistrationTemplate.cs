@@ -49,7 +49,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNRegistra
 
                 if (currentUser == null || !currentUser.IsAdministrator())
                 {
-                    properties.RegistrationItem = new AIUNRegistrationItemModel();
+                    properties.RegistrationItem = new AiunRegistrationModel();
                     properties.IsRegistrationExist = false;
                     return await Task.FromResult(properties);
                 }
@@ -63,7 +63,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNRegistra
                 }
                 else
                 {
-                    properties.RegistrationItem = new AIUNRegistrationItemModel
+                    properties.RegistrationItem = new AiunRegistrationModel
                     {
                         FirstName = currentUser.FirstName ?? string.Empty,
                         LastName = currentUser.LastName ?? string.Empty,
@@ -86,7 +86,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNRegistra
         }
 
         [PageCommand]
-        public async Task<object> StoreOrUpdateAsync(AIUNRegistrationItemModel data)
+        public async Task<object> StoreOrUpdateAsync(AiunRegistrationModel data)
         {
 
             try
@@ -111,7 +111,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNRegistra
     /// </summary>
     public class AiunRegistrationLayoutProperties : TemplateClientProperties
     {
-        public AIUNRegistrationItemModel RegistrationItem { get; set; } = new AIUNRegistrationItemModel();
+        public AiunRegistrationModel RegistrationItem { get; set; } = new AiunRegistrationModel();
         public bool IsRegistrationExist { get; set; }
     }
 }

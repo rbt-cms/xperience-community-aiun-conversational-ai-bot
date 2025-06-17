@@ -215,14 +215,14 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
 
         Task<IEnumerable<string>> IDefaultChatbotManager.GetAbsoluteUrls(IEnumerable<string> relativeUrls, string scheme, HostString host) => throw new NotImplementedException();
 
-        public AIUNRegistrationItemModel GetExistingRegistration()
+        public AiunRegistrationModel GetExistingRegistration()
         {
             var info = aIUNRegistrationInfo.Get().FirstOrDefault();
             if (info == null)
             {
-                return new AIUNRegistrationItemModel();
+                return new AiunRegistrationModel();
             }
-            return new AIUNRegistrationItemModel
+            return new AiunRegistrationModel
             {
                 FirstName = info.FirstName,
                 LastName = info.LastName,
@@ -231,7 +231,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
             };
         }
 
-        public async Task<object> StoreOrUpdate(AIUNRegistrationItemModel data)
+        public async Task<object> StoreOrUpdate(AiunRegistrationModel data)
         {
             var existing = aIUNRegistrationInfo.Get().FirstOrDefault();
             if (existing != null)

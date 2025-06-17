@@ -11,6 +11,6 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.IManagers
         public Task<AiunTokenUsageLayoutProperties> GetTokenUsageAsync();
         public Task<IndexesResponseModel> GetIndexesAsync(IndexItemFilterModel indexItemFilterModel);
 
-        Task<AIUNRegistrationItemModel> AIUNSignup(AIUNRegistrationItemModel aIUNRegistrationItemModel);
+        Task<AiunRegistrationModel> AIUNSignup(AiunRegistrationModel aIUNRegistrationItemModel);
     }
 }

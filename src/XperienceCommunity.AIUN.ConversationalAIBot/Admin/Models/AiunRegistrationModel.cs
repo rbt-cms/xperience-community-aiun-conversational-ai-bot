@@ -4,7 +4,7 @@ using XperienceCommunity.AIUN.ConversationalAIBot.Admin.InfoClasses.AIUNRegistra
 
 namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Models
 {
-    public class AIUNRegistrationItemModel
+    public class AiunRegistrationModel
     {
         public readonly IEnumerable<AIUNRegistrationInfo> ItemList = [];
         public int Id { get; set; }
@@ -21,8 +21,8 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Models
         public string APIKey { get; set; } = string.Empty;
 
 
-        public AIUNRegistrationItemModel() { }
-        public AIUNRegistrationItemModel(string firstName, string lastName, string email, string apiKey)
+        public AiunRegistrationModel() { }
+        public AiunRegistrationModel(string firstName, string lastName, string email, string apiKey)
         {
             FirstName = firstName;
             LastName = lastName;
@@ -30,9 +30,9 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Models
             APIKey = apiKey;
         }
 
-        public AIUNRegistrationItemModel(IEnumerable<AIUNRegistrationInfo> enumerable) => ItemList = enumerable;
+        public AiunRegistrationModel(IEnumerable<AIUNRegistrationInfo> enumerable) => ItemList = enumerable;
 
-        public AIUNRegistrationItemModel(AIUNRegistrationInfo aIUNRegistrationInfo)
+        public AiunRegistrationModel(AIUNRegistrationInfo aIUNRegistrationInfo)
         {
             FirstName = aIUNRegistrationInfo.FirstName;
             LastName = aIUNRegistrationInfo.LastName;

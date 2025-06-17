@@ -39,7 +39,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
         /// </summary>
         /// <param name="aIUNRegistrationItemModel"></param>
         /// <returns></returns>
-        public async Task<AIUNRegistrationItemModel> AIUNSignup(AIUNRegistrationItemModel aIUNRegistrationItemModel)
+        public async Task<AiunRegistrationModel> AIUNSignup(AiunRegistrationModel aIUNRegistrationItemModel)
         {
             try
             {
@@ -69,19 +69,19 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
                 if (response.IsSuccessStatusCode)
                 {
                     string json = await response.Content.ReadAsStringAsync();
-                    var data = System.Text.Json.JsonSerializer.Deserialize<AIUNRegistrationItemModel>(json, new JsonSerializerOptions
+                    var data = System.Text.Json.JsonSerializer.Deserialize<AiunRegistrationModel>(json, new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
                     });
 
-                    return data ?? new AIUNRegistrationItemModel();
+                    return data ?? new AiunRegistrationModel();
                 }
                 else
                 {
                     string details = await response.Content.ReadAsStringAsync();
                     eventLogService.LogException(nameof(AiunApiManager), nameof(AIUNSignup), new Exception("API_Call_Failed"),
                      $"AIUN registration failed with status code {(int)response.StatusCode}: {response.ReasonPhrase}\nDetails: {details}");
-                    return new AIUNRegistrationItemModel();
+                    return new AiunRegistrationModel();
                 }
 
             }
@@ -89,7 +89,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
             {
                 eventLogService.LogException(nameof(AiunApiManager), nameof(AIUNSignup), ex,
                     $"AIUN registration failed:" + ex.Message);
-                return new AIUNRegistrationItemModel();
+                return new AiunRegistrationModel();
             }
         }
         /// <summary>

@@ -12,8 +12,8 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.IManagers
         public string GetClientIDWIthChannelName(string channelName);
         public string GetChannelNameWithClientID(long clientID);
         public Task<IEnumerable<string>> GetAbsoluteUrls(IEnumerable<string> relativeUrls, string scheme, HostString host);
-        public AIUNRegistrationItemModel GetExistingRegistration();
-        public Task<object> StoreOrUpdate(AIUNRegistrationItemModel data);
+        public AiunRegistrationModel GetExistingRegistration();
+        public Task<object> StoreOrUpdate(AiunRegistrationModel data);
 
     }
 }
