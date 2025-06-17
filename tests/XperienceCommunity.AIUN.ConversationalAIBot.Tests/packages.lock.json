@@ -42,17 +42,17 @@
         "resolved": "4.3.2",
         "contentHash": "puVXayXNmEu7MFQSUswGmUjOy3M3baprMbkLl5PAutpeDoGTr+jPv33qAYsqxywi2wJCq8l/O3EhHoLulPE1iQ=="
       },
+      "NUnit3TestAdapter": {
+        "type": "Direct",
+        "requested": "[4.6.0, )",
+        "resolved": "4.6.0",
+        "contentHash": "R7e1+a4vuV/YS+ItfL7f//rG+JBvVeVLX4mHzFEZo4W1qEKl8Zz27AqvQSAqo+BtIzUCo4aAJMYa56VXS4hudw=="
+      },
       "SonarAnalyzer.CSharp": {
         "type": "Direct",
         "requested": "[9.32.0.97167, )",
         "resolved": "9.32.0.97167",
         "contentHash": "Yxk86RV+8ynJpUhku1Yw2hITFmnmXKkXJ73cIFSy85ol5SnWREQg9RuTyV8nI7V7+pyLKpCfRmD7P0widsgjkg=="
-      },
-      "xunit.runner.visualstudio": {
-        "type": "Direct",
-        "requested": "[3.1.0, )",
-        "resolved": "3.1.0",
-        "contentHash": "K9O9TOzugqOo4LJ87uuq1VG8RAqGp20Ng85Wx932oT5LNBkIgeeGYubVW5UMnOOTanFNbGavmbuYrJr4INzSwg=="
       },
       "AngleSharp": {
         "type": "Transitive",
