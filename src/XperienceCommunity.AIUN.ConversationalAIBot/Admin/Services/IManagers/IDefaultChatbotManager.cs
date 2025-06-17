@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 
+using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Models;
+
 namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.IManagers
 {
     public interface IDefaultChatbotManager
@@ -10,7 +12,8 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.IManagers
         public string GetClientIDWIthChannelName(string channelName);
         public string GetChannelNameWithClientID(long clientID);
         public Task<IEnumerable<string>> GetAbsoluteUrls(IEnumerable<string> relativeUrls, string scheme, HostString host);
-
+        public AiunRegistrationModel GetExistingRegistration();
+        public Task<object> StoreOrUpdate(AiunRegistrationModel data);
 
     }
 }

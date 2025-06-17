@@ -9,6 +9,8 @@ using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;
 
+using XperienceCommunity.AIUN.ConversationalAIBot.Admin.InfoClasses.AIUNRegistration;
+using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Models;
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Models.AIUNIndexes;
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.IManagers;
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.TokensUsage;
@@ -20,14 +22,75 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
     {
         private readonly HttpClient httpClient;
         private readonly IEventLogService eventLogService;
-        private readonly IInfoProvider<AIUNSettingsKeyInfo> settingsKeyProvider;
+        private readonly IInfoProvider<AIUNRegistrationInfo> aIUNRegistrationInfo;
 
 
-        public AiunApiManager(HttpClient httpClientParam, IEventLogService eventLogServiceParam, IInfoProvider<AIUNSettingsKeyInfo> settingsKeyProviderParam)
+        public AiunApiManager(HttpClient httpClientParam, IEventLogService eventLogServiceParam,
+            IInfoProvider<AIUNRegistrationInfo> aIUNRegistrationInfoParam)
         {
             httpClient = httpClientParam;
             eventLogService = eventLogServiceParam;
-            settingsKeyProvider = settingsKeyProviderParam;
+            aIUNRegistrationInfo = aIUNRegistrationInfoParam;
+
+        }
+
+        /// <summary>
+        /// Sign up for AIUN service
+        /// </summary>
+        /// <param name="aIUNRegistrationItemModel"></param>
+        /// <returns></returns>
+        public async Task<AiunRegistrationModel> AIUNSignup(AiunRegistrationModel aIUNRegistrationItemModel)
+        {
+            try
+            {
+                string requestUrl = Constants.Constants.AIUNBaseUrl + Constants.Constants.SignupUrl; // e.g. "http://13.84.47.183:5300/users/signup"
+
+                // Set Authorization header with Bearer token and X-Api-Key
+                string moduleKey = Constants.Constants.XApikey;
+
+
+                // Prepare the payload
+                var payload = new
+                {
+                    first_name = aIUNRegistrationItemModel.FirstName,
+                    last_name = aIUNRegistrationItemModel.LastName,
+                    email = aIUNRegistrationItemModel.Email
+                };
+
+                // Convert to JSON
+                var jsonContent = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
+
+
+                httpClient.DefaultRequestHeaders.Add("X-Api-Key", moduleKey);
+
+                // Send GET request
+                var response = await httpClient.PostAsync(requestUrl, jsonContent);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string json = await response.Content.ReadAsStringAsync();
+                    var data = System.Text.Json.JsonSerializer.Deserialize<AiunRegistrationModel>(json, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+
+                    return data ?? new AiunRegistrationModel();
+                }
+                else
+                {
+                    string details = await response.Content.ReadAsStringAsync();
+                    eventLogService.LogException(nameof(AiunApiManager), nameof(AIUNSignup), new Exception("API_Call_Failed"),
+                     $"AIUN registration failed with status code {(int)response.StatusCode}: {response.ReasonPhrase}\nDetails: {details}");
+                    return new AiunRegistrationModel();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                eventLogService.LogException(nameof(AiunApiManager), nameof(AIUNSignup), ex,
+                    $"AIUN registration failed:" + ex.Message);
+                return new AiunRegistrationModel();
+            }
         }
         /// <summary>
         /// Upload URLs to the API
@@ -56,7 +119,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
                 string moduleKey = Constants.Constants.XApikey;
                 if (string.IsNullOrEmpty(securityToken))
                 {
-                    securityToken = settingsKeyProvider.Get()?.FirstOrDefault()?.SettingsKey;
+                    securityToken = aIUNRegistrationInfo.Get()?.FirstOrDefault()?.APIKey ?? string.Empty;
                 }
 
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{securityToken}");
@@ -118,8 +181,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
 
                 // Set Authorization header with Bearer token and X-Api-Key
                 string moduleKey = Constants.Constants.XApikey;
-                string securityToken = settingsKeyProvider.Get()?.FirstOrDefault()?.SettingsKey ?? string.Empty;
-
+                string securityToken = aIUNRegistrationInfo.Get()?.FirstOrDefault()?.APIKey ?? string.Empty;
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", securityToken);
                 httpClient.DefaultRequestHeaders.Add("X-Api-Key", moduleKey);
 
@@ -170,7 +232,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
                 string moduleKey = Constants.Constants.XApikey;
 
                 // This hardcoded need to replace with fetch key from database ......
-                string securityToken = settingsKeyProvider.Get()?.FirstOrDefault()?.SettingsKey ?? string.Empty;
+                string securityToken = aIUNRegistrationInfo.Get()?.FirstOrDefault()?.APIKey ?? string.Empty;
 
                 string filterParams = string.Empty;
 

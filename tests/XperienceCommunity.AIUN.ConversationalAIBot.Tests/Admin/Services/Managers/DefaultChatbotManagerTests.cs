@@ -10,6 +10,7 @@ using Moq;
 
 using NUnit.Framework;
 
+using XperienceCommunity.AIUN.ConversationalAIBot.Admin.InfoClasses.AIUNRegistration;
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.IManagers;
 using XperienceCommunity.AIUN.ConversationalAIBot.InfoClasses.AIUNConfigurationItem;
 
@@ -26,6 +27,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
         private Mock<IWebPageUrlRetriever> mockUrlRetriever;
         private Mock<IEventLogService> mockEventLogService;
         private DefaultChatbotManager chatbotManager;
+        private Mock<IInfoProvider<AIUNRegistrationInfo>> mockAIUNRegistrationInfo;
 
         [SetUp]
         public void SetUp()
@@ -37,6 +39,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
             mockContentQueryExecutor = new Mock<IContentQueryExecutor>();
             mockUrlRetriever = new Mock<IWebPageUrlRetriever>();
             mockEventLogService = new Mock<IEventLogService>();
+            mockAIUNRegistrationInfo = new Mock<IInfoProvider<AIUNRegistrationInfo>>();
 
             var mockAIUNConfigurationItemInfoProvider = new Mock<IInfoProvider<AIUNConfigurationItemInfo>>();
 
@@ -48,7 +51,8 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
                 mockConversionService.Object,
                 mockUrlRetriever.Object,
                 mockEventLogService.Object,
-                mockAIUNApiManager.Object
+                mockAIUNApiManager.Object,
+                mockAIUNRegistrationInfo.Object
             );
         }
 

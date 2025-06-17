@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 using XperienceCommunity.AIUN.ConversationalAIBot;
+using XperienceCommunity.AIUN.ConversationalAIBot.Admin.InfoClasses.AIUNRegistration;
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.IManagers;
 
 [assembly: RegisterModule(typeof(ContentChangeEventHandler))]
@@ -105,18 +106,18 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot
         private readonly IAiunApiManager syncLogs;
         private readonly IDefaultChatbotManager chatbotManager;
         private readonly IEventLogService eventLog;
-        private readonly IInfoProvider<AIUNSettingsKeyInfo> settingsKeyProvider;
+        private readonly IInfoProvider<AIUNRegistrationInfo> aIUNRegistrationInfo;
         public ContentChangeEventHandlerWorker(
             IAiunApiManager syncLogs,
             IDefaultChatbotManager chatbotManager,
             IEventLogService eventLog,
-            IInfoProvider<AIUNSettingsKeyInfo> settingsKeyProvider
+            IInfoProvider<AIUNRegistrationInfo> aIUNRegistrationInfo
              )
         {
             this.syncLogs = syncLogs;
             this.chatbotManager = chatbotManager;
             this.eventLog = eventLog;
-            this.settingsKeyProvider = settingsKeyProvider;
+            this.aIUNRegistrationInfo = aIUNRegistrationInfo;
         }
 
 
@@ -162,7 +163,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot
 
                 var absoluteUrls = await chatbotManager.GetAbsoluteUrls(relativeUrls, scheme, hostString);
                 string clientID = chatbotManager.GetClientIDWIthChannelName(websiteChannelName);
-                string? securityToken = settingsKeyProvider.Get()?.FirstOrDefault()?.SettingsKey;
+                string? securityToken = aIUNRegistrationInfo.Get()?.FirstOrDefault()?.APIKey ?? string.Empty;
 
                 _ = Task.Run(async () =>
                 {

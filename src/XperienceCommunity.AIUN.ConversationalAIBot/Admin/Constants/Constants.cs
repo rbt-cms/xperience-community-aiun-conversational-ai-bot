@@ -9,6 +9,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Constants
         public static readonly string UploadDocumentUrl = GetConfigurationValue("AIUNSettings:UploadDocumentUrl", "upload/urls");
         public static readonly string TokensURl = GetConfigurationValue("AIUNSettings:TokensURl", "users/tokens");
         public static readonly string GetIndexesUrl = GetConfigurationValue("AIUNSettings:GetIndexesUrl", "upload/uploaded/documents");
+        public static readonly string SignupUrl = GetConfigurationValue("AIUNSettings:SignupUrl", "users/signup");
 
         private static string GetConfigurationValue(string key, string defaultValue)
         {
