@@ -248,6 +248,13 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
                 // Call AIUN signup API to register user with AIUN
                 var registeredData = await aiUNApiManager.AIUNSignup(data);
 
+                if (registeredData != null && !string.IsNullOrEmpty(registeredData.ErrorMessage))
+                {
+
+                    return new { success = false, message = registeredData.ErrorMessage };
+
+                }
+
                 if (registeredData == null || registeredData.Email == string.Empty)
                 {
                     return new { success = false, message = "AIUN registration failed. Please check the Event Log for more details." };

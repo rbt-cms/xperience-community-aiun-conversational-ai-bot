@@ -76,6 +76,19 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
 
                     return data ?? new AiunRegistrationModel();
                 }
+                else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    string json = await response.Content.ReadAsStringAsync();
+                    var data = System.Text.Json.JsonSerializer.Deserialize<AiunRegistrationModel>(json, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+                    eventLogService.LogException(nameof(AiunApiManager), nameof(AIUNSignup), new Exception("API_Call_Failed"),
+                    $"AIUN registration failed with status code {(int)response.StatusCode}: {response.ReasonPhrase}\nDetails: {data?.ErrorMessage ?? string.Empty}");
+
+                    return new AiunRegistrationModel(data?.ErrorMessage ?? string.Empty);
+
+                }
                 else
                 {
                     string details = await response.Content.ReadAsStringAsync();

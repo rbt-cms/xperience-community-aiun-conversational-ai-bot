@@ -16,7 +16,8 @@ export interface IRegistrationItem {
 
 export const AIUNRegistrationLayoutTemplate = (props: any) => {
     const registrationItem: IRegistrationItem | null = props?.registrationItem ?? null;
-    const isRegistrationExist: boolean = props.isRegistrationExist;
+    const isRegistrationExist: boolean = props?.isRegistrationExist ?? false;
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const [formData, setFormData] = useState<IRegistrationItem | null>(registrationItem);
     const [errors, setErrors] = useState<{ [K in keyof IRegistrationItem]?: string }>({});
@@ -109,12 +110,15 @@ export const AIUNRegistrationLayoutTemplate = (props: any) => {
             setIsSuccess(false);
             return;
         }
-
+        setIsSubmitting(true);
         try {
             submitCommand(formData);
         } catch {
             setIsSuccess(false);
             setMessage('Unexpected error occurred.');
+        }
+        finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -229,7 +233,9 @@ export const AIUNRegistrationLayoutTemplate = (props: any) => {
                         </div>
                     )}
                     <div className="mt-24">
-                        <button onClick={handleSubmit} className="button___Ky_Bj type-primary___KNJNo size-l___SKn9m">
+                        <button onClick={handleSubmit}
+                            className="button___Ky_Bj type-primary___KNJNo size-l___SKn9m"
+                            disabled={isSubmitting} >
                             {isSaved ? 'Save' : 'Register'}
                         </button>
                     </div>

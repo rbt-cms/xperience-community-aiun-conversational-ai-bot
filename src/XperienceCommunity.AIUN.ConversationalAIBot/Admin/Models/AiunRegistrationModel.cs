@@ -20,8 +20,11 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Models
 
         public string APIKey { get; set; } = string.Empty;
 
-
+        [JsonPropertyName("detail")]
+        public string ErrorMessage { get; set; } = string.Empty;
         public AiunRegistrationModel() { }
+
+        public AiunRegistrationModel(string detail) => ErrorMessage = detail;
         public AiunRegistrationModel(string firstName, string lastName, string email, string apiKey)
         {
             FirstName = firstName;
