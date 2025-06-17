@@ -1,6 +1,6 @@
-﻿using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Models;
+﻿using NUnit.Framework;
 
-using Xunit;
+using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Models;
 
 namespace XperienceCommunity.AIUN.ConversationalAIBot.Models
 {
@@ -10,17 +10,18 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Models
         public string SettingsKey { get; set; } = string.Empty;
     }
 
+    [TestFixture]
     public class AIUNSettingKeyTests
     {
-        [Fact]
+        [Test]
         public void Constructor_InitializesWithDefaultValues()
         {
             var model = new AiunSettingKey();
 
-            Assert.Equal(string.Empty, model.SettingKey);
+            Assert.That(model.SettingKey, Is.EqualTo(string.Empty));
         }
 
-        [Fact]
+        [Test]
         public void Properties_SetAndGetValues()
         {
             var model = new AiunSettingKey
@@ -28,27 +29,25 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Models
                 SettingKey = "TestKey"
             };
 
-            Assert.Equal("TestKey", model.SettingKey);
+            Assert.That(model.SettingKey, Is.EqualTo("TestKey"));
         }
 
-        [Fact]
+        [Test]
         public void Constructor_WithStringParameter_SetsProperty()
         {
             var model = new AiunSettingKey("MySettingKey");
 
-            Assert.Equal("MySettingKey", model.SettingKey);
+            Assert.That(model.SettingKey, Is.EqualTo("MySettingKey"));
         }
 
-        [Fact]
+        [Test]
         public void Constructor_WithAIUNSettingsKeyInfo_SetsProperty()
         {
-            // If you have the real AIUNSettingsKeyInfo, use it here. Otherwise, use a test double.  
             var info = new TestAiunSettingsKeyInfo { SettingsKey = "InfoKey" };
 
-            // You may need to use a mock or a real instance if available.  
             var model = new AiunSettingKey(info.SettingsKey);
 
-            Assert.Equal("InfoKey", model.SettingKey);
+            Assert.That(model.SettingKey, Is.EqualTo("InfoKey"));
         }
     }
 }

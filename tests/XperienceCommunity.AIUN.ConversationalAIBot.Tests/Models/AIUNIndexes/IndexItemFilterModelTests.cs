@@ -1,30 +1,29 @@
-﻿using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Models.AIUNIndexes;
+﻿using NUnit.Framework;
 
-using Xunit;
+using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Models.AIUNIndexes;
 
 namespace XperienceCommunity.AIUN.ConversationalAIBot.Models.AIUNIndexes
 {
+    [TestFixture]
     public class IndexItemFilterModelTests
     {
-
-        [Fact]
+        [Test]
         public void Constructor_InitializesWithDefaultValues()
         {
             // Act
             var model = new IndexItemFilterModel();
 
             // Assert
-            Assert.Equal(1, model.Page);
-            Assert.Equal(10, model.PageSize);
-            Assert.Equal(string.Empty, model.SearchTerm);
-            Assert.Equal("uploaded_date", model.SortBy);
-            Assert.Equal("desc", model.SortDirection);
-            Assert.Equal("All", model.TypeFilter);
-            Assert.Equal(string.Empty, model.Channel); // Fixed: expect empty string, not null
+            Assert.That(model.Page, Is.EqualTo(1));
+            Assert.That(model.PageSize, Is.EqualTo(10));
+            Assert.That(model.SearchTerm, Is.EqualTo(string.Empty));
+            Assert.That(model.SortBy, Is.EqualTo("uploaded_date"));
+            Assert.That(model.SortDirection, Is.EqualTo("desc"));
+            Assert.That(model.TypeFilter, Is.EqualTo("All"));
+            Assert.That(model.Channel, Is.EqualTo(string.Empty));
         }
 
-
-        [Fact]
+        [Test]
         public void Properties_SetAndGetValues()
         {
             // Arrange
@@ -40,13 +39,13 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Models.AIUNIndexes
             };
 
             // Assert
-            Assert.Equal(3, model.Page);
-            Assert.Equal(25, model.PageSize);
-            Assert.Equal("test search", model.SearchTerm);
-            Assert.Equal("name", model.SortBy);
-            Assert.Equal("asc", model.SortDirection);
-            Assert.Equal("Documents", model.TypeFilter);
-            Assert.Equal("Web", model.Channel);
+            Assert.That(model.Page, Is.EqualTo(3));
+            Assert.That(model.PageSize, Is.EqualTo(25));
+            Assert.That(model.SearchTerm, Is.EqualTo("test search"));
+            Assert.That(model.SortBy, Is.EqualTo("name"));
+            Assert.That(model.SortDirection, Is.EqualTo("asc"));
+            Assert.That(model.TypeFilter, Is.EqualTo("Documents"));
+            Assert.That(model.Channel, Is.EqualTo("Web"));
         }
     }
 }

@@ -1,24 +1,27 @@
-﻿using Xunit;
+﻿using NUnit.Framework;
 
 namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Constants
 {
     public class ConstantsTests
     {
-        [Fact]
+        [Test]
         public void XApikey_ShouldHaveDefaultOrConfiguredValue() =>
-            // If appsettings.json is missing or does not contain the key, default is used
-            Assert.False(string.IsNullOrWhiteSpace(Constants.XApikey));
+            Assert.That(Constants.XApikey, Is.Not.Null.And.Not.Empty.And.Not.EqualTo(" ").And.Not.EqualTo(""));
 
-        [Fact]
-        public void AIUNBaseUrl_ShouldHaveDefaultOrConfiguredValue() => Assert.False(string.IsNullOrWhiteSpace(Constants.AIUNBaseUrl));
+        [Test]
+        public void AIUNBaseUrl_ShouldHaveDefaultOrConfiguredValue() =>
+            Assert.That(Constants.AIUNBaseUrl, Is.Not.Null.And.Not.Empty.And.Not.EqualTo(" ").And.Not.EqualTo(""));
 
-        [Fact]
-        public void UploadDocumentUrl_ShouldHaveDefaultOrConfiguredValue() => Assert.False(string.IsNullOrWhiteSpace(Constants.UploadDocumentUrl));
+        [Test]
+        public void UploadDocumentUrl_ShouldHaveDefaultOrConfiguredValue() =>
+            Assert.That(Constants.UploadDocumentUrl, Is.Not.Null.And.Not.Empty.And.Not.EqualTo(" ").And.Not.EqualTo(""));
 
-        [Fact]
-        public void TokensURl_ShouldHaveDefaultOrConfiguredValue() => Assert.False(string.IsNullOrWhiteSpace(Constants.TokensURl));
+        [Test]
+        public void TokensURl_ShouldHaveDefaultOrConfiguredValue() =>
+            Assert.That(Constants.TokensURl, Is.Not.Null.And.Not.Empty.And.Not.EqualTo(" ").And.Not.EqualTo(""));
 
-        [Fact]
-        public void GetIndexesUrl_ShouldHaveDefaultOrConfiguredValue() => Assert.False(string.IsNullOrWhiteSpace(Constants.GetIndexesUrl));
+        [Test]
+        public void GetIndexesUrl_ShouldHaveDefaultOrConfiguredValue() =>
+            Assert.That(Constants.GetIndexesUrl, Is.Not.Null.And.Not.Empty.And.Not.EqualTo(" ").And.Not.EqualTo(""));
     }
 }

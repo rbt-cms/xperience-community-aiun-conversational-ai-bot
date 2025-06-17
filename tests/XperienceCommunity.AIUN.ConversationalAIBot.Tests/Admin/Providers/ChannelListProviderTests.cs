@@ -1,5 +1,4 @@
-﻿
-using System.Data;
+﻿using System.Data;
 
 using CMS.ContentEngine;
 using CMS.DataEngine;
@@ -8,13 +7,13 @@ using Kentico.Xperience.Admin.Base.FormAnnotations;
 
 using Moq;
 
-using Xunit;
+using NUnit.Framework;
 
 namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Providers
 {
     public class ChannelListProviderTests
     {
-        [Fact]
+        [Test]
         public async Task GetOptionItems_ReturnsExpectedOptions()
         {
             // Arrange    
@@ -33,11 +32,11 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Providers
             var result = (await provider.GetOptionItemsAsync()).ToList();
 
             // Assert    
-            Assert.Equal(2, result.Count);
-            Assert.Equal("web1", result[0].Value);
-            Assert.Equal("Website 1", result[0].Text);
-            Assert.Equal("web2", result[1].Value);
-            Assert.Equal("Website 2", result[1].Text);
+            Assert.That(result, Has.Count.EqualTo(2));
+            Assert.That(result[0].Value, Is.EqualTo("web1"));
+            Assert.That(result[0].Text, Is.EqualTo("Website 1"));
+            Assert.That(result[1].Value, Is.EqualTo("web2"));
+            Assert.That(result[1].Text, Is.EqualTo("Website 2"));
         }
 
         private class TestChannelInfo : ChannelInfo
@@ -55,8 +54,6 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Providers
 
         }
 
-
-        // Make ChannelListProvider public so its constructor is accessible
         public class ChannelListProvider : IDropDownOptionsProvider
         {
             private readonly IInfoProvider<ChannelInfo> channelInfoProvider;
@@ -83,4 +80,3 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Providers
         }
     }
 }
-

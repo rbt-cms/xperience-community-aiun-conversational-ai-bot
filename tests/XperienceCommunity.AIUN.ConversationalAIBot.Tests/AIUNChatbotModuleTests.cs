@@ -1,5 +1,4 @@
-﻿
-using CMS.Core;
+﻿using CMS.Core;
 using CMS.DataEngine;
 using CMS.Modules;
 
@@ -7,13 +6,14 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Moq;
 
-using Xunit;
+using NUnit.Framework;
 
 namespace XperienceCommunity.AIUN.ConversationalAIBot
 {
+    [TestFixture]
     public class AIUNChatbotModuleTests
     {
-        [Fact]
+        [Test]
         public void OnInit_RegistersClientModule_And_InitializesInstaller()
         {
             // Arrange  
@@ -31,8 +31,8 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot
             module.TestOnInit(parameters);
 
             // Assert  
-            Assert.True(module.ClientModuleRegistered);
-            Assert.NotNull(module.Installer);
+            Assert.That(module.ClientModuleRegistered, Is.True);
+            Assert.That(module.Installer, Is.Not.Null);
         }
 
         // Helper class to expose protected members for testing  

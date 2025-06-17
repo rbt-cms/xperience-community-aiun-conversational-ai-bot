@@ -1,29 +1,29 @@
-﻿using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Models.AIUNIndexes;
+﻿using NUnit.Framework;
 
-using Xunit;
+using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Models.AIUNIndexes;
 
 namespace XperienceCommunity.AIUN.ConversationalAIBot.Models.AIUNIndexes
 {
+    [TestFixture]
     public class IndexItemModelTests
     {
-        [Fact]
+        [Test]
         public void Constructor_InitializesWithEmptyStringProperties()
         {
             // Act
             var model = new IndexItemModel();
 
             // Assert
-            Assert.Equal(string.Empty, model.Id);
-            Assert.Equal(string.Empty, model.Name);
-            Assert.Equal(string.Empty, model.UploadedDate);
-            Assert.Equal(string.Empty, model.Title);
-            Assert.Equal(string.Empty, model.Status);
-            Assert.Equal(string.Empty, model.Category);
-            Assert.Equal(string.Empty, model.Department);
+            Assert.That(model.Id, Is.EqualTo(string.Empty));
+            Assert.That(model.Name, Is.EqualTo(string.Empty));
+            Assert.That(model.UploadedDate, Is.EqualTo(string.Empty));
+            Assert.That(model.Title, Is.EqualTo(string.Empty));
+            Assert.That(model.Status, Is.EqualTo(string.Empty));
+            Assert.That(model.Category, Is.EqualTo(string.Empty));
+            Assert.That(model.Department, Is.EqualTo(string.Empty));
         }
 
-
-        [Fact]
+        [Test]
         public void Properties_SetAndGetValues()
         {
             // Arrange
@@ -39,13 +39,13 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Models.AIUNIndexes
             };
 
             // Assert
-            Assert.Equal("123", model.Id);
-            Assert.Equal("Test Name", model.Name);
-            Assert.Equal("2024-06-01", model.UploadedDate);
-            Assert.Equal("Test Title", model.Title);
-            Assert.Equal("Active", model.Status);
-            Assert.Equal("General", model.Category);
-            Assert.Equal("IT", model.Department);
+            Assert.That(model.Id, Is.EqualTo("123"));
+            Assert.That(model.Name, Is.EqualTo("Test Name"));
+            Assert.That(model.UploadedDate, Is.EqualTo("2024-06-01"));
+            Assert.That(model.Title, Is.EqualTo("Test Title"));
+            Assert.That(model.Status, Is.EqualTo("Active"));
+            Assert.That(model.Category, Is.EqualTo("General"));
+            Assert.That(model.Department, Is.EqualTo("IT"));
         }
     }
 }
