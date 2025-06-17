@@ -1,8 +1,8 @@
 ﻿using NUnit.Framework;
 
-using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Models;
+using XperienceCommunity.AIUN.ConversationalAIBot.Tests.Admin.Constants;
 
-namespace XperienceCommunity.AIUN.ConversationalAIBot.Models
+namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests.Models
 {
     // Test double for AIUNSettingsKeyInfo
     public class TestAiunSettingsKeyInfo
