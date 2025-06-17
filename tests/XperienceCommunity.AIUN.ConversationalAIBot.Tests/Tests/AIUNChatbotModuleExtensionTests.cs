@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.IManagers;
 
-namespace XperienceCommunity.AIUN.ConversationalAIBot
+namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests
 {
     [TestFixture]
     public class AIUNChatbotModuleExtensionTests

@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Constants
+namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests.Admin.Constants
 {
     public class ConstantsTests
     {

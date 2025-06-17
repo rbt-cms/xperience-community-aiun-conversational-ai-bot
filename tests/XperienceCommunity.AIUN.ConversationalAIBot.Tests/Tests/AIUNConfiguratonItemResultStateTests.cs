@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace XperienceCommunity.AIUN.ConversationalAIBot
+namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests
 {
     [TestFixture]
     public class AIUNConfiguratonItemResultStateTests
