@@ -12,7 +12,7 @@ using NUnit.Framework;
 
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.IManagers;
 
-namespace XperienceCommunity.AIUN.ConversationalAIBot
+namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests
 {
     // Helper class for non-virtual property override
     public class TestWebPageEventArgsBase : WebPageEventArgsBase
