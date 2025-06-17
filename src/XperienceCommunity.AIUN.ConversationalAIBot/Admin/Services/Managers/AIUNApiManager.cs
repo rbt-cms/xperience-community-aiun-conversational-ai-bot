@@ -4,7 +4,6 @@ using System.Text.Json;
 
 using CMS.Core;
 using CMS.DataEngine;
-using CMS.EventLog;
 
 using Microsoft.Extensions.Logging;
 
