@@ -5,6 +5,7 @@ using Moq;
 
 using NUnit.Framework;
 
+using XperienceCommunity.AIUN.ConversationalAIBot.Admin.InfoClasses.AIUNRegistration;
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.IManagers;
 
 namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests
@@ -43,8 +44,8 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests
             var mockEventLogService = new Mock<CMS.Core.IEventLogService>();
             _ = services.AddSingleton(mockEventLogService.Object);
 
-            var mockSettingsKeyInfoProvider = new Mock<CMS.DataEngine.IInfoProvider<AIUNSettingsKeyInfo>>();
-            _ = services.AddSingleton(mockSettingsKeyInfoProvider.Object);
+            var mockAIUNRegistrationInfoProvider = new Mock<CMS.DataEngine.IInfoProvider<AIUNRegistrationInfo>>();
+            _ = services.AddSingleton(mockAIUNRegistrationInfoProvider.Object);
 
             // Act
             _ = services.AddKenticoXperienceAIUNChatbot();
