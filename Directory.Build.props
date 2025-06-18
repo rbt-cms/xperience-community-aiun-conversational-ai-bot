@@ -42,6 +42,7 @@
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <SIGN_FILE>false</SIGN_FILE>
   </PropertyGroup>
 
   <ItemGroup Label="StaticCodeAnalysis">
