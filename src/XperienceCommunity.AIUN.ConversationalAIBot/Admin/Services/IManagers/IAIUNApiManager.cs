@@ -10,7 +10,6 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.IManagers
         public Task<string> UploadURLsAsync(List<string> websiteUrls, string clientID, string securityToken = "");
         public Task<AiunTokenUsageLayoutProperties> GetTokenUsageAsync();
         public Task<IndexesResponseModel> GetIndexesAsync(IndexItemFilterModel indexItemFilterModel);
-
-        Task<AiunRegistrationModel> AIUNSignup(AiunRegistrationModel aIUNRegistrationItemModel);
+        public Task<AiunRegistrationModel> AIUNSignup(AiunRegistrationModel aIUNRegistrationItemModel);
     }
 }
