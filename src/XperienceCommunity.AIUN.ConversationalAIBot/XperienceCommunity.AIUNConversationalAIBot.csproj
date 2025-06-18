@@ -6,10 +6,6 @@
     <!-- Required to prevent type conflicts with existing types -->
     <HotChocolateImplicitUsings>disable</HotChocolateImplicitUsings>
   </PropertyGroup>
-  <PropertyGroup>
-    <Version>$(GitVersion_NuGetVersionV2)</Version>
-    <PackageVersion>$(GitVersion_NuGetVersionV2)</PackageVersion>
-  </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Admin\Client\node_modules\**" />
     <Compile Remove="Admin\Client\src\settingskey-layout\**" />
@@ -54,4 +50,38 @@
   <Target Name="NpmBuildClient" BeforeTargets="BeforeBuild" Condition=" '$(Configuration)|$(Platform)' != 'Debug|AnyCPU' ">
     <Exec Command="npm run build" WorkingDirectory="$(MSBuildProjectDirectory)\Admin\Client" />
   </Target>
+
+  <Target Name="UpdateVersion" BeforeTargets="GenerateNuspec">
+    <!-- Read version.txt -->
+    <ReadLinesFromFile File="version.txt">
+      <Output TaskParameter="Lines" PropertyName="CurrentVersion" />
+    </ReadLinesFromFile>
+
+    <PropertyGroup>
+      <!-- Default version if file is missing or empty -->
+      <CurrentVersion Condition="'$(CurrentVersion)' == ''">1.0.0</CurrentVersion>
+
+      <!-- Split into parts -->
+      <Major>$([System.Text.RegularExpressions.Regex]::Split($(CurrentVersion), '\.')[0])</Major>
+      <Minor>$([System.Text.RegularExpressions.Regex]::Split($(CurrentVersion), '\.')[1])</Minor>
+      <Patch>$([System.Text.RegularExpressions.Regex]::Split($(CurrentVersion), '\.')[2])</Patch>
+
+      <!-- Increment patch -->
+      <NewPatch>$([MSBuild]::Add($(Patch), 1))</NewPatch>
+      <NewVersion>$(Major).$(Minor).$(NewPatch)</NewVersion>
+      <PackageVersion>$(NewVersion)</PackageVersion>
+    </PropertyGroup>
+
+    <!-- Update version.txt -->
+    <WriteLinesToFile File="version.txt"
+                      Lines="$(NewVersion)"
+                      Overwrite="true" />
+  </Target>
+
+  <!-- Apply the updated version -->
+  <PropertyGroup>
+    <Version>$(PackageVersion)</Version>
+    <PackageVersion>$(PackageVersion)</PackageVersion>
+  </PropertyGroup>
+  
 </Project>
