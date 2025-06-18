@@ -896,7 +896,7 @@
           "System.IO.Hashing": "7.0.0"
         }
       },
-      "xperiencecommunity.aiun.conversationalaibot": {
+      "xperiencecommunity.aiunconversationalaibot": {
         "type": "Project",
         "dependencies": {
           "kentico.xperience.admin": "[29.6.0, )"

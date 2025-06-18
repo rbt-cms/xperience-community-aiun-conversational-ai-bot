@@ -31,6 +31,6 @@
 
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\XperienceCommunity.AIUN.ConversationalAIBot\XperienceCommunity.AIUN.ConversationalAIBot.csproj" />
+    <ProjectReference Include="..\..\src\XperienceCommunity.AIUN.ConversationalAIBot\XperienceCommunity.AIUNConversationalAIBot.csproj" />
   </ItemGroup>
 </Project>
