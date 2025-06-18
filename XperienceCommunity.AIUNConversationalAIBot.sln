@@ -5,11 +5,11 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{827E0CD3-B72D-47B6-A68D-7590B98EB39B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XperienceCommunity.AIUN.ConversationalAIBot", "src\XperienceCommunity.AIUN.ConversationalAIBot\XperienceCommunity.AIUN.ConversationalAIBot.csproj", "{E2F7B9EF-A589-4674-9B45-9F43A1AB9704}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XperienceCommunity.AIUNConversationalAIBot", "src\XperienceCommunity.AIUN.ConversationalAIBot\XperienceCommunity.AIUNConversationalAIBot.csproj", "{E2F7B9EF-A589-4674-9B45-9F43A1AB9704}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0AB3BF05-4346-4AA6-1389-037BE0695223}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XperienceCommunity.AIUN.ConversationalAIBot.Tests", "tests\XperienceCommunity.AIUN.ConversationalAIBot.Tests\XperienceCommunity.AIUN.ConversationalAIBot.Tests.csproj", "{04DE74D4-4E11-4FED-8F4C-CB29D5B033DD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XperienceCommunity.AIUNConversationalAIBot.Tests", "tests\XperienceCommunity.AIUN.ConversationalAIBot.Tests\XperienceCommunity.AIUNConversationalAIBot.Tests.csproj", "{04DE74D4-4E11-4FED-8F4C-CB29D5B033DD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{B36A84DF-456D-A817-6EDD-3EC3E7F6E11F}"
 EndProject
@@ -69,5 +69,8 @@ Global
 		{E2F7B9EF-A589-4674-9B45-9F43A1AB9704} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 		{04DE74D4-4E11-4FED-8F4C-CB29D5B033DD} = {0AB3BF05-4346-4AA6-1389-037BE0695223}
 		{FC2495CC-E4D0-4A41-AFD5-FE1C99C549EF} = {B36A84DF-456D-A817-6EDD-3EC3E7F6E11F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FC031470-833C-4085-8F71-E29B58FE1881}
 	EndGlobalSection
 EndGlobal
