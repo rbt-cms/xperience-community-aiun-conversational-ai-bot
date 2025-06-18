@@ -6,10 +6,6 @@
     <!-- Required to prevent type conflicts with existing types -->
     <HotChocolateImplicitUsings>disable</HotChocolateImplicitUsings>
   </PropertyGroup>
-  <PropertyGroup>
-    <Version>$(GitVersion_NuGetVersionV2)</Version>
-    <PackageVersion>$(GitVersion_NuGetVersionV2)</PackageVersion>
-  </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Admin\Client\node_modules\**" />
     <Compile Remove="Admin\Client\src\settingskey-layout\**" />

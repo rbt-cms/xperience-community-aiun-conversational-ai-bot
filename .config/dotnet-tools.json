@@ -2,11 +2,12 @@
   "version": 1,
   "isRoot": true,
   "tools": {
-    "azuresigntool": {
-      "version": "4.0.1",
+    "gitversion.tool": {
+      "version": "6.3.0",
       "commands": [
-        "azuresigntool"
-      ]
+        "dotnet-gitversion"
+      ],
+      "rollForward": false
     }
   }
 }
