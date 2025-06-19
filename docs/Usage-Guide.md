@@ -4,6 +4,9 @@
 
 You can create your AIUN account easily using the "Register with AIUN" Form on the Module. Follow these steps:
 
+**Pre-requisites:**
+ - Install AIUN Chatbot Module
+
 **Step 1: Access the Registration with AIUN Form**
 1.1. Go to the "Register with AIUN" page - If you are logged in as an Administrator, the form will be automatically prefilled with your:
 - First Name
@@ -48,6 +51,10 @@ Your CMS is now securely connected to the AIUN platform!
 
 ## 2. Login to AIUN Platform to setup Chatbot
 
+**Pre-requisites:**
+ - Install AIUN Chatbot Module
+ - Register with AIUN from Module
+
 **2.1. Login:**
 
 - Log in to your AIUN account
@@ -77,50 +84,54 @@ After saving, the chatbot widget script will be generated – this is required f
 
 ![Chatbot List](/images/AIUN_ChatbotList.png)
 
-You can click on Edit Button and see the ClientID, API Key generated Script for website.
-![Chatbot
+You can click on Edit Button and see the ClientID, API Key and generated Script for website.
+![Chatbot Configuration Edit View](/images/AIUN_Chatbot_EditChatbot.png)
 
-4. Link AIUN Chatbot with Kentico
-1. From AIUN Dashboard:
-1.1. Copy your API Key from the Profile page Or You can copy API key from email which was received from AIUN
+## 3. Link AIUN Chatbot with Kentico
 
----Screenshot
+**3.1. From AIUN Dashboard:**
 
-1.2. Get the Client ID, API Key, and Base URL from the chatbot widget script
+3.1.1. Copy your API Key from email which was received from AIUN Or You can copy API key from the Profile page
 
---- Screenshot
+![AIUN Profile Page](/images/AIUN_Profile_Page.png)
 
-In Kentico Admin:
-2.1. Go to AIUN Chatbot --> Register with AIUN> API Key → Paste the API Key (Refer to section 1.1 above for value references) and Save
+3.1.2. Copy the Client ID, API Key, and Base URL from the chatbot widget Configuration Page (Edit Mode)
 
----Screenshot
+![View AIUN Chatbot Widget Configuration Page](/images/AIUN_Chatbot_EditChatbot.png)
 
-2.2. Go to Configurations > 2.2 Go to AIUN Chatbot --> Configuration
+**3.2. In AIUN Chatbot → XBYK CMS Admin:**
 
----Screenshot
+3.2.1. Go to AIUN Chatbot Module → Register with AIUN> API Key → Paste the API Key (Refer to section 3.1.1 above for value references) and Save
 
-2.3 Click Create Button to configure Chat bot. Select Channel → Paste the Client ID, API Key, Base URL (Refer to section 1.2 above for value references)
+![XBKYK AIUN Chatbot Register API Key](/images/RegisterwithAIUN-2.png)
 
----Screenshot
+3.2.2. Go to AIUN Chatbot Module → Configuration
 
-2.4 Save to view the list of configurations
+![XBYK AIUN Chatbot Configuration Page](/images/XBYK_Module_Chatbot_Configuration.png)
 
-----Screenshot
+3.2.2.1. Click **Create** Button to configure Chat bot. Select Channel → Paste the Client ID, API Key, Base URL (Refer to section 3.1.2 above for value references)
 
-5. Index Your Website Content
-Go to the Configurations Page in Kentico
-Use the “Index Published Pages” button to send your site’s content to the AIUN platform -To index all published pages in the Content Tree, push them from Kentico to the AIUN Platform by clicking the 'Index Published Pages' action button in the list.
+![XBYK AIUN Chatbot create bot](/images/XBYK_Module_Chatbot_Configuration-Save.png)
 
----Screenshot
+3.2.2.2. **Save** to view the list of configurations
 
-6. Track progress under:
-Go to Indexes Page – to check status
+![XBYL AIUN Chatbot List](/images/XBYK_Module_Chatbot_Configuration-Save.png)
 
----Screenshot
+**3.3 Index Your Website Content**
+3.3.1. Go to the Configurations Page in Module
+3.3.2. Use the “Index Published Pages” button to send your site’s content to the AIUN platform -To index all published pages in the Content Tree, push them from Kentico to the AIUN Platform by clicking the 'Index Published Pages' action button in the list.
 
-Go to Token Usage Page – to view usage stats
+![XBYK AIUN Index Published Pages](/images/XBYK_Module_Chatbot_Configuration-List-Index.png)
 
--- Screenshot
+**3.4. Track Indexes progress under Indexes Page:**
+3.4.1. Go to **Indexes** Page – to check status
+
+![XBYK AIUN Indexes state](/images/XBYK_Module_Chatbot_IndexList.png)
+
+**3.5. Check Token Usage**
+3.5.1. Go to **Token Usage** Page – to view usage stats
+
+![XBYK AIUN Chatbot Token Usage](/images/TokenUsage.png)
 
 
 
