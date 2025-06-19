@@ -11,16 +11,16 @@ This integration enables you to add an AI-powered chatbot to the Xperience by Ke
 Powered by AIUN’s advanced NLP technology, the chatbot understands human language, extracts key information from the page content, and delivers smart, context-aware responses. This provides a more interactive and intelligent experience, replacing traditional keyword-based search with meaningful conversation.
 
 **Core Features:**
-**1. Conversational AI Integration:**
+1. Conversational AI Integration:
    - Integrates an AI-powered chatbot (AIUN Chatbot) into Xperience by Kentico websites
    - Replaces traditional keyword-based search with smart, conversational interactions
-**2. Natural Language Processing (NLP):**
+2. Natural Language Processing (NLP):
    - Understands user queries using AIUN’s NLP engine
    - Extracts key content information and provides context-aware answers
-**3. Content Indexing:**
+3. Content Indexing:
    - Indexes all published pages in the Content Tree to allow meaningful conversation
    - One-time indexing; intelligently handles future content additions or updates without requiring reindexing
-**4. 200K Free Tokens Included:**
+4. 200K Free Tokens Included:
    - Comes with 200,000 free tokens for initial use of the AIUN platform
    - Helps users get started with no upfront token purchase required
 
