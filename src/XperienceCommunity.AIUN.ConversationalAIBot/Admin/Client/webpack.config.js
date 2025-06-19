@@ -7,7 +7,7 @@ module.exports = (opts, argv) => {
     return baseWebpackConfig({
       // Sets the organizationName and projectName
       // The JS module is registered on the backend using these values
-      orgName: "rbt",
+        orgName: "XperienceCommunity",
         projectName: "aiun-chatbot",
       webpackConfigEnv: webpackConfigEnv,
       argv: argv,

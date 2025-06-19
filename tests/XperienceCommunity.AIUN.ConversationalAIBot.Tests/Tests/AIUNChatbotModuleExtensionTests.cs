@@ -48,7 +48,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests
             _ = services.AddSingleton(mockAIUNRegistrationInfoProvider.Object);
 
             // Act
-            _ = services.AddKenticoXperienceAIUNChatbot();
+            _ = services.AddXperienceCommunityAIUNChatbot();
             var provider = services.BuildServiceProvider();
 
             // Assert

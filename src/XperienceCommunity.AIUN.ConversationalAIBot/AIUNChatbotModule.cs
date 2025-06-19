@@ -28,7 +28,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot
         protected override void OnInit(ModuleInitParameters parameters)
         {
             base.OnInit(parameters);
-            RegisterClientModule("rbt", "aiun-chatbot");
+            RegisterClientModule("XperienceCommunity", "aiun-chatbot");
 
             var services = parameters.Services;
 

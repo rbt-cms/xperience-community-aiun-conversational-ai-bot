@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework Condition="'$(TargetFramework)' == ''">net8.0</TargetFramework>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
-    <AdminOrgName>rbt</AdminOrgName>
+    <AdminOrgName>XperienceCommunity</AdminOrgName>
     <!-- Required to prevent type conflicts with existing types -->
     <HotChocolateImplicitUsings>disable</HotChocolateImplicitUsings>
   </PropertyGroup>
@@ -73,15 +73,16 @@
     </PropertyGroup>
 
     <!-- Update version.txt -->
-    <WriteLinesToFile File="version.txt"
-                      Lines="$(NewVersion)"
-                      Overwrite="true" />
+    <WriteLinesToFile File="version.txt" Lines="$(NewVersion)" Overwrite="true" />
   </Target>
 
   <!-- Apply the updated version -->
   <PropertyGroup>
     <Version>$(PackageVersion)</Version>
     <PackageVersion>$(PackageVersion)</PackageVersion>
+    <Title>Xperience Community AIUN Conversational AI Bot</Title>
+    <PackageProjectUrl>https://github.com/rbt-cms/xperience-community-aiun-conversational-ai-bot</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/rbt-cms/xperience-community-aiun-conversational-ai-bot</RepositoryUrl>
   </PropertyGroup>
   
 </Project>

@@ -1,7 +1,7 @@
 {
-  "name": "rbt-aiun-chatbot",
+  "name": "aiun-chatbot",
   "version": "1.0.0",
-  "description": "Custom Kentico Xperience administration project.",
+  "description": "AIUN Conversational AI bot – Custom Module for Xperience by Kentico",
   "private": true,
   "scripts": {
     "start": "webpack serve --mode development",

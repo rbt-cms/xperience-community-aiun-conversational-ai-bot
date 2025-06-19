@@ -18,7 +18,7 @@ using XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNRegistration
 
     name: "Register with AIUN", // Page Name
 
-    templateName: "@rbt/aiun-chatbot/AIUNRegistrationLayout", // React component
+    templateName: "@XperienceCommunity/aiun-chatbot/AIUNRegistrationLayout", // React component
 
     order: 1)] // No specific order
 
