@@ -1,17 +1,3 @@
-## ---Template info---
-
----Run the `Repository-Setup.ps1` in the root of this repository, specifying the `ProjectName` for the new project
----ex: `.\Repository-Setup.ps1 -ProjectName Kentico.Xperience.CoolProject`
-
----This section contains general information about the repository template and is to be deleted before submitting a pull request with the final documentation.---
-
----Lines enclosed by three dashes (like this one) are placeholders and comments to be replaced with specific information or deleted completely.---
-
-### ---Library naming conventions---
-
----Repository name – use "xperience-by-kentico-\<project-name\>" for projects aimed for Xperience by Kentico and "xperience-\<project-name\>" for projects aimed for Kentico Xperience 13---
-
----Package Name – use "Xperience by Kentico: \<Project Name\>" for projects aimed for Xperience by Kentico and "Xperience: \<Project Name\>" for projects aimed for Kentico Xperience 13---
 
 # Xperience Community AIUN Conversational AI Bot
 
@@ -21,9 +7,13 @@
 
 ## Description
 
----A short description of the functionality – what scenarios are fulfilled by the Intergration / App / Solution. Include screenshots displaying the functionality.---
+This integration enables you to add an AI-powered chatbot to the Xperience by Kentico website using a custom module called AIUN Conversational AI bot (commonly known as the AIUN Chatbot).
 
----Also list any limitations of the functionality that may result in unexpected behavior for the end user. These can be caused, e.g., by scope cuts or unexpected issues during implementation.---
+The chatbot intelligently indexes the content of all your website pages and enables visitors to ask questions in natural, conversational language.
+
+Powered by AIUN’s advanced NLP technology, the chatbot understands human language, extracts key information from the page content, and delivers smart, context-aware responses.
+
+This provides a more interactive and intelligent experience, replacing traditional keyword-based search with meaningful conversation.
 
 ## Requirements
 
@@ -33,7 +23,7 @@
 
 | Xperience Version | Library Version |
 | ----------------- | --------------- |
-| >= 28.1.0         | 1.0.0           |
+| >= 29.6.0         | 1.0.0           |
 
 ### Dependencies
 
@@ -41,26 +31,45 @@
 
 - [ASP.NET Core 8.0](https://dotnet.microsoft.com/en-us/download)
 - [Xperience by Kentico](https://docs.kentico.com)
-
-### Other requirements
-
----A list of other requirements and prerequisites needed to use the library. If there are none, don't include this section in the readme.---
+- [AIUN Platform](https://qa-dashboard.aiun.ai/)
 
 ## Package Installation
 
----This details the steps required to add the library to a solution. This could include multiple packages (NuGet and/or npm)---
 
 Add the package to your application using the .NET CLI
 
 ```powershell
-dotnet add package <library nuget package name>
+dotnet add package XperienceCommunity.AIUNConversationalAIbot
 ```
 
 ## Quick Start
 
----Minimal steps to get started with the library. Support the steps with helpful screenshots.---
+1. Register chatbot service in your code
+Add the following in your Program.cs:
+// Register the AIUN Chatbot services
+builder.Services.AddXperienceCommunityAIUNConversationalAIBot();
 
----You can completely omit this section if the setup is complicated and cannot be realistically condensed into a few steps. Instead, describe everything in detail in _Usage-Guide.md_.---
+Update your view files:
+a. In Views/_ViewImports.cshtml, add:
+
+@addTagHelper *, XperienceCommunity.AIUN.Conversational.AIbot
+
+b. In your layout file (e.g., _Layout.cshtml), right before the </body> tag, add
+<vc:aiun-chatbot />
+c. Add the following code to the ASP.NET Core appsettings.json file:
+
+"AIUNSettings": {
+  "XApikey": "GdcyRmTmraGFerfM-EoFBNDbcj0T-XS9Ietcd3ZemxY",
+  "BaseUrl": "https://dev-api.aiun.ai/",
+  "UploadDocumentUrl": "upload/urls",
+  "TokensURl": "users/tokens",
+  "GetIndexesUrl": "upload/uploaded/documents"
+},
+
+Build your solution and verify the module in the CMS Admin.
+Xpereince by Kentico CMS Dashboard:
+
+---screenshot
 
 ## Full Instructions
 

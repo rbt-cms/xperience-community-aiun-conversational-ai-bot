@@ -12,7 +12,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot
         /// </summary>
         /// <param name="services"></param>
         /// <returns></returns>
-        public static IServiceCollection AddKenticoXperienceAIUNChatbot(this IServiceCollection services)
+        public static IServiceCollection AddXperienceCommunityAIUNChatbot(this IServiceCollection services)
         {
 
             _ = services.AddHttpContextAccessor()

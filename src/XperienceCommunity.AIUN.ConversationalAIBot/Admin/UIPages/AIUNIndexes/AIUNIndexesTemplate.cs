@@ -14,7 +14,7 @@ using XperienceCommunity.AIUN.ConversationalAIBot.InfoClasses.AIUNConfigurationI
     slug: "indexes",
     uiPageType: typeof(AiunIndexesTemplate),
     name: "Indexes",
-    templateName: "@rbt/aiun-chatbot/AIUNIndexesLayout",
+    templateName: "@XperienceCommunity/aiun-chatbot/AIUNIndexesLayout",
     order: UIPageOrder.NoOrder)]
 namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNIndexes
 {

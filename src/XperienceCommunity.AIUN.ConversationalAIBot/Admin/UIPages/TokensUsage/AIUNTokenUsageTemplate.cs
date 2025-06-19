@@ -12,7 +12,7 @@ using XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.TokensUsage;
     slug: "token-usage",
     uiPageType: typeof(AiunTokenUsageTemplate),
     name: "Token Usage",
-    templateName: "@rbt/aiun-chatbot/TokensUsageLayout",
+    templateName: "@XperienceCommunity/aiun-chatbot/TokensUsageLayout",
     order: UIPageOrder.NoOrder)]
 
 namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.TokensUsage

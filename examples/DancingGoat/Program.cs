@@ -53,7 +53,7 @@ builder.Services.AddLocalization()
     );
 
 builder.Services.AddDancingGoatServices();
-builder.Services.AddKenticoXperienceAIUNChatbot();
+builder.Services.AddXperienceCommunityAIUNChatbot();
 builder.Services.AddSingleton<IEmailActivityTrackingEvaluator, EmailActivityTrackingEvaluator>();
 
 ConfigureMembershipServices(builder.Services);
