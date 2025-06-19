@@ -58,7 +58,7 @@ dotnet add package XperienceCommunity.AIUNConversationalAIBot
 ### 1. Register chatbot service in your source code
 **1.1. Add the following in your Program.cs:**
 ```
-builder.Services.AddXperienceCommunityAIUNConversationalAIBot();
+builder.Services.AddXperienceCommunityAIUNChatbot();
 ```
 
 ### 2. Update your view files:
