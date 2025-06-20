@@ -62,7 +62,9 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNConfigur
         public override Task<ICommandResponse<RowActionResult>> Delete(int id) => base.Delete(id);
 
         [PageCommand]
-        public ICommandResponse<RowActionResult> Index(int id, CancellationToken cancellationToken)
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+        public async Task<ICommandResponse<RowActionResult>> Index(int id, CancellationToken cancellationToken)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             var result = new RowActionResult(false);
 
@@ -71,7 +73,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNConfigur
                 return ResponseFrom(result)
                     .AddErrorMessage("Indexing is already in progress. Please try again later.");
             }
-            _ = memoryCache.Set("IndexInProgress", true, TimeSpan.FromMinutes(10));
+            _ = memoryCache.Set("IndexInProgress", true, TimeSpan.FromMinutes(20));
 
             var request = httpContextAccessor.HttpContext?.Request;
             string scheme = request?.Scheme ?? string.Empty;
@@ -95,6 +97,11 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNConfigur
                 {
                     _ = memoryCache.Set("IndexInProgress", false);
                     EventLogService.LogException(nameof(AiunConfigurationItemsList), nameof(Index), ex);
+                }
+                finally
+                {
+                    // ✅ Ensure this always runs
+                    _ = memoryCache.Set("IndexInProgress", false, TimeSpan.FromMinutes(10));
                 }
             });
 
