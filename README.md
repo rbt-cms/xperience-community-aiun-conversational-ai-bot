@@ -74,7 +74,7 @@ builder.Services.AddXperienceCommunityAIUNChatbot();
 ```
 
 
-**2.4. Build your solution and view the module in the CMS Admin**
+**2.3. Build your solution and view the module in the CMS Admin**
 
 AIUN Chatbot in Xpereince by Kentico CMS Dashboard:
 
