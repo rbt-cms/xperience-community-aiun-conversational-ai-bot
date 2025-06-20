@@ -108,7 +108,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
                 var languageUrls = await GetWebPageRelativeUrls(pageIdentifiers, "en", cancellationToken);
 
                 relativeUrls.AddRange(languageUrls);
-                var absoluteUrls = GetAbsoluteUrls(relativeUrls, scheme, host);
+                var absoluteUrls = await GetAbsoluteUrls(relativeUrls, scheme, host);
                 _ = await aiUNApiManager.UploadURLsAsync(absoluteUrls.Distinct().ToList(), clientID);
             }
             catch (Exception ex)
@@ -153,17 +153,21 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
         /// <param name="scheme"></param>
         /// <param name="host"></param>
         /// <returns></returns>
-        public IEnumerable<string> GetAbsoluteUrls(IEnumerable<string> relativeUrls, string scheme, HostString host)
+        /// 
+
+        public Task<IEnumerable<string>> GetAbsoluteUrls(IEnumerable<string> relativeUrls, string scheme, HostString host)
         {
             try
             {
-                return relativeUrls.Select(i => UriHelper.BuildAbsolute(scheme, host, path: i)).OrderBy(i => i);
+                var urls = relativeUrls.Select(i => UriHelper.BuildAbsolute(scheme, host, path: i)).OrderBy(i => i).ToList();
+
+                return Task.FromResult<IEnumerable<string>>(urls);
             }
             catch (Exception ex)
             {
                 eventLogService.LogException(nameof(DefaultChatbotManager), nameof(GetAbsoluteUrls), ex, null);
             }
-            return Enumerable.Empty<string>();
+            return Task.FromResult(Enumerable.Empty<string>());
         }
         /// <summary>
         /// Get client ID with channel name.
@@ -213,22 +217,18 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
             return string.Empty;
         }
 
-        Task<IEnumerable<string>> IDefaultChatbotManager.GetAbsoluteUrls(IEnumerable<string> relativeUrls, string scheme, HostString host) => throw new NotImplementedException();
-
         public AiunRegistrationModel GetExistingRegistration()
         {
             var info = aIUNRegistrationInfo.Get().FirstOrDefault();
-            if (info == null)
-            {
-                return new AiunRegistrationModel();
-            }
-            return new AiunRegistrationModel
-            {
-                FirstName = info.FirstName,
-                LastName = info.LastName,
-                Email = info.Email,
-                APIKey = info.APIKey
-            };
+            return info == null
+                ? new AiunRegistrationModel()
+                : new AiunRegistrationModel
+                {
+                    FirstName = info.FirstName,
+                    LastName = info.LastName,
+                    Email = info.Email,
+                    APIKey = info.APIKey
+                };
         }
 
         public async Task<object> StoreOrUpdate(AiunRegistrationModel data)
@@ -272,6 +272,8 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
                 return new { success = true, message = "Verification email sent. Please confirm to activate your API key." };
             }
         }
+
+
     }
 
 }
