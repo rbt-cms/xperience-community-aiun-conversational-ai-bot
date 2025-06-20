@@ -8,17 +8,20 @@ You can create your AIUN account easily using the "Register with AIUN" Form on t
  - Install AIUN Chatbot Module
 
 **Step 1: Access the Registration with AIUN Form**
+
 1.1. Go to the "Register with AIUN" page - If you are logged in as an Administrator, the form will be automatically prefilled with your:
 - First Name
 - Last Name
 - Email Address
   
-You can edit these fields if needed
+**Note:** You can edit these fields if needed
+
  ![Register with AIUN Form](/images/RegisterwithAIUN-1.png)
 
 **Step 2: Submit Registration Details**
 
-Click Register after filling out or confirming your details
+Click **Register** after filling out or confirming your details
+
 The system will:
   - Send your information to the AIUN platform
   - Display a message that registration is in progress
@@ -40,12 +43,12 @@ These will be sent via email.
 
 Return to the "Register with AIUN" page
 - The form will change and display an input field for the API Key
-- - Paste your API Key into this field
+- Paste your API Key into this field
 
 **Step 6: Save API Key**
 
-- The Register button will now change to Save
-- Click Save to complete the setup
+- The **Register** button will now change to **Save**
+- Click **Save** to complete the Registration
 
 Your CMS is now securely connected to the AIUN platform!
 
@@ -58,10 +61,11 @@ Your CMS is now securely connected to the AIUN platform!
 **2.1. Login:**
 
 - Log in to your AIUN account
+  
 ![AIUN Platform Login Page](/images/AIUN_Login.png)
 
 
-Need help? Contact us at support@aiun.ai
+If you need help? Please contact us at support@aiun.ai
 
 **2.2. Configure Your Chatbot in AIUN Dashboard**
 
@@ -85,6 +89,7 @@ After saving, the chatbot widget script will be generated – this is required f
 ![Chatbot List](/images/AIUN_ChatbotList.png)
 
 You can click on Edit Button and see the ClientID, API Key and generated Script for website.
+
 ![Chatbot Configuration Edit View](/images/AIUN_Chatbot_EditChatbot.png)
 
 ## 3. Link AIUN Chatbot with Kentico
@@ -115,20 +120,23 @@ You can click on Edit Button and see the ClientID, API Key and generated Script 
 
 3.2.2.2. **Save** to view the list of configurations
 
-![XBYL AIUN Chatbot List](/images/XBYK_Module_Chatbot_Configuration-Save.png)
+![XBYL AIUN Chatbot List](/images/XBYK_Module_ChatbotList.png)
 
 **3.3 Index Your Website Content**
+
 3.3.1. Go to the Configurations Page in Module
 3.3.2. Use the “Index Published Pages” button to send your site’s content to the AIUN platform -To index all published pages in the Content Tree, push them from Kentico to the AIUN Platform by clicking the 'Index Published Pages' action button in the list.
 
 ![XBYK AIUN Index Published Pages](/images/XBYK_Module_Chatbot_Configuration-List-Index.png)
 
 **3.4. Track Indexes progress under Indexes Page:**
+
 3.4.1. Go to **Indexes** Page – to check status
 
 ![XBYK AIUN Indexes state](/images/XBYK_Module_Chatbot_IndexList.png)
 
 **3.5. Check Token Usage**
+
 3.5.1. Go to **Token Usage** Page – to view usage stats
 
 ![XBYK AIUN Chatbot Token Usage](/images/TokenUsage.png)
