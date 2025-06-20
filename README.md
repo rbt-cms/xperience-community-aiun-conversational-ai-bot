@@ -96,8 +96,6 @@ View the [Usage Guide](./docs/Usage-Guide.md) for more detailed instructions.
 Please report any issues seen, in the issue list. We will address at the earliest possibility.
 
 
-For any security issues see [`SECURITY.md`](https://github.com/Kentico/.github/blob/main/SECURITY.md).
-
 ## License
 
 Distributed under the MIT License. See [`LICENSE.md`](./LICENSE.md) for more information.
