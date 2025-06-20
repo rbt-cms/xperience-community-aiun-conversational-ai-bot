@@ -73,16 +73,6 @@ builder.Services.AddXperienceCommunityAIUNChatbot();
 <vc:aiun-chatbot />
 ```
 
-**2.3. Add the following code to the ASP.NET Core appsettings.json file:**
-```
-"AIUNSettings": {
-  "XApikey": "GdcyRmTmraGFerfM-EoFBNDbcj0T-XS9Ietcd3ZemxY",
-  "BaseUrl": "https://dev-api.aiun.ai/",
-  "UploadDocumentUrl": "upload/urls",
-  "TokensURl": "users/tokens",
-  "GetIndexesUrl": "upload/uploaded/documents"
-},
-```
 
 **2.4. Build your solution and view the module in the CMS Admin**
 
