@@ -24,20 +24,29 @@ Click **Register** after filling out or confirming your details
 
 The system will:
   - Send your information to the AIUN platform
-  - Display a message that registration is in progress
+  - Display a message that registration "Display a message: 'Verification email sent. Please confirm to activate your API key.'"
+
+![Email 1 ](/images/RegisterwithConfirmation.png)
 
 **Step 3: Verify Your Email**
 
 - Check your email inbox for a message from the AIUN platform
 - Click the verification link in the email to verify your email address
 
+![Email 1](/images/Email_1.png)
+
 **Step 4: Receive Login Credentials & API Key**
 
 After verifying your email, you will receive:
+
+These will be sent via email.
+
 - Username and Password to log in to the AIUN platform
 - API Key used to connect Kentico with the AIUN platform
 
-These will be sent via email.
+![Email 2](/images/Email_2.png)
+
+
 
 **Step 5: Enter Your API Key in the Form**
 
@@ -71,26 +80,26 @@ If you need help? Please contact us at support@aiun.ai
 
 - Go to Chatbot link
 
-![ChatBot Page](/images/AIUN_ChatbotList_FirstTime.png)
+![ChatBot Page](/images/AIUN-Chatbot_List_Empty.png)
 
-- Click Add Chat Widget button then fill the following:
+- Click Add **Chatbot** button then fill the following:
 
-  ![Chatbot Configuration from AIUN Palatform](/images/AIUN_Chatbot_Configuration.png)
+  ![Chatbot Configuration from AIUN Palatform](/images/AIUN-Chatbot_Form.png)
   
-1. Chat Bot Name: e.g. AI Assistant
+1. Chatbot Name: e.g. AI Assistant
 2. Foreground: e.g. #FFFFF
 3. Background Color: e.g. #000000
-4. Allowed Website URL: e.g. Enter the website URL where you want the chat widget to appear
+4. Allowed Domains: e.g. Enter the website URL where you want the chat widget to appear
 5. Status: The default status is Active. Deactivate it if you don't want the chat widget to appear on your website
 6. Welcome Message: Enter welcome message
 
 After saving, the chatbot widget script will be generated – this is required for integration with AIUN Chatbot Module from XBYK and showing list -
 
-![Chatbot List](/images/AIUN_ChatbotList.png)
+![Chatbot List](/images/AIUN-Chatbot_List.png)
 
 You can click on Edit Button and see the ClientID, API Key and generated Script for website.
 
-![Chatbot Configuration Edit View](/images/AIUN_Chatbot_EditChatbot.png)
+![Chatbot Configuration Edit View](/images/AIUN-Chatbot_Edit_View.png)
 
 ## 3. Link AIUN Chatbot with Kentico
 
@@ -102,7 +111,7 @@ You can click on Edit Button and see the ClientID, API Key and generated Script 
 
 3.1.2. Copy the Client ID, API Key, and Base URL from the chatbot widget Configuration Page (Edit Mode)
 
-![View AIUN Chatbot Widget Configuration Page](/images/AIUN_Chatbot_EditChatbot.png)
+![View AIUN Chatbot Widget Configuration Page](/images/AIUN-Chatbot_Edit_View.png)
 
 **3.2. In AIUN Chatbot → XBYK CMS Admin:**
 
