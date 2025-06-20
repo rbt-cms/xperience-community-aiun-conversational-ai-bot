@@ -19,7 +19,12 @@ export const AIUNRegistrationLayoutTemplate = (props: any) => {
     const isRegistrationExist: boolean = props?.isRegistrationExist ?? false;
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const [formData, setFormData] = useState<IRegistrationItem | null>(registrationItem);
+    const [formData, setFormData] = useState<IRegistrationItem>(() => registrationItem ?? {
+        first_name: '',
+        last_name: '',
+        email: '',
+        apiKey: '',
+    });
     const [errors, setErrors] = useState<{ [K in keyof IRegistrationItem]?: string }>({});
     const [message, setMessage] = useState<string | null>(null);
     const [isSuccess, setIsSuccess] = useState<boolean>(true);
@@ -32,7 +37,7 @@ export const AIUNRegistrationLayoutTemplate = (props: any) => {
         }
     }, [registrationItem]);
 
-    if (formData === null || formData?.email === '') {
+    if (registrationItem === null || registrationItem?.email === '') {
         return (
             <div className="registration-page-wrapper">
                 <div className="size-m___exMBL indexes-text">Register with AIUN</div>
