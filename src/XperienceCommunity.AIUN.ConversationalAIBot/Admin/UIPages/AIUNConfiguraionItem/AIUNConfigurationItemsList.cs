@@ -62,9 +62,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNConfigur
         public override Task<ICommandResponse<RowActionResult>> Delete(int id) => base.Delete(id);
 
         [PageCommand]
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public async Task<ICommandResponse<RowActionResult>> Index(int id, CancellationToken cancellationToken)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             var result = new RowActionResult(false);
 
@@ -78,18 +76,17 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNConfigur
             var request = httpContextAccessor.HttpContext?.Request;
             string scheme = request?.Scheme ?? string.Empty;
             var host = request?.Host ?? new HostString();
+            var AIUNConfigurationItem = aiUNConfigurationItemInfoProvider.Get().WithID(id).FirstOrDefault() ?? new AIUNConfigurationItemInfo();
+            var websiteChannels = await defaultChatbotManager.GetAllWebsiteChannels();
+            var (channelName, websiteChannelID) = websiteChannels
+                       .Where(c => c.ChannelName == AIUNConfigurationItem.ChannelName)
+                       .Select(c => (c.ChannelName, c.WebsiteChannelID))
+                       .FirstOrDefault();
 
             _ = Task.Run(async () =>
             {
                 try
                 {
-                    var AIUNConfigurationItem = aiUNConfigurationItemInfoProvider.Get().WithID(id).FirstOrDefault() ?? new AIUNConfigurationItemInfo();
-                    var websiteChannels = await defaultChatbotManager.GetAllWebsiteChannels();
-                    var (channelName, websiteChannelID) = websiteChannels
-                        .Where(c => c.ChannelName == AIUNConfigurationItem.ChannelName)
-                        .Select(c => (c.ChannelName, c.WebsiteChannelID))
-                        .FirstOrDefault();
-
                     _ = await defaultChatbotManager.IndexInternal(websiteChannelID, channelName, AIUNConfigurationItem.ClientID, cancellationToken, scheme, host);
                     _ = memoryCache.Set("IndexInProgress", false);
                 }
