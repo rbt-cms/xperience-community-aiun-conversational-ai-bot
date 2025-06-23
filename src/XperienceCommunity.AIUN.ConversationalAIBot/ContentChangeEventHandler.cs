@@ -23,26 +23,28 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot
 {
     public class ContentChangeEventHandler : Module
     {
+        private IServiceProvider services = null!;
         public ContentChangeEventHandler()
             : base(nameof(ContentChangeEventHandler))
         {
         }
 
-        protected override void OnInit()
+        protected override void OnInit(ModuleInitParameters parameters)
         {
+            services = parameters.Services;
             base.OnInit();
 
             // Attach to relevant events  
-            WebPageEvents.Publish.Execute += async (sender, e) => await HandleWebPagePublish(e);
+            WebPageEvents.Publish.Execute += (sender, e) => HandleWebPagePublish(e);
         }
 
-        private async Task HandleWebPagePublish(CMSEventArgs e)
+        private void HandleWebPagePublish(CMSEventArgs e)
         {
             if (e is not WebPageEventArgsBase pageEvent)
             {
                 return;
             }
-            using var scope = Service.Resolve<IServiceScopeFactory>().CreateScope();
+            using var scope = services.CreateScope();
             var httpContextAccessor = scope.ServiceProvider.GetRequiredService<IHttpContextAccessor>();
             var eventLogService = scope.ServiceProvider.GetRequiredService<IEventLogService>();
 
@@ -60,7 +62,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot
             try
             {
                 var handler = scope.ServiceProvider.GetRequiredService<ContentChangeEventHandlerWorker>();
-                await handler.ProcessAsync(websiteChannelName, pagePath, culture, scheme, host, userId, userName, ipAddress);
+                handler.ProcessAsync(websiteChannelName, pagePath, culture, scheme, host, userId, userName, ipAddress);
             }
             catch (Exception ex)
             {
@@ -75,7 +77,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot
                 });
             }
         }
-        public static async Task<IEnumerable<string>> GetWebPageRelativeUrls(IEnumerable<int> pageIdentifiers, string languageName, CancellationToken cancellationToken)
+        public static IEnumerable<string> GetWebPageRelativeUrls(IEnumerable<int> pageIdentifiers, string languageName, CancellationToken cancellationToken)
         {
 
             using var scope = Service.Resolve<IServiceScopeFactory>().CreateScope();
@@ -87,7 +89,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot
                 foreach (int pageIdentifier in pageIdentifiers)
                 {
 
-                    var webPageUrl = await _urlRetriever.Retrieve(pageIdentifier, languageName, false, cancellationToken);
+                    var webPageUrl = _urlRetriever.Retrieve(pageIdentifier, languageName, false, cancellationToken).GetAwaiter().GetResult();
                     relativeUrls.Add(webPageUrl.RelativePath.TrimStart('~'));
                 }
             }
@@ -121,7 +123,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot
         }
 
 
-        public async Task ProcessAsync(string websiteChannelName, string pagePath, string culture, string scheme, HostString hostString, int userId, string userName, string ipAddress)
+        public void ProcessAsync(string websiteChannelName, string pagePath, string culture, string scheme, HostString hostString, int userId, string userName, string ipAddress)
         {
             try
             {
@@ -130,7 +132,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot
                 {
                     try
                     {
-                        var host = await Dns.GetHostEntryAsync(Dns.GetHostName());
+                        var host = Dns.GetHostEntryAsync(Dns.GetHostName()).GetAwaiter().GetResult();
                         foreach (var ip in host.AddressList)
                         {
                             if (ip.AddressFamily == AddressFamily.InterNetwork)
@@ -151,31 +153,27 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot
                 _ = builder.ForContentTypes(p => p.ForWebsite(websiteChannelName, PathMatch.Single(pagePath)));
                 var contentQueryExecutor = scope.ServiceProvider.GetRequiredService<IContentQueryExecutor>();
                 var urlRetriever = scope.ServiceProvider.GetRequiredService<IWebPageUrlRetriever>();
-                var pageIdentifiers = await contentQueryExecutor.GetWebPageResult(
-                    builder, i => i.WebPageItemID, new ContentQueryExecutionOptions(), CancellationToken.None);
+                var pageIdentifiers = contentQueryExecutor.GetWebPageResult(
+                    builder, i => i.WebPageItemID, new ContentQueryExecutionOptions(), CancellationToken.None).GetAwaiter().GetResult();
 
                 var relativeUrls = new List<string>();
                 foreach (int id in pageIdentifiers)
                 {
-                    var url = await urlRetriever.Retrieve(id, culture, false);
+                    var url = urlRetriever.Retrieve(id, culture, false).GetAwaiter().GetResult();
                     relativeUrls.Add(url.RelativePath.TrimStart('~'));
                 }
 
-                var absoluteUrls = await chatbotManager.GetAbsoluteUrls(relativeUrls, scheme, hostString);
+                var absoluteUrls = chatbotManager.GetAbsoluteUrls(relativeUrls, scheme, hostString).GetAwaiter().GetResult();
                 string clientID = chatbotManager.GetClientIDWIthChannelName(websiteChannelName);
                 string? securityToken = aIUNRegistrationInfo.Get()?.FirstOrDefault()?.APIKey ?? string.Empty;
-
-                _ = Task.Run(async () =>
+                _ = syncLogs.UploadURLsAsync(absoluteUrls.ToList(), clientID, securityToken ?? string.Empty);
+                eventLog.LogEvent(new EventLogData(EventTypeEnum.Information, "ContentChangeEventHandler", "UploadURLsAsync")
                 {
-                    _ = await syncLogs.UploadURLsAsync(absoluteUrls.ToList(), clientID, securityToken ?? string.Empty);
-                    eventLog.LogEvent(new EventLogData(EventTypeEnum.Information, "ContentChangeEventHandler", "UploadURLsAsync")
-                    {
-                        EventDescription = $"Uploaded URLs successfully at {DateTime.Now}.\n" +
-                                           $"URLs: {string.Join("\n", absoluteUrls.ToList())}\n\n",
-                        UserID = userId,
-                        UserName = userName,
-                        IPAddress = ipAddress
-                    });
+                    EventDescription = $"Uploaded URLs successfully at {DateTime.Now}.\n" +
+                                       $"URLs: {string.Join("\n", absoluteUrls.ToList())}\n\n",
+                    UserID = userId,
+                    UserName = userName,
+                    IPAddress = ipAddress
                 });
             }
             catch (Exception ex)
