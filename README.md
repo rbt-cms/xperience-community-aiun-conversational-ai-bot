@@ -19,7 +19,7 @@ Powered by AIUN’s advanced NLP technology, the chatbot understands human langu
    - Extracts key content information and provides context-aware answers
 3. Content Indexing:
    - Indexes all published pages in the Content Tree to allow meaningful conversation
-   - One-time indexing; intelligently handles future content additions or updates without requiring reindexing
+   - New or updated pages in the content tree are automatically indexed
 4. 200K Free Tokens Included:
    - Comes with 200,000 free tokens for initial use of the AIUN platform
    - Helps users get started with no upfront token purchase required
