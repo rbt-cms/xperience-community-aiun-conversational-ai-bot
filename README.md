@@ -1,7 +1,7 @@
 
 # Xperience Community AIUN Conversational AI Bot
 
-[![CI: Build and Test](https://github.com/Kentico/repo-template/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/rbt-cms/xperience-community-aiun-conversational-ai-bot/blob/main/.github/workflows/ci.yml)
+[![CI: Build and Test](https://github.com/rbt-cms/xperience-community-aiun-conversational-ai-bot/actions/workflows/ci.yml/badge.svg)](https://github.com/rbt-cms/xperience-community-aiun-conversational-ai-bot/actions/workflows/ci.yml)
 
 
 ## Description
