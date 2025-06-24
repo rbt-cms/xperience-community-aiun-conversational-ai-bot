@@ -22,7 +22,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot
 
         public ResourceInfo InitializeResource(ResourceInfo resource)
         {
-            resource.ResourceDisplayName = "AIUN chatbot";
+            resource.ResourceDisplayName = "AIUN Chatbot";
 
             resource.ResourceName = "XperienceCommunity.AIUN.ConversationalAIBot";
             resource.ResourceDescription = "AIUN Chatbot module data";
