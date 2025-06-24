@@ -85,6 +85,7 @@
     <Title>Xperience Community AIUN Conversational AI Bot</Title>
     <PackageProjectUrl>https://github.com/rbt-cms/xperience-community-aiun-conversational-ai-bot</PackageProjectUrl>
     <RepositoryUrl>https://github.com/rbt-cms/xperience-community-aiun-conversational-ai-bot</RepositoryUrl>
+    <Description>AIUN Conversational AI bot – Custom Module for Xperience by Kentico</Description>
   </PropertyGroup>
   
 </Project>
