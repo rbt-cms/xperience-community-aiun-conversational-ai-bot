@@ -39,10 +39,10 @@ The system will:
 
 After verifying your email, you will receive:
 
-These will be sent via email.
-
 - Username and Password to log in to the AIUN platform
 - API Key used to connect Kentico with the AIUN platform
+
+These will be sent via email.
 
 ![Email 2](/images/Email_2.png)
 
