@@ -1,7 +1,7 @@
 
 # Xperience Community AIUN Conversational AI Chatbot
 
-[![CI: Build and Test](https://github.com/rbt-cms/xperience-community-aiun-conversational-ai-bot/actions/workflows/ci.yml/badge.svg)](https://github.com/rbt-cms/xperience-community-aiun-conversational-ai-bot/actions/workflows/ci.yml)
+[![CI: Build and Test](https://github.com/rbt-cms/xperience-community-aiun-conversational-ai-bot/actions/workflows/ci.yml/badge.svg)](https://github.com/rbt-cms/xperience-community-aiun-conversational-ai-bot/actions/workflows/ci.yml) [![NuGet Package](https://img.shields.io/nuget/v/XperienceCommunity.AIUNConversationalAIChatbot.svg)](https://www.nuget.org/packages/XperienceCommunity.AIUNConversationalAIChatbot)
 
 
 ## Description
