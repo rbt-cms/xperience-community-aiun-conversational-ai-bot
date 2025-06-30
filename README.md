@@ -1,5 +1,5 @@
 
-# Xperience Community AIUN Conversational AI Bot
+# Xperience Community AIUN Conversational AI Chatbot
 
 [![CI: Build and Test](https://github.com/rbt-cms/xperience-community-aiun-conversational-ai-bot/actions/workflows/ci.yml/badge.svg)](https://github.com/rbt-cms/xperience-community-aiun-conversational-ai-bot/actions/workflows/ci.yml)
 
@@ -24,7 +24,7 @@ Powered by AIUN’s advanced NLP technology, the chatbot understands human langu
    - Comes with 200,000 free tokens for initial use of the AIUN platform
    - Helps users get started with no upfront token purchase required
 
-![AIUN Chatbot](/images/Chatbot-in-website.png)
+![AIUN Chatbot](https://github.com/rbt-cms/xperience-community-aiun-conversational-ai-bot/blob/main/images/Chatbot-in-website.png)
 
 ## Requirements
 
@@ -48,7 +48,7 @@ Powered by AIUN’s advanced NLP technology, the chatbot understands human langu
 Add the package to your application using the .NET CLI
 
 ```powershell
-dotnet add package XperienceCommunity.AIUNConversationalAIBot
+dotnet add package XperienceCommunity.AIUNConversationalAIChatbot
 ```
 
 ## Quick Start
@@ -78,17 +78,17 @@ builder.Services.AddXperienceCommunityAIUNChatbot();
 
 AIUN Chatbot in Xpereince by Kentico CMS Dashboard:
 
-![XBYK Dashboard](/images/XBYK_Dashboard.png)
+![XBYK Dashboard](https://github.com/rbt-cms/xperience-community-aiun-conversational-ai-bot/blob/main/images/XBYK_Dashboard.png)
 
 
 ## Use DancingGoat sample
 
-You can restore database with configured samples. View [DancingGoat Sample Database]().
+You can restore database with configured samples. View [DancingGoat Sample Database](https://github.com/rbt-cms/xperience-community-aiun-conversational-ai-bot/blob/main/db/xpAIUNChatbot_2960.bak).
 
 ## Full Instructions
 
 
-View the [Usage Guide](./docs/Usage-Guide.md) for more detailed instructions.
+View the [Usage Guide](https://github.com/rbt-cms/xperience-community-aiun-conversational-ai-bot/blob/main/docs/Usage-Guide.md) for more detailed instructions.
 
 
 ## Reporting issues
