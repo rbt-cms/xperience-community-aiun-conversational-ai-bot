@@ -81,11 +81,12 @@
   <!-- Apply the updated version -->
   <PropertyGroup>
     <Version>$(PackageVersion)</Version>
+    <PackageId>XperienceCommunity.AIUNConversationalAIChatbot</PackageId>
     <PackageVersion>$(PackageVersion)</PackageVersion>
-    <Title>Xperience Community AIUN Conversational AI Bot</Title>
+    <Title>Xperience Community AIUN Conversational AI Chatbot</Title>
     <PackageProjectUrl>https://github.com/rbt-cms/xperience-community-aiun-conversational-ai-bot</PackageProjectUrl>
     <RepositoryUrl>https://github.com/rbt-cms/xperience-community-aiun-conversational-ai-bot</RepositoryUrl>
-    <Description>AIUN Conversational AI bot – Custom Module for Xperience by Kentico</Description>
+    <Description>AIUN Conversational AI Chatbot – Custom Module for Xperience by Kentico</Description>
     <Authors>RBT</Authors>
   </PropertyGroup>
   
