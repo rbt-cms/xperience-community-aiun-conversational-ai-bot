@@ -85,6 +85,9 @@ AIUN Chatbot in Xpereince by Kentico CMS Dashboard:
 
 You can restore database with configured samples. View [DancingGoat Sample Database](https://github.com/rbt-cms/xperience-community-aiun-conversational-ai-bot/blob/main/DB/xpAIUNChatbot_2960.bak).
 
+Dashboard User Name: Administrator
+Password: XbyK1234$
+
 ## Full Instructions
 
 
