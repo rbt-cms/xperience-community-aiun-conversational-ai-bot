@@ -53,7 +53,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNConfigur
 
             _ = PageConfiguration.HeaderActions.AddLink<AiunConfigurationItemCreate>("Create");
             _ = PageConfiguration.AddEditRowAction<AiunConfigurationItemEdit>();
-            _ = PageConfiguration.TableActions.AddCommand("Index Published Pages", nameof(Index), icon: Icons.ArrowSend);
+            _ = PageConfiguration.TableActions.AddCommand("Index Published Pages", nameof(Index), icon: Icons.RotateRight);
             _ = PageConfiguration.TableActions.AddDeleteAction("Delete");
 
             return base.ConfigurePage();
