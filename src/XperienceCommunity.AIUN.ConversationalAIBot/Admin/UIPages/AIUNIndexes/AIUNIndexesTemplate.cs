@@ -13,7 +13,7 @@ using XperienceCommunity.AIUN.ConversationalAIBot.InfoClasses.AIUNConfigurationI
     parentType: typeof(AiunChatbotApplication),
     slug: "indexes",
     uiPageType: typeof(AiunIndexesTemplate),
-    name: "Indexes",
+    name: "Indexed Pages",
     templateName: "@XperienceCommunity/aiun-chatbot/AIUNIndexesLayout",
     order: UIPageOrder.NoOrder)]
 namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNIndexes
