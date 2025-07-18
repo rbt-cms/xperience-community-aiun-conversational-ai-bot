@@ -4,6 +4,7 @@ using Kentico.Xperience.Admin.Base;
 using Kentico.Xperience.Admin.Base.Forms;
 
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Models;
+using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.IManagers;
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNConfiguraionItem;
 using XperienceCommunity.AIUN.ConversationalAIBot.InfoClasses.AIUNConfigurationItem;
 
@@ -22,18 +23,20 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNConfigur
     {
         private readonly IPageLinkGenerator pageLinkGenerator;
         private readonly IInfoProvider<AIUNConfigurationItemInfo> aIUNConfigurationItemProvider; // Fix: Add missing field declaration
+        private readonly IAiunApiManager aiUNApiManager;
 
         [PageParameter(typeof(IntPageModelBinder))]
         public int AIUNConfigurationItemIdentifier { get; set; }
         private AiunConfigurationItemModel? model = null;
 
-        public AiunConfigurationItemEdit(
+        public AiunConfigurationItemEdit(IAiunApiManager aiUNApiManagerParam,
            IFormItemCollectionProvider formItemCollectionProvider,
            IFormDataBinder formDataBinder,
            IPageLinkGenerator pageLinkGenerator,
            IInfoProvider<AIUNConfigurationItemInfo> aIUNConfigurationItemProvider
         ) : base(formItemCollectionProvider, formDataBinder, aIUNConfigurationItemProvider)
         {
+            aiUNApiManager = aiUNApiManagerParam;
             this.pageLinkGenerator = pageLinkGenerator;
             this.aIUNConfigurationItemProvider = aIUNConfigurationItemProvider; // Fix: Initialize the missing field
         }
@@ -57,8 +60,16 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNConfigur
             return base.ConfigurePage();
         }
 
-        protected override Task<ICommandResponse> ProcessFormData(AiunConfigurationItemModel model, ICollection<IFormItem> formItems)
+        protected override async Task<ICommandResponse> ProcessFormData(AiunConfigurationItemModel model, ICollection<IFormItem> formItems)
         {
+            string error = await aiUNApiManager.ValidateChatbotConfiguration(model);
+            if (!string.IsNullOrEmpty(error))
+            {
+                var validationerrorResponse = ResponseFrom(new FormSubmissionResult(FormSubmissionStatus.ValidationFailure))
+                    .AddErrorMessage(error);
+                return validationerrorResponse;
+            }
+
             var result = ValidateAndProcess(model, updateExisting: true);
 
             if (result.ModificationResultState == ModificationResultState.Success)
@@ -66,13 +77,13 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNConfigur
                 var successResponse = NavigateTo(pageLinkGenerator.GetPath<AiunConfigurationItemsList>())
                     .AddSuccessMessage("Item edited");
 
-                return Task.FromResult<ICommandResponse>(successResponse);
+                return successResponse;
             }
 
             var errorResponse = ResponseFrom(new FormSubmissionResult(FormSubmissionStatus.ValidationFailure))
                 .AddErrorMessage(result.Message);
 
-            return Task.FromResult<ICommandResponse>(errorResponse);
+            return errorResponse;
         }
     }
 }

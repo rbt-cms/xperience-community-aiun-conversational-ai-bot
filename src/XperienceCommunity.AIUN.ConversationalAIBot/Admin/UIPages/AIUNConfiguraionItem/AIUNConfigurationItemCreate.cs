@@ -4,6 +4,7 @@ using Kentico.Xperience.Admin.Base;
 using Kentico.Xperience.Admin.Base.Forms;
 
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Models;
+using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.IManagers;
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNConfiguraionItem;
 using XperienceCommunity.AIUN.ConversationalAIBot.InfoClasses.AIUNConfigurationItem;
 
@@ -18,7 +19,7 @@ using IFormItemCollectionProvider = Kentico.Xperience.Admin.Base.Forms.Internal.
     order: 2)]
 namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNConfiguraionItem
 {
-    internal class AiunConfigurationItemCreate(IFormItemCollectionProvider formItemCollectionProvider,
+    internal class AiunConfigurationItemCreate(IAiunApiManager aiUNApiManagerParam, IFormItemCollectionProvider formItemCollectionProvider,
             IFormDataBinder formDataBinder,
             IInfoProvider<AIUNConfigurationItemInfo> aIUNConfigurationItemInfoProvider,
             IPageLinkGenerator pageLinkGenerator) : AiunConfigurationItemBaseEditPage(
@@ -29,6 +30,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNConfigur
 #pragma warning restore CS9107 // Parameter is captured into the state of the enclosing type and its value is also passed to the base constructor. The value might be captured by the base class as well.
     {
         private AiunConfigurationItemModel? model = null;
+        private readonly IAiunApiManager aiUNApiManager = aiUNApiManagerParam;
         protected override AiunConfigurationItemModel Model
         {
             get
@@ -38,8 +40,16 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNConfigur
             }
         }
 
-        protected override Task<ICommandResponse> ProcessFormData(AiunConfigurationItemModel model, ICollection<IFormItem> formItems)
+        protected override async Task<ICommandResponse> ProcessFormData(AiunConfigurationItemModel model, ICollection<IFormItem> formItems)
         {
+            string error = await aiUNApiManager.ValidateChatbotConfiguration(model);
+            if (!string.IsNullOrEmpty(error))
+            {
+                var validationerrorResponse = ResponseFrom(new FormSubmissionResult(FormSubmissionStatus.ValidationFailure))
+                    .AddErrorMessage(error);
+                return validationerrorResponse;
+            }
+
             var result = ValidateAndProcess(model, updateExisting: false);
 
             if (result.ModificationResultState == ModificationResultState.Success)
@@ -47,13 +57,13 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNConfigur
                 var successResponse = NavigateTo(pageLinkGenerator.GetPath<AiunConfigurationItemsList>())
                     .AddSuccessMessage("Item created!");
 
-                return Task.FromResult<ICommandResponse>(successResponse);
+                return successResponse;
             }
 
             var errorResponse = ResponseFrom(new FormSubmissionResult(FormSubmissionStatus.ValidationFailure))
                 .AddErrorMessage(result.Message);
 
-            return Task.FromResult<ICommandResponse>(errorResponse);
+            return errorResponse;
         }
 
 

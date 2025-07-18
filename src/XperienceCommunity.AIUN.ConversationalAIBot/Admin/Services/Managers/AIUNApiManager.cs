@@ -34,6 +34,59 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
 
         }
 
+        public async Task<string> ValidateChatbotConfiguration(AiunConfigurationItemModel aiunConfigurationItemModel)
+        {
+            try
+            {
+                string requestUrl = Constants.Constants.AIUNBaseUrl + Constants.Constants.ValidateConfigUrl;
+
+                // Set Authorization header with Bearer token and X-Api-Key
+                string moduleKey = Constants.Constants.XApikey;
+
+
+                // Prepare the payload
+                var payload = new
+                {
+                    client_id = aiunConfigurationItemModel.ClientID,
+                    token = aiunConfigurationItemModel.APIKey,
+                    base_url = aiunConfigurationItemModel.BaseURL
+                };
+
+                // Convert to JSON
+                var jsonContent = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
+
+
+                httpClient.DefaultRequestHeaders.Add("X-Api-Key", moduleKey);
+
+                // Send POST request
+                var response = await httpClient.PostAsync(requestUrl, jsonContent);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return string.Empty; // No error, return empty string
+                }
+                else
+                {
+                    string json = await response.Content.ReadAsStringAsync();
+                    var data = System.Text.Json.JsonSerializer.Deserialize<AiunRegistrationModel>(json, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+                    eventLogService.LogInformation(nameof(AiunApiManager), nameof(ValidateChatbotConfiguration),
+                    $"AIUN chatbot config validation failed with status code {(int)response.StatusCode}: {response.ReasonPhrase}\nDetails: {data?.ErrorMessage ?? string.Empty}");
+
+                    return data?.ErrorMessage ?? "Invalid configuration details.";
+
+                }
+            }
+            catch (Exception ex)
+            {
+                eventLogService.LogException(nameof(AiunApiManager), nameof(ValidateChatbotConfiguration), ex,
+                    $"AIUN chatbot config validation failed:" + ex.Message);
+                return "AIUN chatbot config validation failed. Please check event log for more details.";
+            }
+        }
+
         /// <summary>
         /// Sign up for AIUN service
         /// </summary>

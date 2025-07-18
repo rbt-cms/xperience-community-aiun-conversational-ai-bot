@@ -23,5 +23,13 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests.Admin.Constants
         [Test]
         public void GetIndexesUrl_ShouldHaveDefaultOrConfiguredValue() =>
             Assert.That(Constants.GetIndexesUrl, Is.Not.Null.And.Not.Empty.And.Not.EqualTo(" ").And.Not.EqualTo(""));
+
+        [Test]
+        public void SignupUrl_ShouldHaveDefaultOrConfiguredValue() =>
+            Assert.That(Constants.SignupUrl, Is.Not.Null.And.Not.Empty.And.Not.EqualTo(" ").And.Not.EqualTo(""));
+
+        [Test]
+        public void ValidateConfigUrl_ShouldHaveDefaultOrConfiguredValue() =>
+            Assert.That(Constants.ValidateConfigUrl, Is.Not.Null.And.Not.Empty.And.Not.EqualTo(" ").And.Not.EqualTo(""));
     }
 }
