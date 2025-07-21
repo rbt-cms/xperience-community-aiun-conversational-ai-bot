@@ -11,5 +11,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.IManagers
         public Task<AiunTokenUsageLayoutProperties> GetTokenUsageAsync();
         public Task<IndexesResponseModel> GetIndexesAsync(IndexItemFilterModel indexItemFilterModel);
         public Task<AiunRegistrationModel> AIUNSignup(AiunRegistrationModel aIUNRegistrationItemModel);
+
+        public Task<string> ValidateChatbotConfiguration(AiunConfigurationItemModel aiunConfigurationItemModel);
     }
 }

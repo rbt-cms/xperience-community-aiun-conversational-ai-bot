@@ -7,5 +7,9 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests.Admin.Constants
         public static string UploadDocumentUrl { get; set; } = "https://default-upload-url.com";
         public static string TokensURl { get; set; } = "https://default-tokens-url.com";
         public static string GetIndexesUrl { get; set; } = "https://default-indexes-url.com";
+
+        public static string SignupUrl { get; set; } = "https://default-signup-url.com";
+
+        public static string ValidateConfigUrl { get; set; } = "https://default-validate-config-url.com";
     }
 }
