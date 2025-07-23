@@ -23,8 +23,6 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
         private readonly HttpClient httpClient;
         private readonly IEventLogService eventLogService;
         private readonly IInfoProvider<AIUNRegistrationInfo> aIUNRegistrationInfo;
-        // private readonly IDefaultChatbotManager defaultChatbotManager;
-
 
         public AiunApiManager(HttpClient httpClientParam, IEventLogService eventLogServiceParam,
             IInfoProvider<AIUNRegistrationInfo> aIUNRegistrationInfoParam)
@@ -32,7 +30,6 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
             httpClient = httpClientParam;
             eventLogService = eventLogServiceParam;
             aIUNRegistrationInfo = aIUNRegistrationInfoParam;
-            //this.defaultChatbotManager = defaultChatbotManager;
         }
 
         public async Task<string> ValidateChatbotConfiguration(AiunConfigurationItemModel aiunConfigurationItemModel)
@@ -196,9 +193,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
 
                 if (response.IsSuccessStatusCode)
                 {
-                    string result = await response.Content.ReadAsStringAsync();
-                    result = "success";
-                    // defaultChatbotManager.UpdateLastUpdatedInConfig(clientID);
+                    _ = await response.Content.ReadAsStringAsync();
                     // Log success using LogInformation
                     eventLogService.LogInformation(
                         source: nameof(AiunApiManager),
@@ -206,7 +201,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
                         eventDescription: $"Uploaded URLs successfully at {DateTime.Now}. URLs: {string.Join(", ", websiteUrls)}"
                     );
 
-                    return result;
+                    return "success";
 
                 }
                 // Optional: log or handle errors

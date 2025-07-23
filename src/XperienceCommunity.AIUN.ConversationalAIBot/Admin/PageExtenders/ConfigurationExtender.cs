@@ -28,11 +28,6 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.PageExtenders
 
         public override Task ConfigurePage()
         {
-            //if (isConfigured == 1)
-            //{
-            //    return Task.CompletedTask;
-            //}
-
             var AIUNConfigurationItem = aiUNConfigurationItemInfoProvider.Get().FirstOrDefault() ?? new AIUNConfigurationItemInfo();
             var request = httpContextAccessor.HttpContext?.Request;
             string clientUrl = " ";
@@ -68,7 +63,6 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.PageExtenders
             Page.PageConfiguration.ColumnConfigurations
                 .AddColumn("Status", caption: "Status");
 
-            // isConfigured = 1;
             return base.ConfigurePage();
         }
     }
