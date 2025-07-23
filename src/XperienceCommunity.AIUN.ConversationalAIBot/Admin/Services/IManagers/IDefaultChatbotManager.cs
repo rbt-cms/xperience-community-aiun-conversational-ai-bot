@@ -14,6 +14,6 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.IManagers
         public Task<IEnumerable<string>> GetAbsoluteUrls(IEnumerable<string> relativeUrls, string scheme, HostString host);
         public AiunRegistrationModel GetExistingRegistration();
         public Task<object> StoreOrUpdate(AiunRegistrationModel data);
-
+        // public void UpdateLastUpdatedInConfig(string clientID);
     }
 }

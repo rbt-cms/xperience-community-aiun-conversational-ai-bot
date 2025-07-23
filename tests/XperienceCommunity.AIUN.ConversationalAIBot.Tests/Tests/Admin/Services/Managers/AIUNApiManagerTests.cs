@@ -1,5 +1,4 @@
 ﻿using System.Net;
-
 using System.Text;
 using System.Text.Json;
 
@@ -14,6 +13,7 @@ using NUnit.Framework;
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.InfoClasses.AIUNRegistration;
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Models;
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Models.AIUNIndexes;
+using XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.IManagers;
 using XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.TokensUsage;
 
 namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
@@ -27,12 +27,18 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
         private HttpClient httpClient;
         private AiunApiManager apiManager;
 
+        private Mock<IDefaultChatbotManager> defaultChatbotManagerMock;
+
         [SetUp]
+        // Add the appropriate using directive for the namespace where IDefaultChatbotManager is defined.
+        // If you are unsure of the namespace, you may need to check the project references or documentation.
+
         public void SetUp()
         {
             httpMessageHandlerMock = new Mock<HttpMessageHandler>();
             eventLogServiceMock = new Mock<IEventLogService>();
             aIUNRegistrationInfoMock = new Mock<IInfoProvider<AIUNRegistrationInfo>>();
+            defaultChatbotManagerMock = new Mock<IDefaultChatbotManager>();
             httpClient = new HttpClient(httpMessageHandlerMock.Object);
             apiManager = new AiunApiManager(httpClient, eventLogServiceMock.Object, aIUNRegistrationInfoMock.Object);
         }

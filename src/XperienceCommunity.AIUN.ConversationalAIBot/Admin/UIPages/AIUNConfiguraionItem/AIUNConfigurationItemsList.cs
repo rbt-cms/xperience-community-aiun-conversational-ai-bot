@@ -49,7 +49,8 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.UIPages.AIUNConfigur
             .AddColumn(nameof(AIUNConfigurationItemInfo.ChannelName), "Channel Name")
             .AddColumn(nameof(AIUNConfigurationItemInfo.ClientID), "ClientID")
             .AddColumn(nameof(AIUNConfigurationItemInfo.APIKey), "API Key")
-            .AddColumn(nameof(AIUNConfigurationItemInfo.BaseURL), "Base URL");
+            .AddColumn(nameof(AIUNConfigurationItemInfo.BaseURL), "Base URL")
+            .AddColumn(nameof(AIUNConfigurationItemInfo.LastUpdated), "Last Updated");
 
             _ = PageConfiguration.HeaderActions.AddLink<AiunConfigurationItemCreate>("Create");
             _ = PageConfiguration.AddEditRowAction<AiunConfigurationItemEdit>();

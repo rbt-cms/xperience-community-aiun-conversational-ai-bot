@@ -23,6 +23,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
         private readonly HttpClient httpClient;
         private readonly IEventLogService eventLogService;
         private readonly IInfoProvider<AIUNRegistrationInfo> aIUNRegistrationInfo;
+        // private readonly IDefaultChatbotManager defaultChatbotManager;
 
 
         public AiunApiManager(HttpClient httpClientParam, IEventLogService eventLogServiceParam,
@@ -31,7 +32,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
             httpClient = httpClientParam;
             eventLogService = eventLogServiceParam;
             aIUNRegistrationInfo = aIUNRegistrationInfoParam;
-
+            //this.defaultChatbotManager = defaultChatbotManager;
         }
 
         public async Task<string> ValidateChatbotConfiguration(AiunConfigurationItemModel aiunConfigurationItemModel)
@@ -196,7 +197,8 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
                 if (response.IsSuccessStatusCode)
                 {
                     string result = await response.Content.ReadAsStringAsync();
-
+                    result = "success";
+                    // defaultChatbotManager.UpdateLastUpdatedInConfig(clientID);
                     // Log success using LogInformation
                     eventLogService.LogInformation(
                         source: nameof(AiunApiManager),
@@ -347,6 +349,150 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
 
             return new IndexesResponseModel();
         }
+        public async Task<string> DeleteURLsAsync(List<string> websiteUrls, string clientID, string? securityToken = "")
+        {
+            try
+            {
+                string requestUrl = Constants.Constants.AIUNBaseUrl + Constants.Constants.DeleteDocumentUrl;
 
+                // Prepare the payload
+                var payload = new
+                {
+                    urls = websiteUrls
+                };
+
+                // Convert to JSON
+                var jsonContent = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
+
+                var request = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Delete,
+                    RequestUri = new Uri(requestUrl),
+                    Content = jsonContent
+                };
+
+
+
+                // Set Authorization header with Bearer token: ModuleKey + SecurityToken
+                string moduleKey = Constants.Constants.XApikey;
+                if (string.IsNullOrEmpty(securityToken))
+                {
+                    securityToken = aIUNRegistrationInfo.Get()?.FirstOrDefault()?.APIKey ?? string.Empty;
+                }
+
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", $"{securityToken}");
+                request.Headers.Add("X-Api-Key", moduleKey);
+                // Send POST request
+                var response = await httpClient.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+
+                    // Log success using LogInformation
+                    eventLogService.LogInformation(
+                        source: nameof(AiunApiManager),
+                        eventCode: "Delete success",
+                        eventDescription: $"Delete URLs successfully at {DateTime.Now}. URLs: {string.Join(", ", websiteUrls)}"
+                    );
+
+                    return result;
+
+                }
+                // Optional: log or handle errors
+                string error = await response.Content.ReadAsStringAsync();
+
+                // Log failure using LogException
+                var exception = new ApplicationException($"Delete API failed. Status: {response.StatusCode}, Error: {error}");
+                eventLogService.LogException(
+                    source: nameof(AiunApiManager),
+                    eventCode: "Delete Failure",
+                    ex: exception,
+                    additionalMessage: $"Failed to delete URLs at {DateTime.Now}. URLs: {string.Join(", ", websiteUrls)}"
+                );
+
+                return error;
+            }
+            catch (Exception ex)
+            {
+                // Log unexpected exceptions
+                eventLogService.LogException(
+                    source: nameof(AiunApiManager),
+                    eventCode: "Delete Exception",
+                    ex: ex,
+                    additionalMessage: $"Unexpected error at {DateTime.Now} while deleting URLs: {string.Join(", ", websiteUrls)}"
+                );
+            }
+            return string.Empty;
+
+
+        }
+
+        public async Task<List<SitemapIndexStatus>> GetSitemapIndexAsync(string departmentId, string? search = null, string? securityToken = "")
+        {
+            var sitemapList = new List<SitemapIndexStatus>();
+
+            string Url = Constants.Constants.AIUNBaseUrl + Constants.Constants.IndexingStatusDocumentUrl;
+
+            try
+            {
+                var queryParams = new List<string> { $"department_id={Uri.EscapeDataString(departmentId)}" };
+                if (!string.IsNullOrWhiteSpace(search))
+                {
+                    queryParams.Add($"search={Uri.EscapeDataString(search)}");
+                }
+
+                string queryString = string.Join("&", queryParams);
+                string requestUrl = $"{Url}?{queryString}";
+
+                string moduleKey = Constants.Constants.XApikey;
+
+                if (string.IsNullOrEmpty(securityToken))
+                {
+                    securityToken = aIUNRegistrationInfo.Get()?.FirstOrDefault()?.APIKey ?? string.Empty;
+                }
+
+                var request = new HttpRequestMessage(HttpMethod.Get, requestUrl);
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", securityToken);
+                request.Headers.Add("X-Api-Key", moduleKey);
+
+                var response = await httpClient.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    sitemapList = JsonConvert.DeserializeObject<List<SitemapIndexStatus>>(result) ?? [];
+
+                    eventLogService.LogInformation(
+                        source: nameof(AiunApiManager),
+                        eventCode: "Sitemap Fetch Success",
+                        eventDescription: $"Fetched sitemap index successfully at {DateTime.Now} for department ID: {departmentId}"
+                    );
+                }
+                else
+                {
+                    string error = await response.Content.ReadAsStringAsync();
+                    var exception = new ApplicationException($"GET sitemap failed. Status: {response.StatusCode}, Error: {error}");
+
+                    eventLogService.LogException(
+                        source: nameof(AiunApiManager),
+                        eventCode: "Sitemap Fetch Failure",
+                        ex: exception,
+                        additionalMessage: $"Failed to fetch sitemap at {DateTime.Now} for department ID: {departmentId}"
+                    );
+                }
+            }
+            catch (Exception ex)
+            {
+                eventLogService.LogException(
+                    source: nameof(AiunApiManager),
+                    eventCode: "Sitemap Fetch Exception",
+                    ex: ex,
+                    additionalMessage: $"Unexpected error at {DateTime.Now} while fetching sitemap for department ID: {departmentId}"
+                );
+            }
+
+            return sitemapList;
+        }
     }
 }
