@@ -56,11 +56,11 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Tests
             // Arrange  
             var cmsEventArgs = new CMSEventArgs();
 
-            var handleWebPagePublishMethod = typeof(ContentChangeEventHandler).GetMethod("HandleWebPagePublish", BindingFlags.NonPublic | BindingFlags.Instance)
-                ?? throw new InvalidOperationException("HandleWebPagePublish method not found.");
+            var handleWebPageMethod = typeof(ContentChangeEventHandler).GetMethod("HandleWebPage", BindingFlags.NonPublic | BindingFlags.Instance)
+                ?? throw new InvalidOperationException("HandleWebPage method not found.");
 
             // Act  
-            if (handleWebPagePublishMethod.Invoke(eventHandler, new object[] { cmsEventArgs }) is Task task)
+            if (handleWebPageMethod.Invoke(eventHandler, new object[] { "Publish", cmsEventArgs }) is Task task)
             {
                 await task;
             }
