@@ -1,5 +1,4 @@
 ﻿using System.Net;
-
 using System.Text;
 using System.Text.Json;
 
@@ -28,6 +27,9 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
         private AiunApiManager apiManager;
 
         [SetUp]
+        // Add the appropriate using directive for the namespace where IDefaultChatbotManager is defined.
+        // If you are unsure of the namespace, you may need to check the project references or documentation.
+
         public void SetUp()
         {
             httpMessageHandlerMock = new Mock<HttpMessageHandler>();

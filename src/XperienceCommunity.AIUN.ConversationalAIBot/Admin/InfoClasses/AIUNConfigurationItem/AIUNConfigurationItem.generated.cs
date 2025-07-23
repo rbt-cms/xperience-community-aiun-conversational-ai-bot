@@ -89,6 +89,15 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.InfoClasses.AIUNConfigurat
             set => SetValue(nameof(BaseURL), value);
         }
 
+        /// <summary>
+        /// Base URL.
+        /// </summary>
+        [DatabaseField]
+        public virtual string LastUpdated
+        {
+            get => ValidationHelper.GetString(GetValue(nameof(LastUpdated)), String.Empty);
+            set => SetValue(nameof(LastUpdated), value);
+        }
 
         /// <summary>
         /// Deletes the object using appropriate provider.

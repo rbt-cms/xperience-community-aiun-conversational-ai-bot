@@ -13,5 +13,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.IManagers
         public Task<AiunRegistrationModel> AIUNSignup(AiunRegistrationModel aIUNRegistrationItemModel);
 
         public Task<string> ValidateChatbotConfiguration(AiunConfigurationItemModel aiunConfigurationItemModel);
+        public Task<string> DeleteURLsAsync(List<string> websiteUrls, string clientID, string securityToken = "");
+        public Task<List<SitemapIndexStatus>> GetSitemapIndexAsync(string departmentId, string? search = null, string? securityToken = "");
     }
 }

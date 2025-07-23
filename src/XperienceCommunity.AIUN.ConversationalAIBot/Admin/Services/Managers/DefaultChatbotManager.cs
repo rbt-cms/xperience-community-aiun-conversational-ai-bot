@@ -109,7 +109,11 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
 
                 relativeUrls.AddRange(languageUrls);
                 var absoluteUrls = await GetAbsoluteUrls(relativeUrls, scheme, host);
-                _ = await aiUNApiManager.UploadURLsAsync(absoluteUrls.Distinct().ToList(), clientID);
+                string result = await aiUNApiManager.UploadURLsAsync(absoluteUrls.Distinct().ToList(), clientID);
+                if (result == "success")
+                {
+                    UpdateLastUpdatedInConfig(clientID);
+                }
             }
             catch (Exception ex)
             {
@@ -273,7 +277,23 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
             }
         }
 
+        public void UpdateLastUpdatedInConfig(string clientID)
+        {
+            try
+            {
+                var aiUNConfigurationItemInfo = aiUNConfigurationItemInfoProvider.Get().WhereEquals(nameof(AIUNConfigurationItemInfo.ClientID), clientID).FirstOrDefault();
 
+                if (aiUNConfigurationItemInfo != null)
+                {
+                    aiUNConfigurationItemInfo.LastUpdated = ValidationHelper.GetString(DateTime.Now, string.Empty);
+                    aiUNConfigurationItemInfoProvider.Set(aiUNConfigurationItemInfo);
+                }
+            }
+            catch (Exception ex)
+            {
+                eventLogService.LogException(nameof(DefaultChatbotManager), nameof(UpdateLastUpdatedInConfig), ex, null);
+            }
+        }
     }
 
 }

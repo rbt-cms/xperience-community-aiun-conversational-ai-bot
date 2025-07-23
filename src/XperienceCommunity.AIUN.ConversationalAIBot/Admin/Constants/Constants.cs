@@ -11,7 +11,8 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Constants
         public static readonly string GetIndexesUrl = GetConfigurationValue("AIUNSettings:GetIndexesUrl", "upload/uploaded/documents");
         public static readonly string SignupUrl = GetConfigurationValue("AIUNSettings:SignupUrl", "users/signup");
         public static readonly string ValidateConfigUrl = GetConfigurationValue("AIUNSettings:ValidateConfigUrl", "service-agent/validate-config");
-
+        public static readonly string DeleteDocumentUrl = GetConfigurationValue("AIUNSettings:DeleteDocumentUrl", "delete/indexed/url");
+        public static readonly string IndexingStatusDocumentUrl = GetConfigurationValue("AIUNSettings:IndexingStatusDocumentUrl", "upload/index/sitemap");
         private static string GetConfigurationValue(string key, string defaultValue)
         {
             var config = new ConfigurationBuilder()
