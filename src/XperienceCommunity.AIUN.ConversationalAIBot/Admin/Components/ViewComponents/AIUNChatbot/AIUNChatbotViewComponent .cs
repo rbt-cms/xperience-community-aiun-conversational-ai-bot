@@ -41,11 +41,11 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Components.ViewCompo
                 {
                     string script = aiunConfigurationItem.BaseURL.ToLower().Contains("</script>")
                         ? aiunConfigurationItem.BaseURL
-                        : ("<script>  window.addEventListener('load', function () {\r\n var script = document.createElement('script'); script.src='"
+                        : ("<script>  window.addEventListener('load', function () {\r\n var script = document.createElement('script'); var parentPageUrl = window.location.href; script.src='"
                            + aiunConfigurationItem.BaseURL.TrimEnd('/') + "/chat.js?"
                            + "key=" + aiunConfigurationItem.APIKey
                            + "&client_id=" + aiunConfigurationItem.ClientID
-                           + "';  document.body.appendChild(script);\r\n  });\r\n</script>");
+                           + "&domain_name='+parentPageUrl; script.defer = true; document.body.appendChild(script);\r\n  });\r\n</script>");
                     scriptHtml = new HtmlString(script);
                 }
             }
