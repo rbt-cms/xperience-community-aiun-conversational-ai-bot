@@ -40,13 +40,20 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Components.ViewCompo
                 if (aiunConfigurationItem != null)
                 {
                     string script = aiunConfigurationItem.BaseURL.ToLower().Contains("</script>")
-                        ? aiunConfigurationItem.BaseURL
-                        : ("<script>  window.addEventListener('load', function () {\r\n var script = document.createElement('script'); var parentPageUrl = window.location.href; script.src='"
-                           + aiunConfigurationItem.BaseURL.TrimEnd('/') + "/chat.js?"
-                           + "key=" + aiunConfigurationItem.APIKey
-                           + "&client_id=" + aiunConfigurationItem.ClientID
-                           + "&domain_name='+parentPageUrl; script.defer = true; document.body.appendChild(script);\r\n  });\r\n</script>");
+     ? aiunConfigurationItem.BaseURL
+     : ("<script>  window.addEventListener('load', function () {\r\n" +
+        " var script = document.createElement('script');\r\n" +
+        " var parentPageUrl = window.location.href;\r\n" +
+        " script.src='" + aiunConfigurationItem.BaseURL.TrimEnd('/') + "/chat.js?" +
+        "key=" + aiunConfigurationItem.APIKey +
+        "&client_id=" + aiunConfigurationItem.ClientID +
+        "&domain_name=' + encodeURIComponent(parentPageUrl);\r\n" +
+        " script.defer = true;\r\n" +
+        " document.body.appendChild(script);\r\n" +
+        "});\r\n</script>");
+
                     scriptHtml = new HtmlString(script);
+
                 }
             }
             catch (Exception ex)
