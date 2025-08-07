@@ -109,11 +109,8 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
 
                 relativeUrls.AddRange(languageUrls);
                 var absoluteUrls = await GetAbsoluteUrls(relativeUrls, scheme, host);
-                string result = await aiUNApiManager.UploadURLsAsync(absoluteUrls.Distinct().ToList(), clientID);
-                if (result == "success")
-                {
-                    UpdateLastUpdatedInConfig(clientID);
-                }
+                UpdateLastUpdatedInConfig(clientID);
+                _ = await aiUNApiManager.UploadURLsAsync(absoluteUrls.Distinct().ToList(), clientID);
             }
             catch (Exception ex)
             {
