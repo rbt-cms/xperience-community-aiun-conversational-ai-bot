@@ -104,7 +104,7 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
                                                            .InLanguage("en")
                                                            .Parameters(p => p.Columns(nameof(IWebPageContentQueryDataContainer.WebPageItemID)));
 
-                var pageIdentifiers = await contentQueryExecutor.GetWebPageResult(builder, i => i.WebPageItemID, options, cancellationToken);
+                var pageIdentifiers = (await contentQueryExecutor.GetWebPageResult(builder, i => i.WebPageItemID, options, cancellationToken)).ToList();
                 var languageUrls = await GetWebPageRelativeUrls(pageIdentifiers, "en", cancellationToken);
 
                 relativeUrls.AddRange(languageUrls);
@@ -114,7 +114,8 @@ namespace XperienceCommunity.AIUN.ConversationalAIBot.Admin.Services.Managers
             }
             catch (Exception ex)
             {
-                eventLogService.LogException(nameof(DefaultChatbotManager), nameof(IndexInternal), ex, null);
+                eventLogService.LogException(
+                    nameof(DefaultChatbotManager), nameof(IndexInternal), ex, null);
             }
             return string.Empty;
         }
